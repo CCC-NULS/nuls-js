@@ -1,0 +1,11 @@
+version: '3'
+services:
+  nuls_js:
+    build:
+      context: ../..
+      dockerfile: ./environment/dev/Dockerfile
+    image: dev/nuls_js
+    container_name: dev/nuls_js
+    volumes:
+      - ../..:/code
+      - ~/.npmrc:/code/.npmrc:ro

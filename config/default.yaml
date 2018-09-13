@@ -1,0 +1,7 @@
+nuls:
+  nodes:
+    - host: http://localhost
+      port: ''
+      base: '/v1/nuls'
+  resources:
+    balance: '/wallet/balance/__ADDRESS__'

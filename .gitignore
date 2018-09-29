@@ -64,3 +64,4 @@ dist/
 config/config.json
 typedocs/
 .npmrc
+.idea

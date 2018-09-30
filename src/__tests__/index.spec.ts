@@ -1,15 +1,25 @@
-// import * as client from '@/index';
-//
-// test('adds 1 + 2 to equal 3', () =>
+// import pink, { calc } from '@/pink';
+import * as client from '@/index';
+
+// test('pink is foo', () =>
 // {
-// 	expect(client.moduleName).toBe('core');
-// 	console.log(client.moduleName);
-// 	// asdf
+// 	expect(pink).toBe('foo');
 // });
-//
-// test('adds 1 + 2 toa equal 3', () =>
+
+// test('core description text', () =>
 // {
-// 	expect(client.moduleName).toBe('core');
-// 	console.log(client.moduleName);
-// 	// asdf
+// 	expect(client.moduleDescription).toBe('core description');
 // });
+
+test('core name text', () =>
+{
+	expect(client.moduleName).toBe('core');
+});
+
+test('calc', () =>
+{
+	expect(client.calc(1)).toBe(2);
+	expect(client.calc(2)).toBe(3);
+	expect(client.calc(1 + 2)).toBe(4);
+	expect(client.calc(parseInt('a', 10))).toBe(NaN);
+});

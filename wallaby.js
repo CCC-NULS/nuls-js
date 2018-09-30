@@ -1,6 +1,9 @@
 // http://localhost:51245
+
 module.exports = (wallaby) =>
 {
+	'use strict';
+
 	return {
 		files: [
 			'src/**/*.*',

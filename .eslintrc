@@ -1,32 +1,47 @@
 {
 	"parserOptions": {
 		"parser": [
-			"babel-eslint",
-			"typescript-eslint-parser"
+			"babel-eslint"
 		],
 		"ecmaVersion": 2017,
 		"sourceType": "module"
 	},
-	"plugins": ["typescript"],
+	"parser": "typescript-eslint-parser",
+	"plugins": [
+		"typescript",
+		"jest",
+		"import"
+	],
+	"env": {
+		"jest": true
+	},
 	"extends": [
 		"eslint:recommended",
-		"airbnb-base"
+		"airbnb-base",
+		"plugin:jest/recommended",
+		"plugin:import/errors",
+		"plugin:import/warnings"
 	],
-	"overrides": [
-		{
-			"files": [ "*.vue" ],
-			"rules": {
-				"indent": [ "off" ]
-			}
-		},
-		{
-			"files": [ "*.js" ],
-			"rules": {
-				"vue/script-indent": [ "off" ]
+	"settings": {
+		"import/resolver": {
+			"webpack": {
+				"config": "webpack.config.js"
 			}
 		}
-	],
+	},
 	"rules": {
+		"import/extensions": ["off"],
+		"import/no-unresolved": "off",
+		"import/no-unassigned-import": ["error"],
+		"import/no-extraneous-dependencies": [
+			"error",
+			{
+				"devDependencies": [
+					"**/__tests__/*.*.js",
+					"wallaby.js"
+				]
+			}
+		],
 		"no-tabs": ["off"],
 		"indent": ["error", "tab", {"SwitchCase": 1}],
 		"unicorn/filename-case": ["off", {"case": "camelCase"}],

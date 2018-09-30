@@ -19,7 +19,7 @@
     "test:watch": "jest --watchAll",
     "coverage": "jest --coverage",
     "jest": "jest",
-    "lint": "./node_modules/.bin/eslint --ext=js,ts src/ testConfigs/ testConfigs/",
+    "lint": "./node_modules/.bin/eslint --ext=js,ts ./",
     "docs:clean": "rimraf typedocs",
     "docs": "npm run docs:clean && typedoc --options ./typedoc.js ./src"
   },

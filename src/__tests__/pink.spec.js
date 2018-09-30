@@ -1,10 +1,5 @@
 import pink, { calc } from '@/pink';
 
-test('1 + 1', () =>
-{
-	expect(1 + 1).toBe(2);
-});
-
 test('pink is foo', () =>
 {
 	expect(pink).toBe('foo');

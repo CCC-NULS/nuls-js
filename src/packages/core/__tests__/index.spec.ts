@@ -1,15 +1,4 @@
-// import pink, { calc } from '@/pink';
 import * as core from '@/packages/core/';
-
-// test('pink is foo', () =>
-// {
-// 	expect(pink).toBe('foo');
-// });
-
-// test('core description text', () =>
-// {
-// 	expect(client.moduleDescription).toBe('core description');
-// });
 
 test('core name text', () =>
 {

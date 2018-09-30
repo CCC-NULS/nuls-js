@@ -5,10 +5,6 @@ const nodeExternals = require('webpack-node-externals');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 
-const packageConfigPath = path.resolve(__dirname, './config/config.json');
-
-fs.writeFileSync(packageConfigPath, JSON.stringify(config));
-
 const commonWebpackConfig = {
 	entry: {
 		'nuls-js': './src/index.ts'
@@ -21,7 +17,8 @@ const commonWebpackConfig = {
 	resolve: {
 		extensions: ['.ts', '.js', '.json'],
 		alias: {
-			config: packageConfigPath
+			config: path.resolve(__dirname, './config/config.json'),
+			'@': path.join(__dirname, './src')
 		}
 	},
 	module: {

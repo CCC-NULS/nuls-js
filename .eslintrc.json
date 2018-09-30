@@ -1,0 +1,118 @@
+{
+	"parserOptions": {
+		"parser": [
+			"babel-eslint",
+			"typescript-eslint-parser"
+		],
+		"ecmaVersion": 2017,
+		"sourceType": "module"
+	},
+	"plugins": ["typescript"],
+	"extends": [
+		"eslint:recommended",
+		"airbnb-base"
+	],
+	"overrides": [
+		{
+			"files": [ "*.vue" ],
+			"rules": {
+				"indent": [ "off" ]
+			}
+		},
+		{
+			"files": [ "*.js" ],
+			"rules": {
+				"vue/script-indent": [ "off" ]
+			}
+		}
+	],
+	"rules": {
+		"no-tabs": ["off"],
+		"indent": ["error", "tab", {"SwitchCase": 1}],
+		"unicorn/filename-case": ["off", {"case": "camelCase"}],
+		"brace-style": ["error", "allman"],
+		"keyword-spacing": ["error", {
+			"before": true, "after": false, "overrides": {
+				"from": {"before": true, "after": true},
+				"import": {"after": true},
+				"case": {"after": true},
+				"return": {"after": true},
+				"const": {"after": true},
+				"let": {"after": true},
+				"export": {"after": true}
+			}
+		}],
+		"linebreak-style": ["off"],
+		"lines-around-comment": ["off"],
+		"max-len": ["error", 300, 4, {"ignoreUrls": true, "ignoreComments": true, "ignorePattern": "^import\\s.+\\sfrom\\s.+;$"}],
+		"padding-line-between-statements": ["error",
+			{ "blankLine": "always", "prev": ["block",
+				"block-like",
+				"break",
+				"case",
+				"cjs-export",
+				"cjs-import",
+				"class",
+				"const",
+				"continue",
+				"debugger",
+				"default",
+				"directive",
+				"do",
+				"empty",
+				"export",
+				"for",
+				"function",
+				"if",
+				"import",
+				"let",
+				"multiline-block-like",
+				"multiline-expression",
+				"return",
+				"switch",
+				"throw",
+				"try",
+				"var",
+				"while",
+				"with"], "next": "*" },
+			{ "blankLine": "never", "prev": "import", "next": "import" },
+			{ "blankLine": "any", "prev": "const", "next": "const" },
+			{ "blankLine": "never", "prev": "const", "next": "let" },
+			{ "blankLine": "never", "prev": "case", "next": "*" },
+			{ "blankLine": "always", "prev": "expression", "next": "return" }
+		],
+		"no-console": ["off", {"allow": ["warn", "error"]}],
+		"no-inline-comments": ["off"],
+		"one-var": ["error", {"var": "always", "let": "always", "const": "never"}],
+		"no-shadow": ["off"],
+		"comma-dangle": ["error", "never"],
+		"no-param-reassign": ["off"],
+		"arrow-parens": ["error", "always"],
+		"arrow-body-style": ["off"],
+		"prefer-destructuring": ["error",
+			{
+				"VariableDeclarator": {
+					"array": true,
+					"object": true
+				},
+				"AssignmentExpression": {
+					"array": false,
+					"object": false
+				}
+			},
+			{
+				"enforceForRenamedProperties": false
+			}
+		],
+		"global-require": ["off"],
+		"import/no-dynamic-require": ["off"],
+		"class-methods-use-this": ["off"],
+		"no-underscore-dangle": ["off"],
+		"object-curly-newline": ["error", { "consistent": true}],
+		"import/newline-after-import": ["off"],
+		"no-multiple-empty-lines": ["error", { "max": 1 }],
+		"implicit-arrow-linebreak": ["off"],
+		"operator-linebreak": ["error", "after"],
+		"no-else-return": ["error", { "allowElseIf": true }]
+	}
+}

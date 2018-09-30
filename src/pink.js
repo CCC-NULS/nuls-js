@@ -4,5 +4,8 @@ export const calc = (num) => parseInt(num, 10) + 1;
 
 export const calc2 = (num) => parseInt(num, 10) + 1;
 
-// export const bar2 = 'baz 2';
+export const calc3 = (num) =>
+{
+	return parseInt(num, 10) + 1;
+};
 

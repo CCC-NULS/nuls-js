@@ -1,5 +1,5 @@
 // import pink, { calc } from '@/pink';
-import * as client from '@/index';
+import * as core from '@/packages/core/';
 
 // test('pink is foo', () =>
 // {
@@ -13,13 +13,13 @@ import * as client from '@/index';
 
 test('core name text', () =>
 {
-	expect(client.moduleName).toBe('core');
+	expect(core.moduleName).toBe('core');
 });
 
 test('calc', () =>
 {
-	expect(client.calc(1)).toBe(2);
-	expect(client.calc(2)).toBe(3);
-	expect(client.calc(1 + 2)).toBe(4);
-	expect(client.calc(parseInt('a', 10))).toBe(NaN);
+	expect(core.calc(1)).toBe(2);
+	expect(core.calc(2)).toBe(3);
+	expect(core.calc(1 + 2)).toBe(4);
+	expect(core.calc(parseInt('a', 10))).toBe(NaN);
 });

@@ -6,33 +6,37 @@ const { randomBytes } = require('crypto');
 
 class NewAccount
 {
-	protected chainId: number;
-	protected addressType: number;
+	public chainId: number;
+	public addressType: number;
 
 	// private _debug: boolean = false;
+	// private startTime: number;
 
-	public address: string | null = null;
-	public privateKey: string | null;
-	public publicKey: string | null = null;
-	public privateKeyBuffer: Buffer | null = null;
-	public publicKeyBuffer: Buffer | null = null;
+	private address?: string;
+	private privateKey?: string;
+	private publicKey?: string;
+	private privateKeyBuffer?: Buffer;
+	private publicKeyBuffer?: Buffer;
 
-	constructor(privateKey: string | null = null, addressType: number = 1)
+	constructor(privateKey: string, addressType: number = 1)
 	{
 		this.chainId = 8964; // https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70
 		this.addressType = addressType; // https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76
 		this.privateKey = privateKey;
+		// this.startTime = Date.now();
 		this.createAccount();
 	}
 
+	/**
+	 * Old debug function to be used if needed
+	 */
+	// logTime()
+	// {
+	// 	return Date.now() - this.startTime;
+	// }
+
 	getAccount()
 	{
-		if(this.address === null) return false;
-
-		if(this.privateKey === null) return false;
-
-		if(this.publicKey === null) return false;
-
 		return {
 			address: this.address,
 			privateKey: this.privateKey,
@@ -78,6 +82,9 @@ class NewAccount
 		this.validatePrivateKey();
 	}
 
+	/**
+	 * Validate the private keys
+	 */
 	validatePrivateKey()
 	{
 		const msg = randomBytes(32);
@@ -126,16 +133,16 @@ class NewAccount
 		return address;
 	}
 
-	stringToHex(string: string | null)
+	stringToHex(string?: string)
 	{
-		if(string === null) return null;
+		if(!string) return undefined;
 
 		return Buffer.from(string, 'hex');
 	}
 
-	hexToString(hex: Buffer | null)
+	hexToString(hex?: Buffer)
 	{
-		if(hex === null) return null;
+		if(!hex) return undefined;
 
 		return hex.toString('hex');
 	}

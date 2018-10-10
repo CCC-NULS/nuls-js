@@ -1,0 +1,15 @@
+{
+	"extends": "tslint:recommended",
+	"rules": {
+		"indent": false,
+		"whitespace": false,
+		"one-line": false,
+		"curly": false,
+		"trailing-comma": false,
+		"quotes": false,
+		"quotemark": [true, "single"],
+		"typedef": [true, "call-signature", "arrow-call-signature", "parameter", "arrow-parameter", "property-declaration", "variable-declaration", "member-variable-declaration", "object-destructuring", "array-destructuring"],
+		"max-line-length": [false],
+		"no-bitwise": false
+	}
+}

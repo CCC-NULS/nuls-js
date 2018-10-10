@@ -122,7 +122,8 @@
 		"no-else-return": ["error", { "allowElseIf": true }],
 		"no-bitwise": ["error", { "allow": ["^"] }],
 		"lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
-		"new-cap": ["error", { "newIsCapExceptions": ["sha256"] }]
+		"new-cap": ["error", { "newIsCapExceptions": ["sha256"] }],
+		"strict": ["off"]
 	},
 	"overrides": [
 		{

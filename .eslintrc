@@ -119,6 +119,18 @@
 		"no-multiple-empty-lines": ["error", { "max": 1 }],
 		"implicit-arrow-linebreak": ["off"],
 		"operator-linebreak": ["error", "after"],
-		"no-else-return": ["error", { "allowElseIf": true }]
-	}
+		"no-else-return": ["error", { "allowElseIf": true }],
+		"no-bitwise": ["error", { "allow": ["^"] }],
+		"lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
+		"new-cap": ["error", { "newIsCapExceptions": ["sha256"] }]
+	},
+	"overrides": [
+		{
+			"files": ["**/*.ts"],
+			"parser": "typescript-eslint-parser",
+			"rules": {
+				"no-undef": "off"
+			}
+		}
+	]
 }

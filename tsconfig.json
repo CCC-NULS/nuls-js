@@ -64,7 +64,8 @@
     "tests",
 		"**/*.spec.ts",
 		"**/*.test.ts",
-    "**/__test__/**",
-    "**/__mocks__/**"
+    "**/__tests__/**",
+    "**/__mocks__/**",
+		"testConfigs"
   ]
 }

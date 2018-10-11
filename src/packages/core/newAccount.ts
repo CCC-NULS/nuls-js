@@ -13,22 +13,33 @@ interface IGetAccount
 
 class NewAccount
 {
-	public chainId: number;
-	public addressType: number;
-
 	// private _debug: boolean = false;
 	// private startTime: number;
 
+	/** ChainId */
+	public chainId: number;
+	/** Address type */
+	public addressType: number;
+	/** Public address of the private key */
 	private address?: string;
+	/** Private key of the public address */
 	private privateKey?: string;
+	/** Public key of the private key */
 	private publicKey?: string;
+	/** Private key HEX Buffer */
 	private privateKeyBuffer?: Buffer;
+	/** Public key HEX Buffer */
 	private publicKeyBuffer?: Buffer;
 
-	constructor(privateKey: string, addressType: number = 1)
+	/**
+	 * @param privateKey You can provide a private key to generate details based on this private key
+	 * @param addressType The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76).
+	 * @param chainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70).
+	 */
+	constructor(privateKey?: string, addressType: number = 1, chainId: number = 8964)
 	{
-		this.chainId = 8964; // https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70
-		this.addressType = addressType; // https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76
+		this.chainId = chainId;
+		this.addressType = addressType;
 		this.privateKey = privateKey;
 		// this.startTime = Date.now();
 		this.createAccount();
@@ -57,9 +68,9 @@ class NewAccount
 	}
 
 	/**
-	 * Initiates creating an account
+	 * Initiates creating a new account and returns the data
 	 */
-	public createAccount(): void
+	public createAccount(): IGetAccount | null
 	{
 		if(this.privateKey) // If a private key already exists we use it
 		{
@@ -95,6 +106,8 @@ class NewAccount
 		this.address = this.createAddress();
 
 		this.validatePrivateKey();
+
+		return this.getAccount();
 	}
 
 	/**
@@ -189,7 +202,7 @@ class NewAccount
 	// }
 }
 
-module.exports = NewAccount;
+export default NewAccount;
 
 // Running the API
 // https://github.com/nuls-io/API-server

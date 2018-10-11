@@ -202,7 +202,7 @@ class NewAccount
 	// }
 }
 
-export default NewAccount;
+module.exports = NewAccount;
 
 // Running the API
 // https://github.com/nuls-io/API-server

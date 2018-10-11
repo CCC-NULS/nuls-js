@@ -12,8 +12,8 @@ describe('create new accounts', () =>
 		{
 			jest.mock('crypto');
 
-			const Account = require('@/packages/core/NewAccount');
-			const account = new Account();
+			const Account = require('@/packages/core/account/newAccount');
+			let account = new Account();
 
 			expect(account.getAccount()).toEqual({
 				address: 'Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6',
@@ -26,7 +26,7 @@ describe('create new accounts', () =>
 		{
 			jest.mock('crypto');
 
-			const Account = require('@/packages/core/NewAccount');
+			const Account = require('@/packages/core/account/newAccount');
 			let account = new Account();
 
 			expect(account.getAccount()).toEqual({
@@ -54,7 +54,7 @@ describe('create new accounts', () =>
 		{
 			jest.mock('crypto');
 
-			const Account = require('@/packages/core/NewAccount');
+			const Account = require('@/packages/core/account/newAccount');
 			const { publicKeyCreate } = require('secp256k1');
 
 			publicKeyCreate.mockReturnValue(Buffer.from('033f4031d22289befe017472bb954b59d9ba043ce67fbc60c50ee3a48c56b89b1f', 'hex'));
@@ -79,7 +79,7 @@ describe('create new accounts', () =>
 
 		test('providing and generating an invalid private key', () =>
 		{
-			const Account = require('@/packages/core/NewAccount');
+			const Account = require('@/packages/core/account/newAccount');
 			const { publicKeyCreate } = require('secp256k1');
 
 			publicKeyCreate.mockImplementation(() =>
@@ -93,7 +93,7 @@ describe('create new accounts', () =>
 
 		test('signing an invalid private key', () =>
 		{
-			const Account = require('@/packages/core/NewAccount');
+			const Account = require('@/packages/core/account/newAccount');
 			const { verify } = require('secp256k1');
 
 			verify.mockReturnValue(false);

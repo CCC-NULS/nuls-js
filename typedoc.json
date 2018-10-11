@@ -1,0 +1,12 @@
+{
+	"name": "nuls-js Documentation",
+	"hideGenerator": true,
+	"mode": "file",
+	"out": "docs",
+	"exclude": "test",
+	"theme": "default",
+	"excludeExternals": true,
+	"excludeNotExported": true,
+	"target": "ES6",
+	"module": "commonjs"
+}

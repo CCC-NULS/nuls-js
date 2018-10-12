@@ -1,0 +1,40 @@
+module.exports = jest.fn(() =>
+{
+	return {
+		update: jest.fn((hex) =>
+		{
+			if(hex.toString('hex') === '2aee3fccef6a3beab73dbe6a9807378dcb9b450eba11d3348446fd7c8bb64ff2')
+			{
+				return {
+					digest: jest.fn().mockReturnValue(Buffer.from('7756dfd84e2f78f9c85088d4fdc9bf1bd4d8229b', 'hex'))
+				};
+			}
+
+			return {
+				digest: jest.fn().mockReturnValue(Buffer.from('e47edd6e74b8fc7c6f3107eb2fa72b923ac5b2c0', 'hex'))
+			};
+		})
+	};
+});
+
+// export class RIPEMD160
+// {
+// 	constructor()
+// 	{
+// 		console.log('Mock SoundPlayer: constructor was called');
+// 	}
+//
+// 	public update(sha: Buffer)
+// 	{
+// 		if(sha.toString('hex') === '2aee3fccef6a3beab73dbe6a9807378dcb9b450eba11d3348446fd7c8bb64ff2')
+// 		{
+// 			return {
+// 				digest: jest.fn().mockReturnValue(Buffer.from('7756dfd84e2f78f9c85088d4fdc9bf1bd4d8229b', 'hex'))
+// 			};
+// 		}
+//
+// 		return {
+// 			digest: jest.fn().mockReturnValue(Buffer.from('e47edd6e74b8fc7c6f3107eb2fa72b923ac5b2c0', 'hex'))
+// 		};
+// 	}
+// }

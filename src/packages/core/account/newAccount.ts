@@ -23,10 +23,11 @@ export class NewAccount
 	public chainId: number;
 	/** Address type */
 	public addressType: number;
+	/** Private key of the public address */
+	public privateKey?: string;
+
 	/** Public address of the private key */
 	private address?: string;
-	/** Private key of the public address */
-	private privateKey?: string;
 	/** Public key of the private key */
 	private publicKey?: string;
 	/** Private key HEX Buffer */

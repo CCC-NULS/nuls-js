@@ -65,4 +65,3 @@ config/config.json
 typedocs/
 .npmrc
 .idea
-tests/

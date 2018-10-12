@@ -14,8 +14,6 @@ describe('create new accounts', () =>
 		{
 			const { NewAccount } = require('@/packages/core/account/newAccount');
 			const account = new NewAccount();
-			// 1
-			console.log(account.getAccount().address);
 
 			expect(account.getAccount()).toEqual({
 				address: 'Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6',

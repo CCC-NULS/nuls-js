@@ -7,22 +7,27 @@ const commonWebpackConfig = {
 	entry: {
 		'nuls-js': './src/index.ts'
 	},
-	output: {
-		library: '@nuls/[name]',
-		path: path.resolve(__dirname, 'dist')
+	devtool: 'inline-source-map',
+	module: {
+		rules: [
+			{
+				test: /\.tsx?$/,
+				use: 'ts-loader',
+				exclude: /node_modules/
+			}
+		]
 	},
-	devtool: 'source-map',
 	resolve: {
-		extensions: ['.ts', '.js', '.json'],
+		extensions: ['.ts', '.js'],
 		alias: {
-			config: path.resolve(__dirname, './config/config.json'),
+			// config: path.resolve(__dirname, './config/config.json'),
 			'@': path.join(__dirname, './src')
 		}
 	},
-	module: {
-		rules: [
-			{ test: /\.ts$/, use: 'ts-loader' }
-		]
+	output: {
+		library: '@nuls/[name]',
+		filename: 'bundle.js',
+		path: path.resolve(__dirname, 'dist')
 	}
 };
 

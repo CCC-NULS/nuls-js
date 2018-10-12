@@ -1,8 +1,11 @@
 import * as bs58 from 'bs58';
 import { randomBytes } from 'crypto';
-import * as RIPEMD160 from 'ripemd160';
+// import RIPEMD160 from 'ripemd160'; // Works for Jest
+// import * as RIPEMD160 from 'ripemd160'; // Works for WallabyJS // Recommended for Typescript
 import * as secp256k1 from 'secp256k1';
 import * as shajs from 'sha.js';
+
+const RIPEMD160 = require('ripemd160'); // Holy shit balls Jest and WallayJS is finally happy!
 
 interface IGetAccount
 {

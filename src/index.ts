@@ -1,5 +1,7 @@
-import * as core from './packages/core';
+// import * as core from './packages/core';
+//
+// export {
+// 	core
+// };
 
-export {
-	core
-};
+export * from './packages';

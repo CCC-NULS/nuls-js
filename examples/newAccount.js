@@ -1,5 +1,5 @@
 const nuls = require('./../dist/nuls-js.cjs.js');
 
-const account = new nuls.core.account.NewAccount();
+const account = new nuls.Account();
 
-console.log(account.getAccount());
+console.log(account.chainId);

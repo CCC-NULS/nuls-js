@@ -12,7 +12,7 @@ describe('create new accounts', () =>
 
 		test('creating a new account', () =>
 		{
-			const { NewAccount } = require('@/packages/core/account/newAccount');
+			const { NewAccount } = require('@/packages/core/account/NewAccount');
 			const account = new NewAccount();
 
 			expect(account.getAccount()).toEqual({
@@ -24,7 +24,7 @@ describe('create new accounts', () =>
 
 		test('creating multiple accounts', () =>
 		{
-			const { NewAccount } = require('@/packages/core/account/newAccount');
+			const { NewAccount } = require('@/packages/core/account/NewAccount');
 			let account = new NewAccount();
 
 			expect(account.getAccount()).toEqual({
@@ -50,7 +50,7 @@ describe('create new accounts', () =>
 
 		test('providing a private key', () =>
 		{
-			const { NewAccount } = require('@/packages/core/account/newAccount');
+			const { NewAccount } = require('@/packages/core/account/NewAccount');
 			const { publicKeyCreate } = require('secp256k1');
 
 			publicKeyCreate.mockReturnValue(Buffer.from('033f4031d22289befe017472bb954b59d9ba043ce67fbc60c50ee3a48c56b89b1f', 'hex'));
@@ -75,7 +75,7 @@ describe('create new accounts', () =>
 
 		test('providing and generating an invalid private key', () =>
 		{
-			const { NewAccount } = require('@/packages/core/account/newAccount');
+			const { NewAccount } = require('@/packages/core/account/NewAccount');
 			const { publicKeyCreate } = require('secp256k1');
 
 			publicKeyCreate.mockImplementation(() =>
@@ -89,7 +89,7 @@ describe('create new accounts', () =>
 
 		test('signing an invalid private key', () =>
 		{
-			const { NewAccount } = require('@/packages/core/account/newAccount');
+			const { NewAccount } = require('@/packages/core/account/NewAccount');
 			const { verify } = require('secp256k1');
 
 			verify.mockReturnValue(false);

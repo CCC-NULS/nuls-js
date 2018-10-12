@@ -11,17 +11,17 @@
     "dist/**/*.{d.ts,js}"
   ],
   "scripts": {
-    "clean": "rimraf dist",
-    "build:dev": "npm run clean && webpack --mode development --config webpack.config.js",
-    "build:prod": "npm run clean && webpack --mode production --config webpack.config.js",
+		"build": "npm run build:clean && webpack --mode development --config webpack.config.js",
+    "build:prod": "npm run build:clean && webpack --mode production --config webpack.config.js",
+		"build:clean": "rimraf dist",
     "tsnode": "ts-node -O '{\"module\": \"commonjs\", \"allowJs\": true}' tests/index.ts",
-    "test": "npm run jest && npm run lint",
-    "coverage": "jest --coverage",
-    "jest": "jest",
-    "jest:watch": "jest --watch",
-    "lint": "./node_modules/.bin/eslint --ext=js,ts ./",
+    "test": "npm run test:jest && npm run test:lint",
+		"test:lint": "./node_modules/.bin/eslint --ext=js,ts ./",
+    "test:jest": "jest",
+		"test:jest:coverage": "jest --coverage",
+    "test:jest:watch": "jest --watch",
     "docs": "npm run docs:clean && typedoc --options typedoc.json ./src",
-    "docs:clean": "rimraf typedocs"
+    "docs:clean": "rimraf docs"
   },
   "repository": {
     "type": "git",

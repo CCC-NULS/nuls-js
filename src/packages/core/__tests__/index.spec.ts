@@ -1,4 +1,4 @@
-import * as core from '@/packages/core/';
+import * as core from '@/packages/core/index.ts';
 
 test('core name text', () =>
 {

@@ -123,7 +123,8 @@
 		"no-bitwise": ["error", { "allow": ["^"] }],
 		"lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
 		"new-cap": ["error", { "newIsCapExceptions": ["sha256"] }],
-		"strict": ["off"]
+		"strict": ["off"],
+		"import/prefer-default-export": ["off"]
 	},
 	"overrides": [
 		{

@@ -36,5 +36,6 @@ module.exports = {
 	},
 	setupFiles: [
 		'./testConfigs/jest-setup.ts'
-	]
+	],
+	coveragePathIgnorePatterns: ['.*\\.d\\.ts', '<rootDir>/node_modules/']
 };

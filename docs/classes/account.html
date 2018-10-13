@@ -79,10 +79,10 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="account.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><a href="account.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-inherited">
@@ -103,32 +103,49 @@
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
 						<li class="tsd-signature tsd-kind-icon">new <wbr>Account<span class="tsd-signature-symbol">(</span>privateKey<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, addressType<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, chainId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="account.html" class="tsd-signature-type">Account</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="newaccount.html">NewAccount</a>.<a href="newaccount.html#constructor">constructor</a></p>
+								<p>Inherited from <a href="newaccount.html">NewAccount</a>.<a href="newaccount.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MechJosh0/nuls-js/blob/3700a34/src/packages/core/Account.ts#L4">packages/core/Account.ts:4</a></li>
+									<li>Defined in <a href="https://github.com/MechJosh0/nuls-js/blob/f33548a/src/packages/core/account/NewAccount.ts#L36">packages/core/account/NewAccount.ts:36</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> privateKey: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>You can provide a private key to generate details based on this private key</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> addressType: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The default address type, a chain can contain several address types, and the address type is contained in the address. <a href="https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76">View the NULS repo on addressType</a>.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> chainId: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;8964</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The default chain id (NULS main chain), the chain id affects the generation of the address. <a href="https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70">View the NULS repo on chainId</a>.</p>
+										</div>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="account.html" class="tsd-signature-type">Account</a></h4>
@@ -145,7 +162,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="newaccount.html">NewAccount</a>.<a href="newaccount.html#addresstype">addressType</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/MechJosh0/nuls-js/blob/3700a34/src/packages/core/account/NewAccount.ts#L25">packages/core/account/NewAccount.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/MechJosh0/nuls-js/blob/f33548a/src/packages/core/account/NewAccount.ts#L25">packages/core/account/NewAccount.ts:25</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -161,7 +178,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="newaccount.html">NewAccount</a>.<a href="newaccount.html#chainid">chainId</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/MechJosh0/nuls-js/blob/3700a34/src/packages/core/account/NewAccount.ts#L23">packages/core/account/NewAccount.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/MechJosh0/nuls-js/blob/f33548a/src/packages/core/account/NewAccount.ts#L23">packages/core/account/NewAccount.ts:23</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -177,7 +194,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="newaccount.html">NewAccount</a>.<a href="newaccount.html#privatekey">privateKey</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/MechJosh0/nuls-js/blob/3700a34/src/packages/core/account/NewAccount.ts#L27">packages/core/account/NewAccount.ts:27</a></li>
+							<li>Defined in <a href="https://github.com/MechJosh0/nuls-js/blob/f33548a/src/packages/core/account/NewAccount.ts#L27">packages/core/account/NewAccount.ts:27</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -200,7 +217,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="newaccount.html">NewAccount</a>.<a href="newaccount.html#createaccount">createAccount</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MechJosh0/nuls-js/blob/3700a34/src/packages/core/account/NewAccount.ts#L77">packages/core/account/NewAccount.ts:77</a></li>
+									<li>Defined in <a href="https://github.com/MechJosh0/nuls-js/blob/f33548a/src/packages/core/account/NewAccount.ts#L77">packages/core/account/NewAccount.ts:77</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -226,7 +243,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="newaccount.html">NewAccount</a>.<a href="newaccount.html#getaccount">getAccount</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MechJosh0/nuls-js/blob/3700a34/src/packages/core/account/NewAccount.ts#L63">packages/core/account/NewAccount.ts:63</a></li>
+									<li>Defined in <a href="https://github.com/MechJosh0/nuls-js/blob/f33548a/src/packages/core/account/NewAccount.ts#L63">packages/core/account/NewAccount.ts:63</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -258,7 +275,7 @@
 					<li class="current tsd-kind-class">
 						<a href="account.html" class="tsd-kind-icon">Account</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
 								<a href="account.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">

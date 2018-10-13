@@ -29,9 +29,9 @@
   },
   "keywords": [
     "nuls",
-		"nuls-js",
+    "nuls-js",
     "sdk",
-		"blockchain"
+    "blockchain"
   ],
   "license": "MIT",
   "publishConfig": {

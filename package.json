@@ -1,5 +1,5 @@
 {
-  "name": "@nuls/nuls-js",
+  "name": "nuls-js",
   "version": "0.0.1",
   "description": "Isomorphic JavaScript SDK for Nuls blockchain",
   "main": "dist/nuls-js.cjs.js",
@@ -8,7 +8,7 @@
   "browser": "dist/nuls-js.umd.js",
   "typings": "dist/types/index.d.ts",
   "files": [
-		"readme.md",
+    "readme.md",
     "dist/**/*.{d.ts,js}"
   ],
   "scripts": {

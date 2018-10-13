@@ -1,7 +1,7 @@
 {
   "name": "@nuls/nuls-js",
-  "version": "1.0.0-alpha.1",
-  "description": "Isomorphic javascript SDK for Nuls blockchain",
+  "version": "0.0.1",
+  "description": "Isomorphic JavaScript SDK for Nuls blockchain",
   "main": "dist/nuls-js.cjs.js",
   "unpkg": "dist/nuls-js.umd.js",
   "jsdelivr": "dist/nuls-js.umd.js",
@@ -25,13 +25,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/amalcaraz/nuls-js.git"
+    "url": "https://github.com/AlephNuls/nuls-js"
   },
   "keywords": [
     "nuls",
-    "sdk"
+		"nuls-js",
+    "sdk",
+		"blockchain"
   ],
-  "author": "amalcaraz <amalcaraz89@gmail.com>",
   "license": "MIT",
   "publishConfig": {
     "private": true,

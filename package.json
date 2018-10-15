@@ -35,10 +35,6 @@
     "blockchain"
   ],
   "license": "MIT",
-  "publishConfig": {
-    "private": true,
-    "registry": "http://my-internal-registry.local"
-  },
   "engines": {
     "node": ">=7.8.0"
   },

@@ -23,13 +23,13 @@ export class NewAccount
 	public chainId: number;
 	/** Address type */
 	public addressType: number;
-	/** Private key of the public address */
-	public privateKey?: string;
 
+	/** Private key of the public address */
+	private privateKey: string = '';
 	/** Public address of the private key */
-	private address?: string;
+	private address: string = '';
 	/** Public key of the private key */
-	private publicKey?: string;
+	private publicKey: string = '';
 	/** Private key HEX Buffer */
 	private privateKeyBuffer?: Buffer;
 	/** Public key HEX Buffer */
@@ -44,9 +44,8 @@ export class NewAccount
 	{
 		this.chainId = chainId;
 		this.addressType = addressType;
-		this.privateKey = privateKey;
 		// this.startTime = Date.now();
-		this.createAccount();
+		this.createAccount(privateKey);
 	}
 
 	/**
@@ -73,12 +72,13 @@ export class NewAccount
 
 	/**
 	 * Initiates creating a new account and returns the data
+	 * @param privateKey Provide a private key to import the account
 	 */
-	public createAccount(): IGetAccount | null
+	public createAccount(privateKey?: string): IGetAccount | null
 	{
-		if(this.privateKey) // If a private key already exists we use it
+		if(privateKey) // If a private key already exists we use it
 		{
-			this.privateKeyBuffer = this.stringToHex(this.privateKey); // Turn it into a buffer for reading
+			this.privateKeyBuffer = this.stringToHex(privateKey); // Turn it into a buffer for reading
 		}
 		else
 		{
@@ -187,20 +187,16 @@ export class NewAccount
 	/**
 	 * String to buffer
 	 */
-	private stringToHex(str?: string): Buffer | undefined
+	private stringToHex(str: string): Buffer
 	{
-		if(!str) return undefined;
-
 		return Buffer.from(str, 'hex');
 	}
 
 	/**
 	 * Buffer to string
 	 */
-	private hexToString(hex?: Buffer): string | undefined
+	private hexToString(hex: Buffer): string
 	{
-		if(!hex) return undefined;
-
 		return hex.toString('hex');
 	}
 

@@ -2,7 +2,7 @@
 	"name": "nuls-js Documentation",
 	"hideGenerator": true,
 	"mode": "file",
-	"out": "docs/typedoc",
+	"out": "docs/.vuepress/public/typedoc",
 	"exclude": "test",
 	"theme": "default",
 	"excludeExternals": true,

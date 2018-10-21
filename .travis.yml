@@ -12,8 +12,8 @@ addons:
 install:
     - npm i
 script:
-    - npm test
-    - npm test:jest:coveralls
+    - npm run test
+    - npm run test:jest:coveralls
     - npm run docs:build
 cache:
     directories:

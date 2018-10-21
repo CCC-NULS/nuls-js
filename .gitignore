@@ -65,3 +65,5 @@ config/config.json
 typedocs/
 .npmrc
 .idea
+.playground
+docs/.vuepress/dist

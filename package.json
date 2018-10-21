@@ -21,7 +21,7 @@
     "test:jest": "jest",
     "test:jest:coverage": "jest --coverage",
     "test:jest:watch": "jest --watch",
-		"test:jest:coveralls": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls",
+		"test:jest:coveralls": "jest --coverage && cat ./testConfigs/reports/coverage/lcov.info | coveralls",
     "vuepress": "vuepress dev docs",
     "vuepress:build": "vuepress build docs",
     "docs": "npm run docs:clean && npm run docs:typedoc",

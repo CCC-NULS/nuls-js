@@ -14,8 +14,8 @@ console.log(account.address); // Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6
 ```
 
 # Features
-- Create a new account
-- Import an existing account
+- Create a new account - Create a new account (with / without a password)
+- Import an existing account - Import an existing account (with / without a password)
 
 # TODO
 - Read an address balance

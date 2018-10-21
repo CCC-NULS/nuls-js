@@ -79,11 +79,30 @@ export class NewAccount
 	}
 
 	/**
-	 * Initiates creating a new account and returns the data
-	 * @param password A password to encrypt the private key with
-	 * @param privateKey Provide a private key to import the account
+	 * Imports an account and returns the data
+	 * @param password A plain text password for encrypting the private key or decrypting the encrypted private key
+	 * @param privateKey A plain text or encrypted private key
 	 */
-	public createAccount(password?: string, privateKey?: string): IGetAccount | null
+	public import(password?: string, privateKey?: string): IGetAccount | null
+	{
+		return this.createAccount(password, privateKey);
+	}
+
+	/**
+	 * Initiates creating a new account and returns the data
+	 * @param password A plain text password for encrypting the private key
+	 */
+	public create(password?: string): IGetAccount | null
+	{
+		return this.createAccount(password);
+	}
+
+	/**
+	 * Initiates creating a new account or important an account and returns the data
+	 * @param password A plain text password for encrypting the private key or decrypting the encrypted private key
+	 * @param privateKey A plain text or encrypted private key
+	 */
+	private createAccount(password?: string, privateKey?: string): IGetAccount | null
 	{
 		if(privateKey) // If a private key is provided we use that
 		{

@@ -24,7 +24,6 @@
     "vuepress": "vuepress dev docs",
     "vuepress:build": "vuepress build docs",
 		"docs": "npm run docs:clean && npm run docs:typedoc",
-		"docs:build": "npm run docs && npm run vuepress:build",
     "docs:typedoc": "typedoc --options typedoc.json ./src",
     "docs:clean": "rimraf docs/.vuepress/public/typedoc"
   },

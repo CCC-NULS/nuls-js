@@ -28,10 +28,9 @@ module.exports = {
 	bail: true,
 	coverageThreshold: {
 		global: {
-			branches: 60,
-			functions: 60,
-			lines: 60,
-			statements: 60
+			functions: 100,
+			lines: 90,
+			statements: 90
 		}
 	},
 	setupFiles: [

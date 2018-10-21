@@ -1,6 +1,6 @@
 {
   "name": "nuls-js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Isomorphic JavaScript SDK for Nuls blockchain",
   "main": "dist/nuls-js.cjs.js",
   "unpkg": "dist/nuls-js.umd.js",

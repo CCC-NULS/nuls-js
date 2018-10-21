@@ -8,7 +8,7 @@ module.exports = {
 			nav: [
 			{ text: 'Home', link: '/' },
 			{ text: 'Guide', link: '/guide/' },
-			{ text: 'Documentation', link: '/typedoc/index.html' }
+			{ text: 'Documentation', link: 'https://alephnuls.github.io/nuls-js/typedoc/index.html' }
 		],
 			sidebar: {
 			'/guide/': [

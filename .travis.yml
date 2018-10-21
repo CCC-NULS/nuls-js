@@ -10,7 +10,7 @@ addons:
         packages:
             - g++-4.8
 install:
-    - npm install -g vuepress rimraf
+    - npm install -g vuepress rimraf typedoc jest
 script:
     - npm test
     - npm run docs:build

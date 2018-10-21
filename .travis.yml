@@ -10,7 +10,7 @@ addons:
         packages:
             - g++-4.8
 install:
-    - npm install i
+    - npm i
 script:
     - npm test
     - npm test:jest:coveralls

@@ -1,4 +1,4 @@
-# [NULS-JS](https://alephnuls.github.io/nuls-js/) [![Build Status](https://api.travis-ci.org/AlephNuls/nuls-js.svg?branch=master)]
+# [NULS-JS](https://alephnuls.github.io/nuls-js/) ![Build Status](https://api.travis-ci.org/AlephNuls/nuls-js.svg?branch=master)
 Isomorphic JavaScript SDK for NULS blockchain.
 
 https://alephnuls.github.io/nuls-js/

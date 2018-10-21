@@ -1,6 +1,8 @@
 # NULS-JS
 Isomorphic JavaScript SDK for NULS blockchain.
 
+https://alephnuls.github.io/nuls-js/
+
 # Install
 `npm install nuls-js --save`
 
@@ -10,14 +12,15 @@ import NULS from 'nuls-js';
 
 const account = new NULS.account(); // Initiate a new account
 
-console.log(account.address); // Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6
+console.log(account.getAccount().address); // Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6
 ```
 
-# Features
-- Create a new account - Create a new account (with / without a password)
-- Import an existing account - Import an existing account (with / without a password)
+## Features
+##### Account Management
+ - [Create an Account](https://alephnuls.github.io/nuls-js/guide/newAccount.html#create-a-new-account)
+ - [Import an Account](https://alephnuls.github.io/nuls-js/guide/newAccount.html#import-an-account)
 
-# TODO
+## TODO
 - Read an address balance
 - Read node details
 - Read address transactions

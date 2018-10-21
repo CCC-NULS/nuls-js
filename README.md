@@ -1,10 +1,14 @@
 # [NULS-JS](https://alephnuls.github.io/nuls-js/) [![Build Status](https://api.travis-ci.org/AlephNuls/nuls-js.svg?branch=master)](https://travis-ci.org/AlephNuls/nuls-js) [![npm version](https://badge.fury.io/js/nuls-js.svg)](https://www.npmjs.com/package/nuls-js) 
 Isomorphic JavaScript SDK for NULS blockchain.
 
-https://alephnuls.github.io/nuls-js/
+# Warning
+This project is still in early development and this are likely to change. Please do not use
+this in a production environment.
 
 # Install
-`npm install nuls-js --save`
+```bash
+$ npm i nuls-js
+````
 
 # Usage
 ```js
@@ -15,7 +19,13 @@ const account = new NULS.account(); // Initiate a new account
 console.log(account.getAccount().address); // Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6
 ```
 
-## Features
+# Guide
+https://alephnuls.github.io/nuls-js/
+
+# Documentation
+https://alephnuls.github.io/nuls-js/typedoc/index.html
+
+# Features
 ##### Account Management
  - [Create an Account](https://alephnuls.github.io/nuls-js/guide/newAccount.html#create-a-new-account)
  - [Import an Account](https://alephnuls.github.io/nuls-js/guide/newAccount.html#import-an-account)

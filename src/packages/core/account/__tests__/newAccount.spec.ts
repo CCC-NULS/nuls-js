@@ -127,6 +127,24 @@ describe('create new accounts', () =>
 
 			expect(() => new NewAccount()).toThrowError('Something went wrong when validating the signature.');
 		});
+
+		test('importing an account without a password and adding a password', () =>
+		{
+			const { NewAccount } = require('@/packages/core/account/NewAccount');
+			const { publicKeyCreate } = require('secp256k1');
+
+			publicKeyCreate.mockReturnValue(Buffer.from('033f4031d22289befe017472bb954b59d9ba043ce67fbc60c50ee3a48c56b89b1f', 'hex'));
+
+			const account = new NewAccount();
+			const foo = account.import('Password1!', '2d5ed8706749f6d7c096772a075c027f56fae4148bacbf6c78b59df09f84b07b');
+
+			expect(foo).toEqual({
+				address: 'Nse8Ar5XvuPdDCYcTnkK4LDwDNZqTqYx',
+				privateKey: '2d5ed8706749f6d7c096772a075c027f56fae4148bacbf6c78b59df09f84b07b',
+				privateKeyEncrypted: '6f1a067690b4481de3743de3f015da5f172d939b5b1b4842c16977278a9c1fb914adc6079df87c70ab6cef422d6add01',
+				publicKey: '033f4031d22289befe017472bb954b59d9ba043ce67fbc60c50ee3a48c56b89b1f'
+			});
+		});
 	});
 
 	describe('testing public helper functions', () =>

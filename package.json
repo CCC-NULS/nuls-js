@@ -21,8 +21,11 @@
     "test:jest": "jest",
     "test:jest:coverage": "jest --coverage",
     "test:jest:watch": "jest --watch",
-    "docs": "npm run docs:clean && typedoc --options typedoc.json ./src",
-    "docs:clean": "rimraf docs"
+    "vuepress": "vuepress dev docs",
+    "vuepress:build": "vuepress build docs",
+    "docs": "npm run docs:clean && npm run docs:typedoc",
+    "docs:typedoc": "typedoc --options typedoc.json ./src",
+    "docs:clean": "rimraf docs/typedoc"
   },
   "repository": {
     "type": "git",
@@ -80,6 +83,7 @@
     "deepmerge": "^2.1.0",
     "ripemd160": "^2.0.2",
     "secp256k1": "^3.5.2",
-    "sha.js": "^2.4.11"
+    "sha.js": "^2.4.11",
+    "vuepress": "^0.14.4"
   }
 }

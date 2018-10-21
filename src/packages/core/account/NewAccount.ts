@@ -106,7 +106,7 @@ export class NewAccount
 	{
 		if(privateKey) // If a private key is provided we use that
 		{
-			if(password) // If a password exists then we're actually dealing with an encrypted private key
+			if(password && this.decryptPrivateKey(password, privateKey)) // If a password exists and it's able to decrypt the private key then we're actually dealing with an encrypted private key
 			{
 				this.privateKeyBuffer = this.stringToHex(this.decryptPrivateKey(password, privateKey)); // Decrypt it first into a plain text private key and then store the buffer
 			}

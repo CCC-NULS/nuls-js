@@ -60,22 +60,31 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<h1 id="nuls-js">NULS-JS</h1>
+				<h1 id="nuls-js-build-status-npm-version-coverage-status"><a href="https://alephnuls.github.io/nuls-js/">NULS-JS</a> <a href="https://travis-ci.org/AlephNuls/nuls-js"><img src="https://api.travis-ci.org/AlephNuls/nuls-js.svg?branch=master" alt="Build Status"></a> <a href="https://www.npmjs.com/package/nuls-js"><img src="https://badge.fury.io/js/nuls-js.svg" alt="npm version"></a> <a href="https://coveralls.io/github/AlephNuls/nuls-js?branch=master"><img src="https://coveralls.io/repos/github/AlephNuls/nuls-js/badge.svg?branch=master" alt="Coverage Status"></a></h1>
 				<p>Isomorphic JavaScript SDK for NULS blockchain.</p>
+				<h1 id="warning">Warning</h1>
+				<p>This project is still in early development and this are likely to change. Please do not use
+				this in a production environment.</p>
 				<h1 id="install">Install</h1>
-				<p><code>npm install nuls-js --save</code></p>
+				<pre><code class="language-bash">$ npm i nuls-js
+`</code></pre>
 				<h1 id="usage">Usage</h1>
 				<pre><code class="language-js"><span class="hljs-keyword">import</span> NULS <span class="hljs-keyword">from</span> <span class="hljs-string">'nuls-js'</span>;
 
 <span class="hljs-keyword">const</span> account = <span class="hljs-keyword">new</span> NULS.account(); <span class="hljs-comment">// Initiate a new account</span>
 
-<span class="hljs-built_in">console</span>.log(account.address); <span class="hljs-comment">// Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6</span></code></pre>
+<span class="hljs-built_in">console</span>.log(account.getAccount().address); <span class="hljs-comment">// Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6</span></code></pre>
+				<h1 id="guide">Guide</h1>
+				<p><a href="https://alephnuls.github.io/nuls-js/">https://alephnuls.github.io/nuls-js/</a></p>
+				<h1 id="documentation">Documentation</h1>
+				<p><a href="https://alephnuls.github.io/nuls-js/typedoc/index.html">https://alephnuls.github.io/nuls-js/typedoc/index.html</a></p>
 				<h1 id="features">Features</h1>
+				<h5 id="account-management">Account Management</h5>
 				<ul>
-					<li>Create a new account - Create a new account (with / without a password)</li>
-					<li>Import an existing account - Import an existing account (with / without a password)</li>
+					<li><a href="https://alephnuls.github.io/nuls-js/guide/newAccount.html#create-a-new-account">Create an Account</a></li>
+					<li><a href="https://alephnuls.github.io/nuls-js/guide/newAccount.html#import-an-account">Import an Account</a></li>
 				</ul>
-				<h1 id="todo">TODO</h1>
+				<h2 id="todo">TODO</h2>
 				<ul>
 					<li>Read an address balance</li>
 					<li>Read node details</li>

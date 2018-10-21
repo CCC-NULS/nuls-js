@@ -17,14 +17,15 @@
     "build:clean": "rimraf dist",
     "tsnode": "ts-node -O '{\"module\": \"commonjs\", \"allowJs\": true}' tests/index.ts",
     "test": "npm run test:jest && npm run test:lint",
-    "test:lint": "./node_modules/.bin/eslint --ext=js,ts ./",
+    "test:lint": "./node_modules/.bin/eslint --ext=js,ts ./src",
     "test:jest": "jest",
     "test:jest:coverage": "jest --coverage",
     "test:jest:watch": "jest --watch",
+		"test:jest:coveralls": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls",
     "vuepress": "vuepress dev docs",
     "vuepress:build": "vuepress build docs",
-		"docs": "npm run docs:clean && npm run docs:typedoc",
-		"docs:build": "npm run docs && npm run vuepress:build",
+    "docs": "npm run docs:clean && npm run docs:typedoc",
+    "docs:build": "npm run docs && npm run vuepress:build",
     "docs:typedoc": "typedoc --options typedoc.json ./src",
     "docs:clean": "rimraf docs/.vuepress/public/typedoc"
   },
@@ -55,6 +56,7 @@
     "@types/secp256k1": "^3.5.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
+    "coveralls": "^3.0.2",
     "eslint": "^5.7.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-import-resolver-webpack": "^0.10.1",
@@ -73,6 +75,7 @@
     "typedoc": "^0.13.0",
     "typescript": "^3.1.3",
     "typescript-eslint-parser": "^20.0.0",
+    "vuepress": "^0.14.4",
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2",
     "webpack-merge": "^4.1.4",
@@ -81,10 +84,8 @@
   "dependencies": {
     "bs58": "^4.0.1",
     "crypto-js": "^3.1.9-1",
-    "deepmerge": "^2.1.0",
     "ripemd160": "^2.0.2",
     "secp256k1": "^3.5.2",
-    "sha.js": "^2.4.11",
-    "vuepress": "^0.14.4"
+    "sha.js": "^2.4.11"
   }
 }

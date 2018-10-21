@@ -12,6 +12,7 @@ addons:
 install:
     - npm install -g vuepress rimraf
 script:
+    - npm test
     - npm run docs:build
 cache:
     directories:

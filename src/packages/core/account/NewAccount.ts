@@ -1,5 +1,6 @@
 import * as bs58 from 'bs58';
 import { randomBytes } from 'crypto';
+import * as cryptoJS from 'crypto-js';
 // import RIPEMD160 from 'ripemd160'; // Works for Jest
 // import * as RIPEMD160 from 'ripemd160'; // Works for WallabyJS // Recommended for Typescript
 import * as secp256k1 from 'secp256k1';
@@ -11,6 +12,7 @@ interface IGetAccount
 {
 	address: string;
 	privateKey: string;
+	privateKeyEncrypted?: string;
 	publicKey: string;
 }
 
@@ -26,26 +28,31 @@ export class NewAccount
 
 	/** Private key of the public address */
 	private privateKey: string = '';
+	/** Private key encrypted using SHA256 and AESencryption */
+	private privateKeyEncrypted?: string;
 	/** Public address of the private key */
 	private address: string = '';
 	/** Public key of the private key */
 	private publicKey: string = '';
 	/** Private key HEX Buffer */
-	private privateKeyBuffer?: Buffer;
+	private privateKeyBuffer: Buffer = Buffer.from('');
 	/** Public key HEX Buffer */
-	private publicKeyBuffer?: Buffer;
+	private publicKeyBuffer: Buffer = Buffer.from('');
+	/** The IV used for encrypting and decrypting private keys [View the NULS repo on IV](https://github.com/nuls-io/nuls/blob/4436795eabe864437de013b83aee0dca0d5400bf/tools-module/tools/src/main/java/io/nuls/core/tools/crypto/EncryptedData.java#L38) */
+	private iv = this.hexWordsArray('0000000000000000');
 
 	/**
-	 * @param privateKey You can provide a private key to generate details based on this private key
+	 * @param password Encrypt your new private key with this password or decrypt the private key you provide with this password
+	 * @param privateKey You can provide a private key to generate details based on this private key (if you're providing an encrypted key you must provide the password in the first param, otherwise provide `null` password)
 	 * @param addressType The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76).
 	 * @param chainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70).
 	 */
-	constructor(privateKey?: string, addressType: number = 1, chainId: number = 8964)
+	constructor(password?: string, privateKey?: string, addressType: number = 1, chainId: number = 8964)
 	{
 		this.chainId = chainId;
 		this.addressType = addressType;
 		// this.startTime = Date.now();
-		this.createAccount(privateKey);
+		this.createAccount(password, privateKey);
 	}
 
 	/**
@@ -66,19 +73,28 @@ export class NewAccount
 		return {
 			address: this.address,
 			privateKey: this.privateKey,
+			privateKeyEncrypted: this.privateKeyEncrypted,
 			publicKey: this.publicKey
 		};
 	}
 
 	/**
 	 * Initiates creating a new account and returns the data
+	 * @param password A password to encrypt the private key with
 	 * @param privateKey Provide a private key to import the account
 	 */
-	public createAccount(privateKey?: string): IGetAccount | null
+	public createAccount(password?: string, privateKey?: string): IGetAccount | null
 	{
-		if(privateKey) // If a private key already exists we use it
+		if(privateKey) // If a private key is provided we use that
 		{
-			this.privateKeyBuffer = this.stringToHex(privateKey); // Turn it into a buffer for reading
+			if(password) // If a password exists then we're actually dealing with an encrypted private key
+			{
+				this.privateKeyBuffer = this.stringToHex(this.decryptPrivateKey(password, privateKey)); // Decrypt it first into a plain text private key and then store the buffer
+			}
+			else
+			{
+				this.privateKeyBuffer = this.stringToHex(privateKey); // Turn it into a buffer for reading
+			}
 		}
 		else
 		{
@@ -100,7 +116,11 @@ export class NewAccount
 		}
 		catch(e)
 		{
-			if(this.privateKey)
+			if(password && privateKey)
+			{
+				throw new Error('Invalid password or encrypted private key provided.');
+			}
+			else if(privateKey)
 			{
 				throw new Error('Invalid private key provided.');
 			}
@@ -113,6 +133,11 @@ export class NewAccount
 		this.privateKey = this.hexToString(this.privateKeyBuffer);
 		this.publicKey = this.hexToString(this.publicKeyBuffer);
 		this.address = this.createAddress();
+
+		if(password)
+		{
+			this.privateKeyEncrypted = this.encryptPrivateKey(password);
+		}
 
 		this.validatePrivateKey();
 
@@ -139,14 +164,61 @@ export class NewAccount
 	}
 
 	/**
+	 * Converts a hex string to a word array
+	 */
+	private hexWordsArray(str?: string)
+	{
+		return cryptoJS.enc.Hex.parse(str);
+	}
+
+	/**
+	 * Encrypt the generated private key with the password using AES
+	 */
+	private encryptPrivateKey(password: string): string
+	{
+		const encryptedKey = cryptoJS.AES.encrypt(
+			this.hexWordsArray(this.privateKey),
+			this.hexWordsArray(this.hexToString(this.sha256(password))),
+			{
+				iv: this.iv
+			}
+		);
+
+		return encryptedKey.ciphertext.toString();
+	}
+
+	/**
+	 * Decrypt the provided private key with the password using AES
+	 */
+	private decryptPrivateKey(password: string, encryptedPrivateKey: string): string
+	{
+		const decryptedKey = cryptoJS.AES.decrypt(
+			cryptoJS.enc.Base64.stringify(this.hexWordsArray(encryptedPrivateKey)),
+			this.hexWordsArray(this.hexToString(this.sha256(password))),
+			{
+				iv: this.iv
+			}
+		);
+
+		return decryptedKey.toString();
+	}
+
+	/**
+	 * Use SHA256 to encrypt the string
+	 */
+	private sha256(str: string | Buffer): Buffer
+	{
+		return new shajs.sha256().update(str).digest();
+	}
+
+	/**
 	 * Encrypts the private key buffer using sha256 and hash160
 	 */
 	private privateKeyHash(): Buffer
 	{
 		// sha256hash160
 		// https://github.com/nuls-io/nuls/blob/274204b748ed72fdac150637ee758037d64c7ce5/core-module/kernel/src/main/java/io/nuls/kernel/utils/AddressTool.java#L61
-		const sha: Buffer = new shajs.sha256().update(this.publicKeyBuffer).digest();
-		const hash: Buffer = new RIPEMD160().update(sha).digest();
+		const hash: Buffer = new RIPEMD160().update(this.sha256(this.publicKeyBuffer)).digest();
 
 		return hash;
 	}

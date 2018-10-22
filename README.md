@@ -27,8 +27,8 @@ https://alephnuls.github.io/nuls-js/typedoc/index.html
 
 # Features
 ##### Account Management
- - [Create an Account](https://alephnuls.github.io/nuls-js/guide/newAccount.html#create-a-new-account)
- - [Import an Account](https://alephnuls.github.io/nuls-js/guide/newAccount.html#import-an-account)
+ - [Create an Account](https://alephnuls.github.io/nuls-js/guide/account.html#create-a-new-account)
+ - [Import an Account](https://alephnuls.github.io/nuls-js/guide/account.html#import-an-account)
 
 ## TODO
 - Read an address balance

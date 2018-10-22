@@ -8,11 +8,6 @@ interface IQROptions
 
 class QRCodeClass
 {
-	public test()
-	{
-		return 'hello';
-	}
-
 	public async create(address: string, options: any = {})
 	{
 		return this.generateQR(address, options);

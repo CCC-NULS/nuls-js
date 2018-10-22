@@ -41,10 +41,10 @@ class AccountClass
 	/** The IV used for encrypting and decrypting private keys [View the NULS repo on IV](https://github.com/nuls-io/nuls/blob/4436795eabe864437de013b83aee0dca0d5400bf/tools-module/tools/src/main/java/io/nuls/core/tools/crypto/EncryptedData.java#L38) */
 	private iv = this.hexWordsArray('0000000000000000');
 
-	constructor(addressType: number = 1, chainId: number = 8964)
+	constructor()
 	{
-		this.chainId = chainId;
-		this.addressType = addressType;
+		this.chainId = 1;
+		this.addressType = 8964;
 		// this.startTime = Date.now();
 	}
 

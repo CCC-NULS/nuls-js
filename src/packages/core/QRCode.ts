@@ -1,4 +1,4 @@
-import * as pkg_QRCode from 'qrcode';
+import * as PkgQRCode from 'qrcode';
 import * as url from 'url';
 
 export interface IQROptions
@@ -24,7 +24,7 @@ class QRCodeClass
 
 		try
 		{
-			return pkg_QRCode.toDataURL(urlObj.href, { errorCorrectionLevel: 'H', ...QRCodeOptions });
+			return PkgQRCode.toDataURL(urlObj.href, { errorCorrectionLevel: 'H', ...QRCodeOptions });
 		}
 		catch(err)
 		{

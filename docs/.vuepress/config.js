@@ -13,7 +13,7 @@ module.exports = {
 			sidebar: {
 			'/guide/': [
 				'',
-				'newAccount'
+				'account'
 			]
 		}
 	}

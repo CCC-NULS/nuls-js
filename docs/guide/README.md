@@ -13,8 +13,8 @@ $ npm i nuls-js
 
 ## Features
 ##### Account Management
- - [Create an Account](/guide/newAccount.html#create-a-new-account)
- - [Import an Account](/guide/newAccount.html#import-an-account)
+ - [Create an Account](/guide/account.html#create-a-new-account)
+ - [Import an Account](/guide/account.html#import-an-account)
 
 ## TODO
 - Read an address balance

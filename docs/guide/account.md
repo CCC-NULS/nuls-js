@@ -3,6 +3,16 @@ The account class can handle the whole account generation, importing, decrypting
 There are only two parameters which are accepted, `PASSWORD` and `PRIVATE_KEY` in their respective order.
 If you do not provide a password the account created will not be encrypted.
 
+#### Import NULS Package
+```js
+import nuls from 'nuls-js';
+```
+You can also import just the `Account` module by itself
+```js
+import { Account } from 'nuls-js';
+```
+
+#### Quick Introduction
 ```js
 const account = new nuls.Account(PASSWORD); // Creates an account
 const fooAccount = account.getAccount(); // Gets the account created

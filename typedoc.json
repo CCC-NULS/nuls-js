@@ -6,7 +6,6 @@
 	"exclude": "test",
 	"theme": "default",
 	"excludeExternals": true,
-	"excludeNotExported": true,
 	"target": "ES6",
 	"module": "commonjs"
 }

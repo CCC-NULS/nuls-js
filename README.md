@@ -8,7 +8,7 @@ this in a production environment.
 # Install
 ```bash
 $ npm i nuls-js
-````
+```
 
 # Usage
 ```js

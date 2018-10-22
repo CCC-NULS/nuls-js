@@ -9,7 +9,7 @@ Install `nuls-js` as a dependency in your project.
 ###### npm
 ```bash
 $ npm i nuls-js
-````
+```
 
 ## Features
 ##### Account Management

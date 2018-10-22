@@ -21,6 +21,22 @@ describe('create new accounts', () =>
 			});
 		});
 
+		test('creating a contract account and different chainId', () =>
+		{
+			const { Account } = require('@/index');
+			const { randomBytes } = require('crypto');
+			const { publicKeyCreate } = require('secp256k1');
+
+			publicKeyCreate.mockReturnValue(Buffer.from('02d772f1649c142494483e358b915573f5ba1573c71951117fc9a7db804fc3e64b', 'hex'));
+			randomBytes.mockReturnValue(Buffer.from('2e4fa652034f495089daebb9a390600cb144eafe3fe34fad0750ee9674dfc402', 'hex'));
+
+			expect(Account.create(undefined, 2, 9000)).toEqual({
+				address: '4fDyBjzqYi5bfqMDT9ggC8SdLtvfw88Yu',
+				privateKey: '2e4fa652034f495089daebb9a390600cb144eafe3fe34fad0750ee9674dfc402',
+				publicKey: '02d772f1649c142494483e358b915573f5ba1573c71951117fc9a7db804fc3e64b'
+			});
+		});
+
 		test('creating a new account with a password', () =>
 		{
 			const { Account } = require('@/index');

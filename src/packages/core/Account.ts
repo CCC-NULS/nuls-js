@@ -41,18 +41,11 @@ class AccountClass
 	/** The IV used for encrypting and decrypting private keys [View the NULS repo on IV](https://github.com/nuls-io/nuls/blob/4436795eabe864437de013b83aee0dca0d5400bf/tools-module/tools/src/main/java/io/nuls/core/tools/crypto/EncryptedData.java#L38) */
 	private iv = this.hexWordsArray('0000000000000000');
 
-	/**
-	 * @param password Encrypt your new private key with this password or decrypt the private key you provide with this password
-	 * @param privateKey You can provide a private key to generate details based on this private key (if you're providing an encrypted key you must provide the password in the first param, otherwise provide `null` password)
-	 * @param addressType The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76).
-	 * @param chainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70).
-	 */
-	constructor(password?: string, privateKey?: string, addressType: number = 1, chainId: number = 8964)
+	constructor(addressType: number = 1, chainId: number = 8964)
 	{
 		this.chainId = chainId;
 		this.addressType = addressType;
 		// this.startTime = Date.now();
-		this.createAccount(password, privateKey);
 	}
 
 	/**
@@ -79,30 +72,36 @@ class AccountClass
 	}
 
 	/**
-	 * Imports an account and returns the data
+	 * Imports an account and returns the full account data
 	 * @param password A plain text password for encrypting the private key or decrypting the encrypted private key
 	 * @param privateKey A plain text or encrypted private key
+	 * @param addressType The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76).
+	 * @param chainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70).
 	 */
-	public import(password?: string, privateKey?: string): IGetAccount | null
+	public import(password?: string, privateKey?: string, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount | null
 	{
-		return this.createAccount(password, privateKey);
+		return this.createAccount(password, privateKey, addressType, chainId);
 	}
 
 	/**
 	 * Initiates creating a new account and returns the data
 	 * @param password A plain text password for encrypting the private key
+	 * @param addressType The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76).
+	 * @param chainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70).
 	 */
-	public create(password?: string): IGetAccount | null
+	public create(password?: string, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount | null
 	{
-		return this.createAccount(password);
+		return this.createAccount(password, undefined, addressType, chainId);
 	}
 
 	/**
 	 * Initiates creating a new account or important an account and returns the data
 	 * @param password A plain text password for encrypting the private key or decrypting the encrypted private key
 	 * @param privateKey A plain text or encrypted private key
+	 * @param addressType The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76).
+	 * @param chainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70).
 	 */
-	private createAccount(password?: string, privateKey?: string): IGetAccount | null
+	private createAccount(password?: string, privateKey?: string, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount | null
 	{
 		if(privateKey) // If a private key is provided we use that
 		{
@@ -151,7 +150,7 @@ class AccountClass
 
 		this.privateKey = this.hexToString(this.privateKeyBuffer);
 		this.publicKey = this.hexToString(this.publicKeyBuffer);
-		this.address = this.createAddress();
+		this.address = this.createAddress(addressType, chainId);
 
 		if(password)
 		{
@@ -245,12 +244,12 @@ class AccountClass
 	/**
 	 * Creates the public key hash using encryption, chainId, and addressId
 	 */
-	private getPublicKeyHash(): Buffer
+	private getPublicKeyHash(addressType, chainId): Buffer
 	{
 		const output: Buffer = Buffer.allocUnsafe(3);
 
-		output.writeInt16LE(this.chainId, 0);
-		output.writeInt8(this.addressType, 2);
+		output.writeInt16LE(chainId, 0);
+		output.writeInt8(addressType, 2);
 
 		return Buffer.concat([output, this.privateKeyHash()]);
 	}
@@ -258,9 +257,9 @@ class AccountClass
 	/**
 	 * Using the public key create the public address
 	 */
-	private createAddress(): string
+	private createAddress(addressType, chainId): string
 	{
-		const publicKeyHash: Buffer = this.getPublicKeyHash();
+		const publicKeyHash: Buffer = this.getPublicKeyHash(addressType, chainId);
 
 		// https://github.com/nuls-io/nuls/blob/274204b748ed72fdac150637ee758037d64c7ce5/core-module/kernel/src/main/java/io/nuls/kernel/utils/AddressTool.java#L182
 		const address: string = bs58.encode(

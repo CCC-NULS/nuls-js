@@ -1,21 +1,21 @@
 import * as pkg_QRCode from 'qrcode';
 import * as url from 'url';
 
-interface IQROptions
+export interface IQROptions
 {
 	amount?: number;
 }
 
 class QRCodeClass
 {
-	public async create(address: string, options: any = {})
+	/**
+	 * @param addressOrPrivateKey This can be either an address or a private key. Developers who read the QRCode should be able to read the QR code and if it's an `address` they can provide options for adding the contact or send funds, if it's a private key then the can transfer the funds, save or open the account.
+	 * @param options Extra URL parameters added onto the address URL QR code
+	 * @param QRCodeOptions Extra QRCode package options
+	 */
+	private async create(addressOrPrivateKey: string, options: IQROptions = {}, QRCodeOptions: any = {})
 	{
-		return this.generateQR(address, options);
-	}
-
-	private async generateQR(address: string, options: IQROptions = {}, QRCodeOptions: any = {})
-	{
-		const urlObj = new url.URL(`nuls:${address}`);
+		const urlObj = new url.URL(`nuls:${addressOrPrivateKey}`);
 
 		Object.keys(options).forEach((key) =>
 		{

@@ -12,8 +12,8 @@ describe('create new accounts', () =>
 
 		test('creating a new account', () =>
 		{
-			const { NewAccount } = require('@/packages/core/account/NewAccount');
-			const account = new NewAccount();
+			const { Account } = require('@/index');
+			const account = new Account();
 
 			expect(account.getAccount()).toEqual({
 				address: 'Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6',
@@ -24,8 +24,8 @@ describe('create new accounts', () =>
 
 		test('creating a new account with a password', () =>
 		{
-			const { NewAccount } = require('@/packages/core/account/NewAccount');
-			const account = new NewAccount('Password1!');
+			const { Account } = require('@/index');
+			const account = new Account('Password1!');
 
 			expect(account.getAccount()).toEqual({
 				address: 'Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6',
@@ -37,8 +37,8 @@ describe('create new accounts', () =>
 
 		test('creating multiple accounts', () =>
 		{
-			const { NewAccount } = require('@/packages/core/account/NewAccount');
-			let account = new NewAccount();
+			const { Account } = require('@/index');
+			let account = new Account();
 
 			expect(account.getAccount()).toEqual({
 				address: 'Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6',
@@ -52,7 +52,7 @@ describe('create new accounts', () =>
 			publicKeyCreate.mockReturnValue(Buffer.from('033f4031d22289befe017472bb954b59d9ba043ce67fbc60c50ee3a48c56b89b1f', 'hex'));
 			randomBytes.mockReturnValue(Buffer.from('2d5ed8706749f6d7c096772a075c027f56fae4148bacbf6c78b59df09f84b07b', 'hex'));
 
-			account = new NewAccount();
+			account = new Account();
 
 			expect(account.getAccount()).toEqual({
 				address: 'Nse8Ar5XvuPdDCYcTnkK4LDwDNZqTqYx',
@@ -63,12 +63,12 @@ describe('create new accounts', () =>
 
 		test('providing an unencrypted private key', () =>
 		{
-			const { NewAccount } = require('@/packages/core/account/NewAccount');
+			const { Account } = require('@/index');
 			const { publicKeyCreate } = require('secp256k1');
 
 			publicKeyCreate.mockReturnValue(Buffer.from('033f4031d22289befe017472bb954b59d9ba043ce67fbc60c50ee3a48c56b89b1f', 'hex'));
 
-			const account = new NewAccount(null, '2d5ed8706749f6d7c096772a075c027f56fae4148bacbf6c78b59df09f84b07b');
+			const account = new Account(null, '2d5ed8706749f6d7c096772a075c027f56fae4148bacbf6c78b59df09f84b07b');
 
 			expect(account.getAccount()).toEqual({
 				address: 'Nse8Ar5XvuPdDCYcTnkK4LDwDNZqTqYx',
@@ -79,12 +79,12 @@ describe('create new accounts', () =>
 
 		test('decrypting a private key', () =>
 		{
-			const { NewAccount } = require('@/packages/core/account/NewAccount');
+			const { Account } = require('@/index');
 			const { publicKeyCreate } = require('secp256k1');
 
 			publicKeyCreate.mockReturnValue(Buffer.from('033f4031d22289befe017472bb954b59d9ba043ce67fbc60c50ee3a48c56b89b1f', 'hex'));
 
-			const account = new NewAccount('Password1!', '6f1a067690b4481de3743de3f015da5f172d939b5b1b4842c16977278a9c1fb914adc6079df87c70ab6cef422d6add01');
+			const account = new Account('Password1!', '6f1a067690b4481de3743de3f015da5f172d939b5b1b4842c16977278a9c1fb914adc6079df87c70ab6cef422d6add01');
 
 			expect(account.getAccount()).toEqual({
 				address: 'Nse8Ar5XvuPdDCYcTnkK4LDwDNZqTqYx',
@@ -105,7 +105,7 @@ describe('create new accounts', () =>
 
 		test('providing and generating an invalid private key', () =>
 		{
-			const { NewAccount } = require('@/packages/core/account/NewAccount');
+			const { Account } = require('@/index');
 			const { publicKeyCreate } = require('secp256k1');
 
 			publicKeyCreate.mockImplementation(() =>
@@ -113,29 +113,29 @@ describe('create new accounts', () =>
 				throw new Error();
 			});
 
-			expect(() => new NewAccount()).toThrowError('Invalid private key generated.');
-			expect(() => new NewAccount(null, 'bar')).toThrowError('Invalid private key provided.');
-			expect(() => new NewAccount('foo', 'bar')).toThrowError('Invalid password or encrypted private key provided.');
+			expect(() => new Account()).toThrowError('Invalid private key generated.');
+			expect(() => new Account(null, 'bar')).toThrowError('Invalid private key provided.');
+			expect(() => new Account('foo', 'bar')).toThrowError('Invalid password or encrypted private key provided.');
 		});
 
 		test('signing an invalid private key', () =>
 		{
-			const { NewAccount } = require('@/packages/core/account/NewAccount');
+			const { Account } = require('@/index');
 			const { verify } = require('secp256k1');
 
 			verify.mockReturnValue(false);
 
-			expect(() => new NewAccount()).toThrowError('Something went wrong when validating the signature.');
+			expect(() => new Account()).toThrowError('Something went wrong when validating the signature.');
 		});
 
 		test('importing an account without a password and adding a password', () =>
 		{
-			const { NewAccount } = require('@/packages/core/account/NewAccount');
+			const { Account } = require('@/index');
 			const { publicKeyCreate } = require('secp256k1');
 
 			publicKeyCreate.mockReturnValue(Buffer.from('033f4031d22289befe017472bb954b59d9ba043ce67fbc60c50ee3a48c56b89b1f', 'hex'));
 
-			const account = new NewAccount();
+			const account = new Account();
 
 			account.import('Password1!', '2d5ed8706749f6d7c096772a075c027f56fae4148bacbf6c78b59df09f84b07b');
 
@@ -158,8 +158,8 @@ describe('create new accounts', () =>
 
 		test('creating a new account', () =>
 		{
-			const { NewAccount } = require('@/packages/core/account/NewAccount');
-			const account = new NewAccount();
+			const { Account } = require('@/index');
+			const account = new Account();
 
 			account.create();
 
@@ -172,8 +172,8 @@ describe('create new accounts', () =>
 
 		test('creating a new account with a password', () =>
 		{
-			const { NewAccount } = require('@/packages/core/account/NewAccount');
-			const account = new NewAccount();
+			const { Account } = require('@/index');
+			const account = new Account();
 			const foo = account.create('Password1!');
 
 			expect(foo).toEqual({
@@ -186,12 +186,12 @@ describe('create new accounts', () =>
 
 		test('importing an account', () =>
 		{
-			const { NewAccount } = require('@/packages/core/account/NewAccount');
+			const { Account } = require('@/index');
 			const { publicKeyCreate } = require('secp256k1');
 
 			publicKeyCreate.mockReturnValue(Buffer.from('033f4031d22289befe017472bb954b59d9ba043ce67fbc60c50ee3a48c56b89b1f', 'hex'));
 
-			const account = new NewAccount();
+			const account = new Account();
 			const foo = account.import(null, '2d5ed8706749f6d7c096772a075c027f56fae4148bacbf6c78b59df09f84b07b');
 
 			expect(foo).toEqual({
@@ -203,12 +203,12 @@ describe('create new accounts', () =>
 
 		test('importing an account with a password', () =>
 		{
-			const { NewAccount } = require('@/packages/core/account/NewAccount');
+			const { Account } = require('@/index');
 			const { publicKeyCreate } = require('secp256k1');
 
 			publicKeyCreate.mockReturnValue(Buffer.from('033f4031d22289befe017472bb954b59d9ba043ce67fbc60c50ee3a48c56b89b1f', 'hex'));
 
-			const account = new NewAccount();
+			const account = new Account();
 			const foo = account.import('Password1!', '6f1a067690b4481de3743de3f015da5f172d939b5b1b4842c16977278a9c1fb914adc6079df87c70ab6cef422d6add01');
 
 			expect(foo).toEqual({

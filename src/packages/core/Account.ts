@@ -16,7 +16,7 @@ interface IGetAccount
 	publicKey: string;
 }
 
-export class Account
+class AccountClass
 {
 	// private _debug: boolean = false;
 	// private startTime: number;
@@ -302,6 +302,8 @@ export class Account
 	// 	return this._debug;
 	// }
 }
+
+export const Account = new AccountClass();
 
 // Running the API
 // https://github.com/nuls-io/API-server

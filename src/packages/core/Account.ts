@@ -41,10 +41,14 @@ class AccountClass
 	/** The IV used for encrypting and decrypting private keys [View the NULS repo on IV](https://github.com/nuls-io/nuls/blob/4436795eabe864437de013b83aee0dca0d5400bf/tools-module/tools/src/main/java/io/nuls/core/tools/crypto/EncryptedData.java#L38) */
 	private iv = this.hexWordsArray('0000000000000000');
 
-	constructor()
+	/**
+	 * @param addressType The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76).
+	 * @param chainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70).
+	 */
+	constructor(addressType: number = 1, chainId: number = 8964)
 	{
-		this.chainId = 1;
-		this.addressType = 8964;
+		this.chainId = chainId;
+		this.addressType = addressType;
 		// this.startTime = Date.now();
 	}
 

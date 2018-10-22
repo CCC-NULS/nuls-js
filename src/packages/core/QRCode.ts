@@ -13,7 +13,7 @@ class QRCodeClass
 	 * @param options Extra URL parameters added onto the address URL QR code
 	 * @param QRCodeOptions Extra QRCode package options
 	 */
-	private async create(addressOrPrivateKey: string, options: IQROptions = {}, QRCodeOptions: any = {})
+	public async create(addressOrPrivateKey: string, options: IQROptions = {}, QRCodeOptions: any = {})
 	{
 		const urlObj = new url.URL(`nuls:${addressOrPrivateKey}`);
 

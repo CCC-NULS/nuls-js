@@ -117,14 +117,9 @@ class AccountClass
 					found = false;
 					break;
 			}
-
-			if(found)
-			{
-				found = user;
-			}
 		}
 
-		return found;
+		return user;
 	}
 
 	/**

@@ -69,6 +69,8 @@
 		"src/**/*.test.*",
     "src/**/__tests__/**",
     "src/**/__mocks__/**",
-		"testConfigs"
+		"testConfigs",
+		"dist",
+		"docs"
   ]
 }

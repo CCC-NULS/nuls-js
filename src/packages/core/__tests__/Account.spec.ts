@@ -1,5 +1,3 @@
-import { QRCode } from '@/index';
-
 jest.mock('crypto');
 
 describe('create new accounts', () =>

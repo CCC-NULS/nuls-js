@@ -11,6 +11,7 @@
 		"typedef": [false, "call-signature", "arrow-call-signature", "parameter", "arrow-parameter", "property-declaration", "variable-declaration", "member-variable-declaration", "object-destructuring", "array-destructuring"],
 		"max-line-length": [false],
 		"no-bitwise": false,
-		"no-console": [false]
+		"no-console": [false],
+		"one-variable-per-declaration": false
 	}
 }

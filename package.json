@@ -6,7 +6,7 @@
   "unpkg": "dist/nuls-js.umd.js",
   "jsdelivr": "dist/nuls-js.umd.js",
   "browser": "dist/nuls-js.umd.js",
-  "typings": "dist/types/index.d.ts",
+  "typings": "dist/index.d.ts",
   "files": [
     "readme.md",
     "dist/**/*.{d.ts,js}"

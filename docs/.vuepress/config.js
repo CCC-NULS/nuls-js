@@ -13,7 +13,8 @@ module.exports = {
 			sidebar: {
 			'/guide/': [
 				'',
-				'account'
+				'account',
+				'QRCode'
 			]
 		}
 	}

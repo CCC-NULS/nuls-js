@@ -11,9 +11,15 @@ const RIPEMD160 = require('ripemd160'); // Holy shit balls Jest and WallayJS is 
 interface IGetAccount
 {
 	address: string;
-	privateKey: string;
-	privateKeyEncrypted?: string;
-	publicKey: string;
+	encryptedPrivateKey?: string;
+	prikey: string;
+	pubKey: string;
+}
+
+enum CustomAddressPosition {
+	end = 'end',
+	start = 'start',
+	anywhere = 'anywhere'
 }
 
 class AccountClass
@@ -29,7 +35,7 @@ class AccountClass
 	/** Private key of the public address */
 	private privateKey: string = '';
 	/** Private key encrypted using SHA256 and AESencryption */
-	private privateKeyEncrypted?: string;
+	private encryptedPrivateKey?: string;
 	/** Public address of the private key */
 	private address: string = '';
 	/** Public key of the private key */
@@ -63,16 +69,62 @@ class AccountClass
 	/**
 	 * Get the account generated
 	 */
-	public getAccount(): IGetAccount | null
+	public getAccount(): IGetAccount
 	{
-		if(!this.address || !this.privateKey || !this.publicKey) return null;
-
 		return {
 			address: this.address,
-			privateKey: this.privateKey,
-			privateKeyEncrypted: this.privateKeyEncrypted,
-			publicKey: this.publicKey
+			encryptedPrivateKey: this.encryptedPrivateKey,
+			prikey: this.privateKey,
+			pubKey: this.publicKey
 		};
+	}
+
+	/**
+	 * This will loop around until it finds a matching address
+	 * @param str The string to look for in addresses created - The larger the string the harder it is to find
+	 * @param password A plain text password for encrypting the private key
+	 * @param caseSensitive Mark this as `true` to make the address case sensitive to your input `string`
+	 * @param position The position of where `string` should be inside the address - Be aware that `start` is very difficult to find
+	 * @param addressType The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76).
+	 * @param chainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70).
+	 */
+	public createCustomAddress(str: string, password: string, caseSensitive: false, position: CustomAddressPosition = CustomAddressPosition.end, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount
+	{
+		const searchForText = caseSensitive ? str : str.toLowerCase();
+		const appendAddresses = caseSensitive ? ['Nse', 'Nsd'] : ['nse', 'nsd'];
+		const appendAddressesLoop = (usersAddress) => appendAddresses.find((appendAddress) => usersAddress.startsWith(`${appendAddress}${searchForText}`));
+		let found = false,
+			address,
+			user;
+
+		while(!found)
+		{
+			user = this.create(password, addressType, chainId);
+			address = caseSensitive ? user.address : user.address.toLowerCase();
+
+			switch(position)
+			{
+				case CustomAddressPosition.start:
+					found = !!appendAddressesLoop(address);
+					break;
+				case CustomAddressPosition.anywhere:
+					found = address.includes(searchForText);
+					break;
+				case CustomAddressPosition.end:
+					found = address.endsWith(searchForText);
+					break;
+				default:
+					found = false;
+					break;
+			}
+
+			if(found)
+			{
+				found = user;
+			}
+		}
+
+		return found;
 	}
 
 	/**
@@ -82,7 +134,7 @@ class AccountClass
 	 * @param addressType The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76).
 	 * @param chainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70).
 	 */
-	public import(password?: string, privateKey?: string, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount | null
+	public import(password?: string, privateKey?: string, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount
 	{
 		return this.createAccount(password, privateKey, addressType, chainId);
 	}
@@ -93,7 +145,7 @@ class AccountClass
 	 * @param addressType The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76).
 	 * @param chainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70).
 	 */
-	public create(password?: string, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount | null
+	public create(password?: string, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount
 	{
 		return this.createAccount(password, undefined, addressType, chainId);
 	}
@@ -105,7 +157,7 @@ class AccountClass
 	 * @param addressType The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76).
 	 * @param chainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70).
 	 */
-	private createAccount(password?: string, privateKey?: string, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount | null
+	private createAccount(password?: string, privateKey?: string, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount
 	{
 		if(privateKey) // If a private key is provided we use that
 		{
@@ -158,7 +210,7 @@ class AccountClass
 
 		if(password)
 		{
-			this.privateKeyEncrypted = this.encryptPrivateKey(password);
+			this.encryptedPrivateKey = this.encryptPrivateKey(password);
 		}
 
 		this.validatePrivateKey();

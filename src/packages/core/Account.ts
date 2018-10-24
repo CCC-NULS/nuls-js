@@ -88,7 +88,7 @@ class AccountClass
 	 * @param addressType The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76).
 	 * @param chainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70).
 	 */
-	public createCustomAddress(str: string, password: string, caseSensitive: false, position: CustomAddressPosition = CustomAddressPosition.end, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount
+	public createCustomAddress(str: string, password: string, caseSensitive: boolean = false, position: CustomAddressPosition = CustomAddressPosition.end, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount
 	{
 		const searchForText = caseSensitive ? str : str.toLowerCase();
 		const appendAddresses = caseSensitive ? ['Nse', 'Nsd'] : ['nse', 'nsd'];

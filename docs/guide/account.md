@@ -123,3 +123,29 @@ import { Account } from 'nuls-js';
 const fooAccount = Account.create(PASSWORD, ADDRESS_TYPE, CHAINID);
 const barAccount = Account.import(PASSWORD, PRIVATE_KEY, ADDRESS_TYPE, CHAINID);
 ```
+
+## Create a Custom Address
+Address strings are randomly generated, but we can loop until we find an address that matches our requirements. Check
+out the [documentation for the method](https://alephnuls.github.io/nuls-js/typedoc/classes/accountclass.html) to discover
+what parameters are available for the method. Below is an example for finding addresses which end with the string
+`josh` where case sensitive is not an issue. This will return the first address found, but be aware the longer the
+string then the harder it is to find, as well as making it case sensitive and setting the position to `start`. 
+
+```js
+import { Account } from 'nuls-js';
+
+// const fooAccount = createCustomAddress(MATCH_STRING, PASSWORD, CASE_SENSITIVE, MATCH_POSITION);
+const fooAccount = Account.createCustomAddress('josh', 'Password1!');
+```
+
+###### Find all `josh` addresses until the script is killed
+```js
+import { Account } from 'nuls-js';
+
+while(true)
+{
+	const account = Account.createCustomAddress('josh', 'Password1!');
+
+	console.log(account);
+}
+```

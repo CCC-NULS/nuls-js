@@ -129,6 +129,161 @@ describe('create new accounts', () =>
 		});
 	});
 
+	describe('createCustomAddress', () =>
+	{
+		beforeEach(() =>
+		{
+			jest.resetModules();
+			jest.clearAllMocks();
+		});
+
+		const addresses = [
+			{
+				address: 'Nse8Ar5XvuPdDCYcTnkK4LDwDNZqjOsH',
+				helloWorld: true
+			},
+			{
+				address: 'Nse8Ar5XvuPdDJOSHnkK4LDwDNZqTqYx',
+				helloWorld: true
+			},
+			{
+				address: 'Nse8Ar5XvuPdDCYcTnkK4LDwDNZqTqYx',
+				helloWorld: true
+			},
+			{
+				address: 'NsejoShXvuPdDCYcTnkK4LDwDNZqTqYx',
+				helloWorld: true
+			}
+		];
+
+		test('find `josh` where caseSensitive=false and position=end', () =>
+		{
+			const { Account } = require('@/index');
+
+			Account.create = jest.fn(() =>
+			{
+				const i = Math.floor((Math.random() * 4) + 1);
+
+				return addresses[i - 1];
+			});
+
+			expect(Account.createCustomAddress('josh', 'Password1!')).toEqual({
+				address: 'Nse8Ar5XvuPdDCYcTnkK4LDwDNZqjOsH',
+				helloWorld: true
+			});
+		});
+
+		test('find `josh` where caseSensitive=true and position=end', () =>
+		{
+			const { Account } = require('@/index');
+
+			Account.create = jest.fn(() =>
+			{
+				const i = Math.floor((Math.random() * 2) + 1);
+				const addresses2 = [
+					{
+						address: 'Nse8Ar5XvuPdDCYcTnkK4LDwDNZqJOSH',
+						helloWorld: true
+					},
+					{
+						address: 'Nse8Ar5XvuPdDCYcTnkK4LDwDNZqjosh',
+						helloWorld: true
+					}
+				];
+
+				return addresses2[i - 1];
+			});
+
+			expect(Account.createCustomAddress('JOSH', 'Password1!', true)).toEqual({
+				address: 'Nse8Ar5XvuPdDCYcTnkK4LDwDNZqJOSH',
+				helloWorld: true
+			});
+		});
+
+		test('find `josh` where caseSensitive=false and position=start', () =>
+		{
+			const { Account } = require('@/index');
+
+			Account.create = jest.fn(() =>
+			{
+				const i = Math.floor((Math.random() * 4) + 1);
+
+				return addresses[i - 1];
+			});
+
+			expect(Account.createCustomAddress('josh', 'Password1!', false, 'start')).toEqual({
+				address: 'NsejoShXvuPdDCYcTnkK4LDwDNZqTqYx',
+				helloWorld: true
+			});
+		});
+
+		test('find `josh` where caseSensitive=false and position=anywhere', () =>
+		{
+			const { Account } = require('@/index');
+
+			Account.create = jest.fn(() =>
+			{
+				const i = Math.floor((Math.random() * 2) + 1);
+				const addresses2 = [
+					{
+						address: 'Nse8Ar5XvuPdDCYcTnkK4LDwDNZqjosh',
+						helloWorld: true
+					},
+					{
+						address: 'Nse8Ar5XvuPdDCYcTnkK4LDwDNZqTqYx',
+						helloWorld: true
+					}
+				];
+
+				return addresses2[i - 1];
+			});
+
+			expect(Account.createCustomAddress('josh', 'Password1!', false, 'anywhere')).toEqual({
+				address: 'Nse8Ar5XvuPdDCYcTnkK4LDwDNZqjosh',
+				helloWorld: true
+			});
+
+			Account.create = jest.fn(() =>
+			{
+				const i = Math.floor((Math.random() * 2) + 1);
+				const addresses2 = [
+					{
+						address: 'Nse8Ar5XvuPdDJOSHnkK4LDwDNZqTqYx',
+						helloWorld: true
+					},
+					{
+						address: 'Nse8Ar5XvuPdDCYcTnkK4LDwDNZqTqYx',
+						helloWorld: true
+					}
+				];
+
+				return addresses2[i - 1];
+			});
+
+			expect(Account.createCustomAddress('josh', 'Password1!', false, 'anywhere')).toEqual({
+				address: 'Nse8Ar5XvuPdDJOSHnkK4LDwDNZqTqYx',
+				helloWorld: true
+			});
+		});
+
+		test('find `josh` where caseSensitive=false and position=anywhere', () =>
+		{
+			const { Account } = require('@/index');
+
+			Account.create = jest.fn(() =>
+			{
+				const i = Math.floor((Math.random() * 2) + 1);
+
+				return addresses[i - 1];
+			});
+
+			expect(Account.createCustomAddress('josh', 'Password1!', false, 'asdf')).toEqual({
+				address: 'Nse8Ar5XvuPdDCYcTnkK4LDwDNZqjOsH',
+				helloWorld: true
+			});
+		});
+	});
+
 	describe('invalid private keys', () =>
 	{
 		beforeEach(() =>

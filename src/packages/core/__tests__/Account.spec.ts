@@ -266,7 +266,7 @@ describe('create new accounts', () =>
 			});
 		});
 
-		test('find `josh` where caseSensitive=false and position=anywhere', () =>
+		test('find `josh` where caseSensitive=false and position=asdf', () =>
 		{
 			const { Account } = require('@/index');
 

@@ -1,5 +1,11 @@
 describe('creating QR codes', () =>
 {
+	beforeEach(() =>
+	{
+		jest.resetModules();
+		jest.clearAllMocks();
+	});
+
 	test('an address', async () =>
 	{
 		const { QRCode } = require('@/index');
@@ -18,7 +24,6 @@ describe('creating QR codes', () =>
 
 	test('throw error', async () =>
 	{
-		const { QRCode } = require('@/index');
 		const PkgQRCode = require('qrcode');
 		let errorMessage = 'No error thrown.';
 
@@ -27,9 +32,11 @@ describe('creating QR codes', () =>
 			throw new Error('Error message');
 		});
 
+		const { QRCode } = require('@/index');
+
 		try
 		{
-			await await QRCode.create('Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6', { amount: 10 });
+			await QRCode.create('Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6', { amount: 10 });
 		}
 		catch(error)
 		{

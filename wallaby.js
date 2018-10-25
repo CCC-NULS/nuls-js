@@ -10,7 +10,14 @@ module.exports = (wallaby) =>
 			'testConfigs/*-setup.*',
 			'package.json',
 			'tsconfig.json',
-			{ pattern: 'src/**/__tests__/*.spec.*', ignore: true }
+			{
+				pattern: 'src/**/__tests__/*.spec.*',
+				ignore: true
+			}
+		],
+		filesWithNoCoverageCalculated: [
+			'testConfigs/*-setup.*',
+			'src/**/__mocks__/*'
 		],
 		tests: [
 			'tests/**/*.spec.*',

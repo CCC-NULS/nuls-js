@@ -111,10 +111,8 @@ class AccountClass
 					found = address.includes(searchForText);
 					break;
 				case CustomAddressPosition.end:
-					found = address.endsWith(searchForText);
-					break;
 				default:
-					found = false;
+					found = address.endsWith(searchForText);
 					break;
 			}
 		}

@@ -174,11 +174,6 @@ class AccountClass
 
 		try
 		{
-			if(!this.privateKeyBuffer)
-			{
-				throw new Error('Invalid private key buffer');
-			}
-
 			this.publicKeyBuffer = secp256k1.publicKeyCreate(this.privateKeyBuffer);
 		}
 		catch(e)
@@ -216,11 +211,6 @@ class AccountClass
 	 */
 	private validatePrivateKey(): void
 	{
-		if(!this.privateKeyBuffer || !this.publicKeyBuffer)
-		{
-			throw new Error('Invalid private key buffer');
-		}
-
 		const msg: Buffer = randomBytes(32);
 		const { signature }: { signature: Buffer } = secp256k1.sign(msg, this.privateKeyBuffer);
 

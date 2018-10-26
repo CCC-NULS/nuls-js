@@ -22,6 +22,14 @@ describe('creating QR codes', () =>
 		expect(code).toMatchSnapshot();
 	});
 
+	test('error correction level option setting `L`', async () =>
+	{
+		const { QRCode } = require('@/index');
+		const code = await QRCode.create('Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6', undefined, { errorCorrectionLevel: 'L' });
+
+		expect(code).toMatchSnapshot();
+	});
+
 	test('throw error', async () =>
 	{
 		const PkgQRCode = require('qrcode');

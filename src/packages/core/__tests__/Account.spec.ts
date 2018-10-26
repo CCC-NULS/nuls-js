@@ -295,7 +295,7 @@ describe('create new accounts', () =>
 			});
 		});
 
-		test.only('contract address and custom chainId', () =>
+		test('contract address and custom chainId', () =>
 		{
 			const { Account } = require('@/index');
 

@@ -112,6 +112,18 @@ describe('create new accounts', () =>
 				});
 			});
 
+			test('importing a contract account and different chainId', () =>
+			{
+				const { Account } = require('@/index');
+
+				expect(Account.import('Password1!', '2e4fa652034f495089daebb9a390600cb144eafe3fe34fad0750ee9674dfc402', 2, 9000)).toEqual({
+					address: '4fDyBjzqYi5bfqMDT9ggC8SdLtvfw88Yu',
+					encryptedPrivateKey: '5af6f2f9aa014d467c22a7523ed352a0eaed4816b4caa3cc52c15d68d627089db055f95d3de88e01fab28d2fa96fb10e',
+					prikey: '2e4fa652034f495089daebb9a390600cb144eafe3fe34fad0750ee9674dfc402',
+					pubKey: '02d772f1649c142494483e358b915573f5ba1573c71951117fc9a7db804fc3e64b'
+				});
+			});
+
 			test('importing an account without a password and adding a password', () =>
 			{
 				const { Account } = require('@/index');
@@ -281,6 +293,27 @@ describe('create new accounts', () =>
 				address: 'Nse8Ar5XvuPdDCYcTnkK4LDwDNZqjOsH',
 				helloWorld: true
 			});
+		});
+
+		test.only('contract address and custom chainId', () =>
+		{
+			const { Account } = require('@/index');
+
+			Account.create = jest.fn(() =>
+			{
+				const i = Math.floor((Math.random() * 4) + 1);
+
+				return addresses[i - 1];
+			});
+
+			const account = Account.createCustomAddress('josh', 'Password1!', undefined, undefined, 2, 9000);
+
+			expect(account).toEqual({
+				address: 'Nse8Ar5XvuPdDCYcTnkK4LDwDNZqjOsH',
+				helloWorld: true
+			});
+
+			expect(Account.create.mock.calls[0]).toEqual(['Password1!', 2, 9000]);
 		});
 	});
 

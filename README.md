@@ -14,9 +14,9 @@ $ npm i nuls-js
 ```js
 import NULS from 'nuls-js';
 
-const account = new NULS.account(); // Initiate a new account
+const account = NULS.account.create(); // Initiate a new account
 
-console.log(account.getAccount().address); // Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6
+console.log(account.address); // Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6
 ```
 
 # Guide
@@ -29,6 +29,7 @@ https://alephnuls.github.io/nuls-js/typedoc/index.html
 ##### Account Management
  - [Create an Account](https://alephnuls.github.io/nuls-js/guide/account.html#create-a-new-account)
  - [Import an Account](https://alephnuls.github.io/nuls-js/guide/account.html#import-an-account)
+ - [QRCode](https://alephnuls.github.io/nuls-js/guide/QRCode.html)
 
 ## TODO
 - Read an address balance

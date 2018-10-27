@@ -15,6 +15,7 @@ $ npm i nuls-js
 ##### Account Management
  - [Create an Account](/guide/account.html#create-a-new-account)
  - [Import an Account](/guide/account.html#import-an-account)
+ - [QRCode](/guide/QRCode.html)
 
 ## TODO
 - Read an address balance

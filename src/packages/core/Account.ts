@@ -56,6 +56,17 @@ class AccountClass
 	// }
 
 	/**
+	 * Reset all account details
+	 */
+	public resetAccountDetails()
+	{
+		this.address = '';
+		this.encryptedPrivateKey = undefined;
+		this.privateKey = '';
+		this.publicKey = '';
+	}
+
+	/**
 	 * Get the account generated
 	 */
 	public getAccount(): IGetAccount
@@ -111,12 +122,12 @@ class AccountClass
 
 	/**
 	 * Imports an account and returns the full account data
-	 * @param password A plain text password for encrypting the private key or decrypting the encrypted private key
 	 * @param privateKey A plain text or encrypted private key
+	 * @param password A plain text password for encrypting the private key or decrypting the encrypted private key
 	 * @param addressType The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76).
 	 * @param chainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70).
 	 */
-	public import(password?: string, privateKey?: string, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount
+	public import(privateKey: string, password?: string, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount
 	{
 		return this.createAccount(password, privateKey, addressType, chainId);
 	}
@@ -141,6 +152,8 @@ class AccountClass
 	 */
 	private createAccount(password?: string, privateKey?: string, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount
 	{
+		this.resetAccountDetails();
+
 		if(privateKey) // If a private key is provided we use that
 		{
 			if(password && this.decryptPrivateKey(password, privateKey)) // If a password exists and it's able to decrypt the private key then we're actually dealing with an encrypted private key

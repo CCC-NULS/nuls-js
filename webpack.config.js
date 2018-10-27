@@ -2,6 +2,7 @@ const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const commonWebpackConfig = {
 	entry: {
@@ -14,11 +15,18 @@ const commonWebpackConfig = {
 				test: /\.tsx?$/,
 				use: 'ts-loader',
 				exclude: /node_modules/
+			},
+			{
+				test: /\.txt$/,
+				use: 'raw-loader'
 			}
 		]
 	},
+	node: {
+		fs: 'empty'
+	},
 	resolve: {
-		extensions: ['.ts', '.js'],
+		extensions: ['.ts', '.js', '.txt'],
 		alias: {
 			// config: path.resolve(__dirname, './config/config.json'),
 			'@': path.join(__dirname, './src')
@@ -28,7 +36,12 @@ const commonWebpackConfig = {
 		library: '@nuls/[name]',
 		filename: 'bundle.js',
 		path: path.resolve(__dirname, 'dist')
-	}
+	},
+	plugins: [
+		new CopyWebpackPlugin([
+			{ from: 'src/assets', to: 'assets' }
+		])
+	]
 };
 
 const serverWebpackConfig = merge(commonWebpackConfig, {

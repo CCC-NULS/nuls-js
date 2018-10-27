@@ -22,6 +22,14 @@ describe('creating QR codes', () =>
 		expect(code).toMatchSnapshot();
 	});
 
+	test('private ket import', async () =>
+	{
+		const { QRCode } = require('@/index');
+		const code = await QRCode.create('5af6f2f9aa014d467c22a7523ed352a0eaed4816b4caa3cc52c15d68d627089db055f95d3de88e01fab28d2fa96fb10e');
+
+		expect(code).toMatchSnapshot();
+	});
+
 	test('error correction level option setting `L`', async () =>
 	{
 		const { QRCode } = require('@/index');

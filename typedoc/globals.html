@@ -69,6 +69,7 @@
 							<h3>Enumerations</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-enum tsd-is-not-exported"><a href="enums/customaddressposition.html" class="tsd-kind-icon">Custom<wbr>Address<wbr>Position</a></li>
+								<li class="tsd-kind-enum tsd-is-not-exported"><a href="enums/logocolour.html" class="tsd-kind-icon">Logo<wbr>Colour</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-not-exported">
@@ -81,6 +82,7 @@
 						<section class="tsd-index-section ">
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-interface"><a href="interfaces/iaddressparams.html" class="tsd-kind-icon">IAddress<wbr>Params</a></li>
 								<li class="tsd-kind-interface tsd-is-not-exported"><a href="interfaces/igetaccount.html" class="tsd-kind-icon">IGet<wbr>Account</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/iqroptions.html" class="tsd-kind-icon">IQROptions</a></li>
 							</ul>
@@ -91,6 +93,13 @@
 								<li class="tsd-kind-variable"><a href="globals.html#account" class="tsd-kind-icon">Account</a></li>
 								<li class="tsd-kind-variable"><a href="globals.html#qrcode" class="tsd-kind-icon">QRCode</a></li>
 								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#ripemd160" class="tsd-kind-icon">RIPEMD160</a></li>
+								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#jimp" class="tsd-kind-icon">jimp</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-not-exported">
+							<h3>Object literals</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-object-literal tsd-is-not-exported"><a href="globals.html#defaultiqroptions" class="tsd-kind-icon">defaultIQROptions</a></li>
 							</ul>
 						</section>
 					</div>
@@ -104,7 +113,7 @@
 					<div class="tsd-signature tsd-kind-icon">Account<span class="tsd-signature-symbol">:</span> <a href="classes/accountclass.html" class="tsd-signature-type">AccountClass</a><span class="tsd-signature-symbol"> =&nbsp;new AccountClass()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/936f6cb/src/packages/core/Account.ts#L346">packages/core/Account.ts:346</a></li>
+							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/3e49abb/src/packages/core/Account.ts#L346">packages/core/Account.ts:346</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -114,7 +123,7 @@
 					<div class="tsd-signature tsd-kind-icon">QRCode<span class="tsd-signature-symbol">:</span> <a href="classes/qrcodeclass.html" class="tsd-signature-type">QRCodeClass</a><span class="tsd-signature-symbol"> =&nbsp;new QRCodeClass()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/936f6cb/src/packages/core/QRCode.ts#L36">packages/core/QRCode.ts:36</a></li>
+							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/3e49abb/src/packages/core/QRCode.ts#L89">packages/core/QRCode.ts:89</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -124,9 +133,42 @@
 					<div class="tsd-signature tsd-kind-icon">RIPEMD160<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;require(&#x27;ripemd160&#x27;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/936f6cb/src/packages/core/Account.ts#L9">packages/core/Account.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/3e49abb/src/packages/core/Account.ts#L9">packages/core/Account.ts:9</a></li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
+					<a name="jimp" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> jimp</h3>
+					<div class="tsd-signature tsd-kind-icon">jimp<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;require(&#x27;jimp&#x27;)</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/3e49abb/src/packages/core/QRCode.ts#L6">packages/core/QRCode.ts:6</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
+				<h2>Object literals</h2>
+				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-is-not-exported">
+					<a name="defaultiqroptions" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> defaultIQROptions</h3>
+					<div class="tsd-signature tsd-kind-icon">defaultIQROptions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/3e49abb/src/packages/core/QRCode.ts#L23">packages/core/QRCode.ts:23</a></li>
+						</ul>
+					</aside>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
+						<a name="defaultiqroptions.logo" class="tsd-anchor"></a>
+						<h3>logo</h3>
+						<div class="tsd-signature tsd-kind-icon">logo<span class="tsd-signature-symbol">:</span> <a href="enums/logocolour.html" class="tsd-signature-type">LogoColour</a><span class="tsd-signature-symbol"> =&nbsp;LogoColour.green</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/3e49abb/src/packages/core/QRCode.ts#L24">packages/core/QRCode.ts:24</a></li>
+							</ul>
+						</aside>
+					</section>
 				</section>
 			</section>
 		</div>
@@ -143,11 +185,17 @@
 					<li class=" tsd-kind-enum tsd-is-not-exported">
 						<a href="enums/customaddressposition.html" class="tsd-kind-icon">Custom<wbr>Address<wbr>Position</a>
 					</li>
+					<li class=" tsd-kind-enum tsd-is-not-exported">
+						<a href="enums/logocolour.html" class="tsd-kind-icon">Logo<wbr>Colour</a>
+					</li>
 					<li class=" tsd-kind-class tsd-is-not-exported">
 						<a href="classes/accountclass.html" class="tsd-kind-icon">Account<wbr>Class</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-not-exported">
 						<a href="classes/qrcodeclass.html" class="tsd-kind-icon">QRCode<wbr>Class</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/iaddressparams.html" class="tsd-kind-icon">IAddress<wbr>Params</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-not-exported">
 						<a href="interfaces/igetaccount.html" class="tsd-kind-icon">IGet<wbr>Account</a>
@@ -163,6 +211,12 @@
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="globals.html#ripemd160" class="tsd-kind-icon">RIPEMD160</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#jimp" class="tsd-kind-icon">jimp</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="globals.html#defaultiqroptions" class="tsd-kind-icon">defaultIQROptions</a>
 					</li>
 				</ul>
 			</nav>

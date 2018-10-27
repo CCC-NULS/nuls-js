@@ -25,9 +25,40 @@ describe('creating QR codes', () =>
 	test('error correction level option setting `L`', async () =>
 	{
 		const { QRCode } = require('@/index');
-		const code = await QRCode.create('Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6', undefined, { errorCorrectionLevel: 'L' });
+		const code = await QRCode.create('Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6', undefined, undefined, { errorCorrectionLevel: 'L' });
 
 		expect(code).toMatchSnapshot();
+	});
+
+	test('logo colours', async () =>
+	{
+		const { QRCode } = require('@/index');
+		const green = await QRCode.create('Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6');
+		const white = await QRCode.create('Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6', undefined, { logo: 'green' });
+		const black = await QRCode.create('Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6', undefined, { logo: 'black' });
+		const blank = await QRCode.create('Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6', undefined, { logo: false });
+
+		expect(green).toMatchSnapshot();
+		expect(white).toMatchSnapshot();
+		expect(black).toMatchSnapshot();
+		expect(blank).toMatchSnapshot();
+	});
+
+	test('unknown logo colour', async () =>
+	{
+		const { QRCode } = require('@/index');
+		let errorMessage = 'No error thrown.';
+
+		try
+		{
+			await QRCode.create('Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6', undefined, { logo: 'foo' });
+		}
+		catch(error)
+		{
+			errorMessage = error.message;
+		}
+
+		expect(errorMessage).toBe('Unknown NULS logo colour [foo]');
 	});
 
 	test('throw error', async () =>

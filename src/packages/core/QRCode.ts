@@ -1,8 +1,9 @@
 import * as fs from 'fs';
-import * as jimp from 'jimp';
 import * as path from 'path';
 import * as PkgQRCode from 'qrcode';
 import * as url from 'url';
+
+const jimp = require('jimp');
 
 enum LogoColour {
 	green = 'green',

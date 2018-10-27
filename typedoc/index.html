@@ -72,9 +72,9 @@
 				<h1 id="usage">Usage</h1>
 				<pre><code class="language-js"><span class="hljs-keyword">import</span> NULS <span class="hljs-keyword">from</span> <span class="hljs-string">'nuls-js'</span>;
 
-<span class="hljs-keyword">const</span> account = <span class="hljs-keyword">new</span> NULS.account(); <span class="hljs-comment">// Initiate a new account</span>
+<span class="hljs-keyword">const</span> account = NULS.account.create(); <span class="hljs-comment">// Initiate a new account</span>
 
-<span class="hljs-built_in">console</span>.log(account.getAccount().address); <span class="hljs-comment">// Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6</span></code></pre>
+<span class="hljs-built_in">console</span>.log(account.address); <span class="hljs-comment">// Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6</span></code></pre>
 				<h1 id="guide">Guide</h1>
 				<p><a href="https://alephnuls.github.io/nuls-js/">https://alephnuls.github.io/nuls-js/</a></p>
 				<h1 id="documentation">Documentation</h1>
@@ -84,6 +84,7 @@
 				<ul>
 					<li><a href="https://alephnuls.github.io/nuls-js/guide/account.html#create-a-new-account">Create an Account</a></li>
 					<li><a href="https://alephnuls.github.io/nuls-js/guide/account.html#import-an-account">Import an Account</a></li>
+					<li><a href="https://alephnuls.github.io/nuls-js/guide/QRCode.html">QRCode</a></li>
 				</ul>
 				<h2 id="todo">TODO</h2>
 				<ul>

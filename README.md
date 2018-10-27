@@ -2,8 +2,7 @@
 Isomorphic JavaScript SDK for NULS blockchain.
 
 # Warning
-This project is still in early development and this are likely to change. Please do not use
-this in a production environment.
+This project is still in early development stages. It is strongly not recommended to use this in a production environment.
 
 # Install
 ```bash

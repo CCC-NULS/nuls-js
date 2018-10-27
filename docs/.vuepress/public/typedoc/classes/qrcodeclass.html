@@ -91,13 +91,13 @@
 					<a name="create" class="tsd-anchor"></a>
 					<h3>create</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">create<span class="tsd-signature-symbol">(</span>addressOrPrivateKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iqroptions.html" class="tsd-signature-type">IQROptions</a>, QRCodeOptions<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<span class="tsd-signature-symbol">(</span>addressOrPrivateKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, addressParams<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iaddressparams.html" class="tsd-signature-type">IAddressParams</a>, options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iqroptions.html" class="tsd-signature-type">IQROptions</a>, QRCodeOptions<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/QRCode.ts#L16">packages/core/QRCode.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/QRCode.ts#L35">packages/core/QRCode.ts:35</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -111,9 +111,15 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <a href="../interfaces/iqroptions.html" class="tsd-signature-type">IQROptions</a><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> addressParams: <a href="../interfaces/iaddressparams.html" class="tsd-signature-type">IAddressParams</a><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Extra URL parameters added onto the address URL QR code</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <a href="../interfaces/iqroptions.html" class="tsd-signature-type">IQROptions</a><span class="tsd-signature-symbol"> =&nbsp;defaultIQROptions</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Options for the QRCode</p>
 									</div>
 								</li>
 								<li>
@@ -142,6 +148,9 @@
 					<li class=" tsd-kind-enum tsd-is-not-exported">
 						<a href="../enums/customaddressposition.html" class="tsd-kind-icon">Custom<wbr>Address<wbr>Position</a>
 					</li>
+					<li class=" tsd-kind-enum tsd-is-not-exported">
+						<a href="../enums/logocolour.html" class="tsd-kind-icon">Logo<wbr>Colour</a>
+					</li>
 					<li class=" tsd-kind-class tsd-is-not-exported">
 						<a href="accountclass.html" class="tsd-kind-icon">Account<wbr>Class</a>
 					</li>
@@ -157,6 +166,9 @@
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/iaddressparams.html" class="tsd-kind-icon">IAddress<wbr>Params</a>
+					</li>
 					<li class=" tsd-kind-interface tsd-is-not-exported">
 						<a href="../interfaces/igetaccount.html" class="tsd-kind-icon">IGet<wbr>Account</a>
 					</li>
@@ -171,6 +183,12 @@
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="../globals.html#ripemd160" class="tsd-kind-icon">RIPEMD160</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="../globals.html#jimp" class="tsd-kind-icon">jimp</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="../globals.html#defaultiqroptions" class="tsd-kind-icon">defaultIQROptions</a>
 					</li>
 				</ul>
 			</nav>

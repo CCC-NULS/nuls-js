@@ -77,12 +77,6 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section tsd-is-not-exported">
-							<h3>Constructors</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-not-exported"><a href="accountclass.html#constructor" class="tsd-kind-icon">constructor</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section tsd-is-not-exported">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-not-exported"><a href="accountclass.html#address" class="tsd-kind-icon">address</a></li>
@@ -111,53 +105,13 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-not-exported"><a href="accountclass.html#hexwordsarray" class="tsd-kind-icon">hex<wbr>Words<wbr>Array</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="accountclass.html#import" class="tsd-kind-icon">import</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-not-exported"><a href="accountclass.html#privatekeyhash" class="tsd-kind-icon">private<wbr>Key<wbr>Hash</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="accountclass.html#resetaccountdetails" class="tsd-kind-icon">reset<wbr>Account<wbr>Details</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-not-exported"><a href="accountclass.html#sha256" class="tsd-kind-icon">sha256</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-not-exported"><a href="accountclass.html#stringtohex" class="tsd-kind-icon">string<wbr>ToHex</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-not-exported"><a href="accountclass.html#validateprivatekey" class="tsd-kind-icon">validate<wbr>Private<wbr>Key</a></li>
 							</ul>
 						</section>
 					</div>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
-				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-not-exported">
-					<a name="constructor" class="tsd-anchor"></a>
-					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Account<wbr>Class<span class="tsd-signature-symbol">(</span>addressType<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, chainId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="accountclass.html" class="tsd-signature-type">AccountClass</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L48">packages/core/Account.ts:48</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> addressType: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The default address type, a chain can contain several address types, and the address type is contained in the address. <a href="https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76">View the NULS repo on addressType</a>.</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> chainId: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;8964</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The default chain id (NULS main chain), the chain id affects the generation of the address. <a href="https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70">View the NULS repo on chainId</a>.</p>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="accountclass.html" class="tsd-signature-type">AccountClass</a></h4>
-						</li>
-					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
@@ -168,7 +122,7 @@
 					<div class="tsd-signature tsd-kind-icon">address<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L40">packages/core/Account.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L40">packages/core/Account.ts:40</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -180,30 +134,30 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
 					<a name="addresstype" class="tsd-anchor"></a>
 					<h3>address<wbr>Type</h3>
-					<div class="tsd-signature tsd-kind-icon">address<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<div class="tsd-signature tsd-kind-icon">address<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L33">packages/core/Account.ts:33</a></li>
+							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L33">packages/core/Account.ts:33</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Address type</p>
+							<p>Address type The default address type, a chain can contain several address types, and the address type is contained in the address. <a href="https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76">View the NULS repo on addressType</a></p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
 					<a name="chainid" class="tsd-anchor"></a>
 					<h3>chain<wbr>Id</h3>
-					<div class="tsd-signature tsd-kind-icon">chain<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<div class="tsd-signature tsd-kind-icon">chain<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;8964</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L31">packages/core/Account.ts:31</a></li>
+							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L31">packages/core/Account.ts:31</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>ChainId</p>
+							<p>ChainId The default chain id (NULS main chain), the chain id affects the generation of the address. <a href="https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70">View the NULS repo on chainId</a></p>
 						</div>
 					</div>
 				</section>
@@ -213,7 +167,7 @@
 					<div class="tsd-signature tsd-kind-icon">encrypted<wbr>Private<wbr>Key<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L38">packages/core/Account.ts:38</a></li>
+							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L38">packages/core/Account.ts:38</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -228,7 +182,7 @@
 					<div class="tsd-signature tsd-kind-icon">iv<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;this.hexWordsArray(&#x27;0000000000000000&#x27;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L48">packages/core/Account.ts:48</a></li>
+							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L48">packages/core/Account.ts:48</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -243,7 +197,7 @@
 					<div class="tsd-signature tsd-kind-icon">private<wbr>Key<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L36">packages/core/Account.ts:36</a></li>
+							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L36">packages/core/Account.ts:36</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -258,7 +212,7 @@
 					<div class="tsd-signature tsd-kind-icon">private<wbr>Key<wbr>Buffer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Buffer</span><span class="tsd-signature-symbol"> =&nbsp;Buffer.from(&#x27;&#x27;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L44">packages/core/Account.ts:44</a></li>
+							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L44">packages/core/Account.ts:44</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -273,7 +227,7 @@
 					<div class="tsd-signature tsd-kind-icon">public<wbr>Key<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L42">packages/core/Account.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L42">packages/core/Account.ts:42</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -288,7 +242,7 @@
 					<div class="tsd-signature tsd-kind-icon">public<wbr>Key<wbr>Buffer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Buffer</span><span class="tsd-signature-symbol"> =&nbsp;Buffer.from(&#x27;&#x27;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L46">packages/core/Account.ts:46</a></li>
+							<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L46">packages/core/Account.ts:46</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -310,7 +264,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L143">packages/core/Account.ts:143</a></li>
+									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L141">packages/core/Account.ts:141</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -353,7 +307,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L155">packages/core/Account.ts:155</a></li>
+									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L153">packages/core/Account.ts:153</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -402,7 +356,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L311">packages/core/Account.ts:311</a></li>
+									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L301">packages/core/Account.ts:301</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -427,13 +381,13 @@
 					<a name="createcustomaddress" class="tsd-anchor"></a>
 					<h3>create<wbr>Custom<wbr>Address</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Custom<wbr>Address<span class="tsd-signature-symbol">(</span>str<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, password<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, caseSensitive<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">false</span>, position<span class="tsd-signature-symbol">?: </span><a href="../enums/customaddressposition.html" class="tsd-signature-type">CustomAddressPosition</a>, addressType<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, chainId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/igetaccount.html" class="tsd-signature-type">IGetAccount</a></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Custom<wbr>Address<span class="tsd-signature-symbol">(</span>str<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, password<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, caseSensitive<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span>, position<span class="tsd-signature-symbol">?: </span><a href="../enums/customaddressposition.html" class="tsd-signature-type">CustomAddressPosition</a>, addressType<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, chainId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/igetaccount.html" class="tsd-signature-type">IGetAccount</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L91">packages/core/Account.ts:91</a></li>
+									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L91">packages/core/Account.ts:91</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -456,7 +410,7 @@
 									</div>
 								</li>
 								<li>
-									<h5>caseSensitive: <span class="tsd-signature-type">false</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> caseSensitive: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Mark this as <code>true</code> to make the address case sensitive to your input <code>string</code></p>
 									</div>
@@ -494,7 +448,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L262">packages/core/Account.ts:262</a></li>
+									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L252">packages/core/Account.ts:252</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -525,7 +479,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L246">packages/core/Account.ts:246</a></li>
+									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L236">packages/core/Account.ts:236</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -553,7 +507,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L72">packages/core/Account.ts:72</a></li>
+									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L72">packages/core/Account.ts:72</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -575,7 +529,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L298">packages/core/Account.ts:298</a></li>
+									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L288">packages/core/Account.ts:288</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -606,7 +560,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L339">packages/core/Account.ts:339</a></li>
+									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L329">packages/core/Account.ts:329</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -634,7 +588,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L238">packages/core/Account.ts:238</a></li>
+									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L228">packages/core/Account.ts:228</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -656,13 +610,13 @@
 					<a name="import" class="tsd-anchor"></a>
 					<h3>import</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">import<span class="tsd-signature-symbol">(</span>password<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, privateKey<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, addressType<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, chainId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/igetaccount.html" class="tsd-signature-type">IGetAccount</a></li>
+						<li class="tsd-signature tsd-kind-icon">import<span class="tsd-signature-symbol">(</span>privateKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, password<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, addressType<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, chainId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/igetaccount.html" class="tsd-signature-type">IGetAccount</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L132">packages/core/Account.ts:132</a></li>
+									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L130">packages/core/Account.ts:130</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -673,15 +627,15 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> password: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+									<h5>privateKey: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>A plain text password for encrypting the private key or decrypting the encrypted private key</p>
+										<p>A plain text or encrypted private key</p>
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> privateKey: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> password: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>A plain text or encrypted private key</p>
+										<p>A plain text password for encrypting the private key or decrypting the encrypted private key</p>
 									</div>
 								</li>
 								<li>
@@ -711,7 +665,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L286">packages/core/Account.ts:286</a></li>
+									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L276">packages/core/Account.ts:276</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -720,6 +674,28 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Buffer</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+					<a name="resetaccountdetails" class="tsd-anchor"></a>
+					<h3>reset<wbr>Account<wbr>Details</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">reset<wbr>Account<wbr>Details<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L61">packages/core/Account.ts:61</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Reset all account details</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -733,7 +709,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L278">packages/core/Account.ts:278</a></li>
+									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L268">packages/core/Account.ts:268</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -761,7 +737,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L331">packages/core/Account.ts:331</a></li>
+									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L321">packages/core/Account.ts:321</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -789,7 +765,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/60eb5af/src/packages/core/Account.ts#L219">packages/core/Account.ts:219</a></li>
+									<li>Defined in <a href="https://github.com/AlephNuls/nuls-js/blob/fd03abd/src/packages/core/Account.ts#L214">packages/core/Account.ts:214</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -816,14 +792,14 @@
 					<li class=" tsd-kind-enum tsd-is-not-exported">
 						<a href="../enums/customaddressposition.html" class="tsd-kind-icon">Custom<wbr>Address<wbr>Position</a>
 					</li>
+					<li class=" tsd-kind-enum tsd-is-not-exported">
+						<a href="../enums/logocolour.html" class="tsd-kind-icon">Logo<wbr>Colour</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-is-not-exported">
 						<a href="accountclass.html" class="tsd-kind-icon">Account<wbr>Class</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-not-exported">
-								<a href="accountclass.html#constructor" class="tsd-kind-icon">constructor</a>
-							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-not-exported">
 								<a href="accountclass.html#address" class="tsd-kind-icon">address</a>
 							</li>
@@ -887,6 +863,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-not-exported">
 								<a href="accountclass.html#privatekeyhash" class="tsd-kind-icon">private<wbr>Key<wbr>Hash</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+								<a href="accountclass.html#resetaccountdetails" class="tsd-kind-icon">reset<wbr>Account<wbr>Details</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-not-exported">
 								<a href="accountclass.html#sha256" class="tsd-kind-icon">sha256</a>
 							</li>
@@ -903,6 +882,9 @@
 					<li class=" tsd-kind-class tsd-is-not-exported">
 						<a href="qrcodeclass.html" class="tsd-kind-icon">QRCode<wbr>Class</a>
 					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/iaddressparams.html" class="tsd-kind-icon">IAddress<wbr>Params</a>
+					</li>
 					<li class=" tsd-kind-interface tsd-is-not-exported">
 						<a href="../interfaces/igetaccount.html" class="tsd-kind-icon">IGet<wbr>Account</a>
 					</li>
@@ -917,6 +899,12 @@
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="../globals.html#ripemd160" class="tsd-kind-icon">RIPEMD160</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="../globals.html#jimp" class="tsd-kind-icon">jimp</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="../globals.html#defaultiqroptions" class="tsd-kind-icon">defaultIQROptions</a>
 					</li>
 				</ul>
 			</nav>

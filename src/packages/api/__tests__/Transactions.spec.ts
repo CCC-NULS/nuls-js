@@ -8,12 +8,14 @@ describe.only('transactions', () =>
 
 	test('the api server is optional and has our default value', async () =>
 	{
-		const { Transfer } = require('@/index');
+		const { Transfer, APIServer, APIServerTestNet } = require('@/index');
 
-		const transfer = new Transfer();
-		const transferCustomUrl = new Transfer('FooBar');
+		const transferDefault = new Transfer();
+		const transferLive = new Transfer(APIServer);
+		const transferTest = new Transfer(APIServerTestNet);
 
-		expect(transfer.url).toEqual('https://apiserver.nuls.io/');
-		expect(transferCustomUrl.url).toEqual('FooBar');
+		expect(transferDefault.url).toEqual('https://apiserver.nuls.io/');
+		expect(transferLive.url).toEqual('https://apiserver.nuls.io/');
+		expect(transferTest.url).toEqual('http://testnet.apiserver.nuls.io/');
 	});
 });

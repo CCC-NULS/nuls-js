@@ -7,8 +7,10 @@ specifically we use the [nodejs](https://www.npmjs.com/package/qrcode#nodejs) im
 and if it's an `address` they can provide options for adding the contact or send funds, if it's a private key then the
 can transfer the funds, save or open the account.
 
-`OPTIONS` is any extra URL parameters added onto the address URL QR code. For example `{ amount: 1 }` can be added so
-the reader is told the amount of NULS to send in the transaction. [Read more](https://alephnuls.github.io/nuls-js/typedoc/interfaces/iqroptions.html) options on the documentation. 
+`ADDRESSPARAMS` is any extra URL parameters added onto the address URL QR code. For example `{ amount: 1 }` can be added so
+the reader is told the amount of NULS to send in the transaction. [Read more](https://alephnuls.github.io/nuls-js/typedoc/interfaces/iaddressparams.html) address params on the documentation. 
+
+`OPTIONS` are options to configure the QR code to our preference. [Read more](https://alephnuls.github.io/nuls-js/typedoc/interfaces/iqroptions.html) options on the documentation. 
 
 `QRCODE_PACKAGE_OPTIONS` provide any additional QRCode package options.
 

@@ -1,4 +1,4 @@
-describe.only('transactions', () =>
+describe('transactions', () =>
 {
 	beforeEach(() =>
 	{

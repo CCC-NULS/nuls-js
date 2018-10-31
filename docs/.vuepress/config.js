@@ -2,7 +2,7 @@ module.exports = {
 	base: '/nuls-js/',
 		title: 'nuls-js',
 		themeConfig: {
-		repo: 'AlephNuls/nuls-js',
+		repo: 'CCC-NULS/nuls-js',
 			docsDir: 'docs',
 			editLinks: true,
 			nav: [

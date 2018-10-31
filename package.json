@@ -1,6 +1,6 @@
 {
   "name": "nuls-js",
-  "version": "0.0.36",
+  "version": "0.0.37",
   "description": "Isomorphic JavaScript SDK for Nuls blockchain",
   "main": "dist/nuls-js.cjs.js",
   "unpkg": "dist/nuls-js.umd.js",
@@ -27,11 +27,11 @@
     "docs": "npm run docs:clean && npm run docs:typedoc",
     "docs:build": "npm run docs && npm run vuepress:build",
     "docs:typedoc": "typedoc --options typedoc.json ./src",
-    "docs:clean": "rimraf docs/.vuepress/public/typedoc"
+    "docs:clean": "rimraf docs/.vuepress/public/typedoc && rimraf docs/.vuepress/dist"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/AlephNuls/nuls-js"
+    "url": "https://github.com/CCC-NULS/nuls-js"
   },
   "keywords": [
     "nuls",

@@ -1,4 +1,4 @@
-# [NULS-JS](https://alephnuls.github.io/nuls-js/) [![Build Status](https://api.travis-ci.org/AlephNuls/nuls-js.svg?branch=master)](https://travis-ci.org/AlephNuls/nuls-js) [![npm version](https://badge.fury.io/js/nuls-js.svg)](https://www.npmjs.com/package/nuls-js) [![Coverage Status](https://coveralls.io/repos/github/AlephNuls/nuls-js/badge.svg?branch=master)](https://coveralls.io/github/AlephNuls/nuls-js?branch=master) 
+# [NULS-JS](https://CCC-NULS.github.io/nuls-js/) [![Build Status](https://api.travis-ci.org/AlephNuls/nuls-js.svg?branch=master)](https://travis-ci.org/AlephNuls/nuls-js) [![npm version](https://badge.fury.io/js/nuls-js.svg)](https://www.npmjs.com/package/nuls-js) [![Coverage Status](https://coveralls.io/repos/github/AlephNuls/nuls-js/badge.svg?branch=master)](https://coveralls.io/github/AlephNuls/nuls-js?branch=master) 
 Isomorphic JavaScript SDK for NULS blockchain.
 
 # Warning
@@ -19,16 +19,16 @@ console.log(account.address); // Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6
 ```
 
 # Guide
-https://alephnuls.github.io/nuls-js/
+https://CCC-NULS.github.io/nuls-js/
 
 # Documentation
-https://alephnuls.github.io/nuls-js/typedoc/index.html
+https://CCC-NULS.github.io/nuls-js/typedoc/index.html
 
 # Features
 ##### Account Management
- - [Create an Account](https://alephnuls.github.io/nuls-js/guide/account.html#create-a-new-account)
- - [Import an Account](https://alephnuls.github.io/nuls-js/guide/account.html#import-an-account)
- - [QRCode](https://alephnuls.github.io/nuls-js/guide/QRCode.html)
+ - [Create an Account](https://CCC-NULS.github.io/nuls-js/guide/account.html#create-a-new-account)
+ - [Import an Account](https://CCC-NULS.github.io/nuls-js/guide/account.html#import-an-account)
+ - [QRCode](https://CCC-NULS.github.io/nuls-js/guide/QRCode.html)
 
 ## TODO
 - Read an address balance

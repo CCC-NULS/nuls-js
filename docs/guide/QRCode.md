@@ -8,7 +8,7 @@ and if it's an `address` they can provide options for adding the contact or send
 can transfer the funds, save or open the account.
 
 `OPTIONS` is any extra URL parameters added onto the address URL QR code. For example `{ amount: 1 }` can be added so
-the reader is told the amount of NULS to send in the transaction. [Read more](https://alephnuls.github.io/nuls-js/typedoc/interfaces/iqroptions.html) options on the documentation. 
+the reader is told the amount of NULS to send in the transaction. [Read more](https://CCC-NULS.github.io/nuls-js/typedoc/interfaces/iqroptions.html) options on the documentation. 
 
 `QRCODE_PACKAGE_OPTIONS` provide any additional QRCode package options.
 

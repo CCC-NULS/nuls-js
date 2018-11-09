@@ -19,7 +19,7 @@ describe('transfer', () =>
 		expect(transferTest.url).toEqual('http://testnet.apiserver.nuls.io/');
 	});
 
-	test.only('send a transaction', async () =>
+	test('send a transaction', async () =>
 	{
 		const { Transfer } = require('@/index');
 

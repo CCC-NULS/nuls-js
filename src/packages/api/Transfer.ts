@@ -1,11 +1,9 @@
-import { APIServer } from '@/index';
+import { APIServerClass } from '@/packages/api/APIServer';
 
-export class Transfer
+export class Transfer extends APIServerClass
 {
-	public readonly url: string;
-
-	constructor(url: string = APIServer)
+	public send(asset: string, toAddress: string, amount: number)
 	{
-		this.url = url;
+		console.log(asset, toAddress, amount);
 	}
 }

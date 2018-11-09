@@ -1,4 +1,4 @@
-describe('transactions', () =>
+describe('transfer', () =>
 {
 	beforeEach(() =>
 	{
@@ -17,5 +17,14 @@ describe('transactions', () =>
 		expect(transferDefault.url).toEqual('https://apiserver.nuls.io/');
 		expect(transferLive.url).toEqual('https://apiserver.nuls.io/');
 		expect(transferTest.url).toEqual('http://testnet.apiserver.nuls.io/');
+	});
+
+	test.only('send a transaction', async () =>
+	{
+		const { Transfer } = require('@/index');
+
+		const transfer = new Transfer();
+
+		transfer.send('asdf');
 	});
 });

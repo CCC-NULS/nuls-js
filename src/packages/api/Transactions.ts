@@ -8,4 +8,11 @@ export class Transactions extends APIServerClass
 
 		return res;
 	}
+
+	public async latestBlock()
+	{
+		const res = await this.api.get('/block/newest');
+
+		return res;
+	}
 }

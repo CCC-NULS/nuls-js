@@ -16,7 +16,7 @@ describe('transactions', () =>
 
 	test('get balance', async () =>
 	{
-		const url = `nuls/balance/get/${address}`;
+		const url = `/balance/get/${address}`;
 		const response = {
 			code: '10000',
 			data: {
@@ -31,7 +31,7 @@ describe('transactions', () =>
 			success: true
 		};
 
-		mock.onGet(`http://testnet.apiserver.nuls.io/${url}`).reply(200, response);
+		mock.onGet(`${APIServerTestNet}${url}`).reply(200, response);
 
 		const res = await transaction.getBalance(address);
 

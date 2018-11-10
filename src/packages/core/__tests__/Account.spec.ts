@@ -62,6 +62,12 @@ describe('create new accounts', () =>
 					prikey: '0b49a019cc0ddd0eee422b944dda8926df46744e550123b3a0faa8f19ba221e0',
 					pubKey: '02d868f43a77be7222c49b25aea6848fd56a074cb7464f520883970a84e3c6ff4c'
 				});
+
+				Account.switchChain('testnet');
+				expect(Account.create().address).toEqual('TTapxY8ZmLd2qZ2uw9doYBxivLmXvaHF');
+
+				Account.switchChain('mainnet');
+				expect(Account.create().address).toEqual('Nsdzo27Y8zRx6iausVr9vec9hoZLhbnp');
 			});
 
 			test('creating a new account with a password', () =>

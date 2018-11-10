@@ -22,6 +22,11 @@ enum CustomAddressPosition {
 	anywhere = 'anywhere'
 }
 
+enum ChainIdOptions {
+	testnet = 'testnet',
+	mainnet = 'mainnet'
+}
+
 class AccountClass
 {
 	// private _debug: boolean = false;
@@ -54,6 +59,22 @@ class AccountClass
 	// {
 	// 	return Date.now() - this.startTime;
 	// }
+
+	public switchChain(type: ChainIdOptions): number
+	{
+		switch(type)
+		{
+			case 'testnet':
+				this.chainId = 261;
+				break;
+			case 'mainnet':
+			default:
+				this.chainId = 8964;
+				break;
+		}
+
+		return this.chainId;
+	}
 
 	/**
 	 * Reset all account details

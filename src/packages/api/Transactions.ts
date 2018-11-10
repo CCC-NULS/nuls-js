@@ -16,7 +16,7 @@ export class Transactions extends APIServerClass
 		return res;
 	}
 
-	public async getHash(hash: string): Promise<any>
+	public async getTransaction(hash: string): Promise<any>
 	{
 		const res = await this.api.get(`/tx/hash/${hash}`);
 

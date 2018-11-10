@@ -42,14 +42,14 @@ describe.only('transactions', () =>
 		expect(res.config.url).toEqual(url);
 	});
 
-	test('get hash', async () =>
+	test('get transaction', async () =>
 	{
 		const url = '/tx/hash/00200c80b7f36270c94a67341c8664a7251e0e61f41b59f714e0493e21904f823bb5';
-		const response = { call: 'getHash' };
+		const response = { call: 'getTransaction' };
 
 		mock.onGet(`${APIServerTestNet}${url}`).reply(200, response);
 
-		const res = await transaction.getHash('00200c80b7f36270c94a67341c8664a7251e0e61f41b59f714e0493e21904f823bb5');
+		const res = await transaction.getTransaction('00200c80b7f36270c94a67341c8664a7251e0e61f41b59f714e0493e21904f823bb5');
 
 		expect(res.status).toEqual(200);
 		expect(res.data).toEqual(response);

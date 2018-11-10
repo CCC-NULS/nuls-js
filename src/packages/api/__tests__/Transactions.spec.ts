@@ -35,7 +35,7 @@ describe.only('transactions', () =>
 
 		mock.onGet(`${APIServerTestNet}${url}`).reply(200, response);
 
-		const res = await transaction.latestBlock();
+		const res = await transaction.getLatestBlock();
 
 		expect(res.status).toEqual(200);
 		expect(res.data).toEqual(response);

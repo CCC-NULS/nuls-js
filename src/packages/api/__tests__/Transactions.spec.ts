@@ -14,7 +14,7 @@ describe('transactions', () =>
 		jest.clearAllMocks();
 	});
 
-	test.only('get balance', async () =>
+	test('get balance', async () =>
 	{
 		const url = `nuls/balance/get/${address}`;
 		const response = {

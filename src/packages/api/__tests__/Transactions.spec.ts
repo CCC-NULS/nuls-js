@@ -6,7 +6,7 @@ const mock = new MockAdapter(axios);
 const transaction = new Transactions(APIServerTestNet);
 const address = 'TTapFc7eSWpUxNjQRUiLddEMVuBN9a7g';
 
-describe.only('transactions', () =>
+describe('transactions', () =>
 {
 	beforeEach(() =>
 	{

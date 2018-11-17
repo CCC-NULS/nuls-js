@@ -1,8 +1,15 @@
 const path = require('path');
+const config = require('config');
 const nodeExternals = require('webpack-node-externals');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const fs = require('fs');
+
+const packageconfigFileName = './config/config.json';
+const packageconfigPath = path.resolve(__dirname, packageconfigFileName);
+
+fs.writeFileSync(packageconfigPath, JSON.stringify(config));
 
 const commonWebpackConfig = {
 	entry: {
@@ -28,7 +35,7 @@ const commonWebpackConfig = {
 	resolve: {
 		extensions: ['.ts', '.js', '.txt'],
 		alias: {
-			// config: path.resolve(__dirname, './config/config.json'),
+			config: path.resolve(__dirname, './config/config.json'),
 			'@': path.join(__dirname, './src')
 		}
 	},

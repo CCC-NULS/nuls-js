@@ -1,0 +1,4 @@
+nuls:
+  api:
+    apiserver:
+      host: https://apiserver.nuls.io

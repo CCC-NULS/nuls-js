@@ -1,17 +1,18 @@
 import axios, { AxiosInstance } from 'axios';
+import config from 'config';
 
-export const APIServer = 'https://apiserver.nuls.io/nuls';
+export interface IAPIConfig {
+	host: string;
+	port: number;
+	base: string;
+}
 
-export const APIServerTestNet = 'http://testnet.apiserver.nuls.io/nuls';
-
-export class APIServerClass
-{
-	public readonly url: string;
+export class APIServerClass {
+	public url: string;
 	public readonly api: AxiosInstance;
 
-	constructor(url: string = APIServer)
-	{
-		this.url = url.substr(-1) === '/' ? url.substr(0, url.length - 1) : url; // Remove trailing slash
+	constructor(apiConf: IAPIConfig = config.api.apiserver) {
+		this.url = `${apiConf.host}${apiConf.port ? (':' + apiConf.port) : ''}${apiConf.base}`;
 		this.api = axios.create({
 			baseURL: this.url,
 			timeout: 5000

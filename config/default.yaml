@@ -1,5 +1,9 @@
 nuls:
   api:
+    apiserver:
+      host: http://testnet.apiserver.nuls.io
+      port: ''
+      base: /nuls
     contract:
       host: http://localhost
       port: 8001
@@ -8,9 +12,3 @@ nuls:
         methods: /info/wallet/__ADDRESS__
         view: /view
         call: /call
-  nodes:
-    - host: http://localhost
-      port: ''
-      base: '/v1/nuls'
-  resources:
-    balance: '/wallet/balance/__ADDRESS__'

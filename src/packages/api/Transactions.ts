@@ -1,4 +1,4 @@
-import { APIServerClass } from '@/packages/api/APIServer';
+import { APIServerClass } from './APIServer';
 
 export class Transactions extends APIServerClass
 {

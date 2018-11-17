@@ -15,7 +15,7 @@ export class APIServerClass {
 		this.url = `${apiConf.host}${apiConf.port ? (':' + apiConf.port) : ''}${apiConf.base}`;
 		this.api = axios.create({
 			baseURL: this.url,
-			timeout: 5000
+			timeout: config.api.timeout
 		});
 	}
 }

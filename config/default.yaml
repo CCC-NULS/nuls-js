@@ -1,5 +1,6 @@
 nuls:
   api:
+    timeout: 5000
     apiserver:
       host: http://testnet.apiserver.nuls.io
       port: ''

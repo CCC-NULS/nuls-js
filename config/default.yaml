@@ -1,4 +1,13 @@
 nuls:
+  api:
+    contract:
+      host: http://localhost
+      port: 8001
+      base: /api/contract/
+      method:
+        methods: /info/wallet/__ADDRESS__
+        view: /view
+        call: /call
   nodes:
     - host: http://localhost
       port: ''

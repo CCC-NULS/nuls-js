@@ -9,7 +9,7 @@ nuls:
       host: http://localhost
       port: 8001
       base: /api/contract/
-      method:
+      resources:
         methods: /info/wallet/__ADDRESS__
         view: /view
         call: /call

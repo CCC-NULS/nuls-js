@@ -14,7 +14,7 @@ import { ITxDataOutput } from './txData';
 
 export interface ITxDataRewardOutput extends ITxDataOutput {
   readedBytes: number;
-  value: number;
+  data: number;
 }
 
 /**
@@ -31,8 +31,8 @@ export class TxDataRewardSerializer {
   public static read(buf: Buffer, offset: number): ITxDataRewardOutput {
 
     return {
-      readedBytes: PLACE_HOLDER.length,
-      value: buf.readUIntLE(offset + 1, PLACE_HOLDER.length)
+      data: buf.readUIntLE(offset + 1, PLACE_HOLDER.length),
+      readedBytes: PLACE_HOLDER.length
     };
 
   }

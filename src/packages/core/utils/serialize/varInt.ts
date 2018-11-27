@@ -21,7 +21,7 @@ export interface IVarIntOutput {
  * Class to handle the protocol VarInt type
  * http://dev.nuls.io/protocol/index.html#VarInt
  */
-export class VarInt {
+export class VarIntSerializer {
 
   /**
    * Reads a varInt integer from buf at the specified offset

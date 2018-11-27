@@ -4,6 +4,36 @@ import * as RIPEMD160 from 'ripemd160';
 import * as shajs from 'sha.js';
 import { VarIntSerializer } from './varInt';
 
+export const PLACE_HOLDER = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF]);
+
+export interface IReadedData {
+  readedBytes: number;
+  data: any;
+}
+
+export interface IReadedBytes {
+  readedBytes: number;
+  data: Buffer;
+}
+
+export function readBytesByLength(buf: Buffer, offset: number): IReadedBytes {
+
+  const { data: bytesToRead, readedBytes } = VarIntSerializer.read(buf, offset);
+  const data: Buffer = buf.slice(offset + readedBytes, offset + readedBytes + bytesToRead);
+
+  return { data, readedBytes: readedBytes + bytesToRead };
+
+}
+
+export function writeBytesWithLength(data: Buffer, buf: Buffer, offset: number): number {
+
+  let writtenBytes: number = VarIntSerializer.write(data.length, buf, offset);
+  writtenBytes += data.copy(buf, offset + writtenBytes);
+
+  return writtenBytes;
+
+}
+
 function getxor(body) {
   // my current/simple method
   // assume 'buf1', 'buf2' & 'result' are ArrayBuffers
@@ -92,19 +122,6 @@ export function hash_from_address(address): Buffer {
 //   }
 //   return llen + slen;
 // }
-
-export function read_by_length(buf, cursor) {
-  const { value: length, readedBytes: llen } = VarIntSerializer.read(buf, cursor);
-  // let value = new Buffer.from(buf, cursor + llen, length)
-  const value = buf.slice(cursor + llen, cursor + llen + length);
-  return { val: value, len: length + llen };
-}
-
-export function writeWithLength(val: Buffer, buf: Buffer, cursor: number) {
-  const llen = VarIntSerializer.write(val.length, buf, cursor);
-  const slen = val.copy(buf, cursor + llen);
-  return llen + slen;
-}
 
 export function readUint64(buffer: Buffer, cursor) {
   return (new Uint64LE(buffer, cursor)).toNumber();

@@ -1,3 +1,5 @@
+import { IReadedData } from '.';
+
 /***
   * ### VarInt
   * http://dev.nuls.io/protocol/index.html#VarInt
@@ -12,9 +14,9 @@
   * | > 0xffffffff  | 9    | 0xff + uint64 |
  */
 
-export interface IVarIntOutput {
+export interface IVarIntOutput extends IReadedData {
   readedBytes: number;
-  value: number;
+  data: number;
 }
 
 /**
@@ -32,26 +34,26 @@ export class VarIntSerializer {
 
     const first = 0xFF & buf[offset];
     let readedBytes = 0;
-    let value = 0;
+    let data = 0;
 
     if (first < 0xFD) {
 
-      value = first;
+      data = first;
       readedBytes = 1;
 
     } else if (first === 0xFD) {
 
-      value = buf.readUIntLE(offset + 1, 2);
+      data = buf.readUIntLE(offset + 1, 2);
       readedBytes = 3;
 
     } else if (first === 0xFE) {
 
-      value = buf.readUIntLE(offset + 1, 4);
+      data = buf.readUIntLE(offset + 1, 4);
       readedBytes = 5;
 
     } else if (first === 0xFF) {
 
-      value = buf.readUIntLE(offset + 1, 8);
+      data = buf.readUIntLE(offset + 1, 8);
       readedBytes = 9;
 
     } else {
@@ -60,41 +62,41 @@ export class VarIntSerializer {
 
     }
 
-    return { value, readedBytes };
+    return { data, readedBytes };
 
   }
 
   /**
-   * Writes value to buf at the specified offset
-   * @param value Number to be written to buf
+   * Writes data to buf at the specified offset
+   * @param data Number to be written to buf
    * @param buf Buffer object where the number will be written
    * @param offset Number of bytes to skip before starting to write. Must satisfy
    * @returns The number of bytes that has been written
    */
-  public static write(value: number, buf: Buffer, cursor: number): number {
+  public static write(data: number, buf: Buffer, offset: number): number {
 
     let len = 1;
 
-    if (value < 0xFD) {
+    if (data < 0xFD) {
 
-      buf[cursor] = value;
+      buf[offset] = data;
 
-    } else if (value <= 0xFFFF) {
+    } else if (data <= 0xFFFF) {
 
-      buf[cursor] = 0xFD;
-      buf.writeUIntLE(value, cursor + 1, 2);
+      buf[offset] = 0xFD;
+      buf.writeUIntLE(data, offset + 1, 2);
       len = 3;
 
-    } else if (value <= 0xFFFFFFFF) {
+    } else if (data <= 0xFFFFFFFF) {
 
-      buf[cursor] = 0xFE;
-      buf.writeUIntLE(value, cursor + 1, 4);
+      buf[offset] = 0xFE;
+      buf.writeUIntLE(data, offset + 1, 4);
       len = 5;
 
-    } else if (value <= 0xFFFFFFFF) {
+    } else if (data <= 0xFFFFFFFF) {
 
-      buf[cursor] = 0xFF;
-      buf.writeUIntLE(value, cursor + 1, 8);
+      buf[offset] = 0xFF;
+      buf.writeUIntLE(data, offset + 1, 8);
       len = 9;
 
     } else {

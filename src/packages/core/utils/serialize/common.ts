@@ -1,8 +1,8 @@
 import * as bs58 from 'bs58';
 import { Uint64LE } from 'int64-buffer';
 import * as RIPEMD160 from 'ripemd160';
-import * as secp256k1 from 'secp256k1';
 import * as shajs from 'sha.js';
+import { VarInt } from './varInt';
 
 function getxor(body) {
   // my current/simple method
@@ -15,8 +15,10 @@ function getxor(body) {
   return xor;
 }
 
-export function private_key_to_public_key(prv) {
-  return secp256k1.publicKeyCreate(prv);
+const hexRegEx = new RegExp('([0-9]|[a-f])', 'gim');
+
+export function isHex(input: string) {
+  return hexRegEx.test(input);
 }
 
 export function public_key_to_hash(pub, { chain_id = 8964, address_type = 1 } = {}) {
@@ -94,71 +96,32 @@ export function format_uint48(val) {
 //   return ob;
 // }
 
-export function parse_varint(buf, offset): any {
-  const first = 0xFF & buf[offset];
-  let len = 1;
-  let val = 0;
-  if (first < 253) {
-    val = first;
-  } else if (first === 253) {
-    val = (buf.readUIntLE(offset + 1, 2));
-    len = 3;
-  } else if (first === 254) {
-    val = (buf.readUIntLE(offset + 1, 4));
-    len = 5;
-  } else {
-    return null; // Not implemented. Uint64LE ?
-  }
-
-  return { val, len };
-}
-
-export function write_varint(value, buf, cursor) {
-  let len = 1;
-  if (value < 253) {
-    // ob = new Buffer.from([self.value]);
-    buf[cursor] = value;
-  } else if (value <= 0xFFFF) {
-    // ob = new Buffer.allocUnsafe(3);
-    buf[cursor] = 253;
-    buf.writeUIntLE(value, cursor + 1, 2);
-    len = 3;
-  } else if (value <= 0xFFFFFFFF) {
-    buf[cursor] = 254;
-    buf.writeUIntLE(value, cursor + 1, 4);
-    len = 5;
-  } else {
-    throw new Error('not implemented');
-  }
-  return len;
-}
-
 export function read_string_by_length(buf, cursor) {
-  const { val: length, len: llen } = parse_varint(buf, cursor);
+  const { value: length, readedBytes: llen } = VarInt.read(buf, cursor);
   const value = buf.readstring('utf8', cursor + llen, cursor + llen + length);
   return { val: value, len: length + llen };
 }
 
 export function write_string_with_length(val, buf, cursor) {
-  let llen = write_varint(val.length, buf, cursor);
+  let llen = VarInt.write(val.length, buf, cursor);
   let slen = buf.write(val, cursor + llen);
   if (slen !== val.length) {
     // In case of utf-8 string with data encoded multi bytes, we have to rewrite
-    llen = write_varint(slen, buf, cursor);
+    llen = VarInt.write(slen, buf, cursor);
     slen = buf.write(val, cursor + llen);
   }
   return llen + slen;
 }
 
 export function read_by_length(buf, cursor) {
-  const { val: length, len: llen } = parse_varint(buf, cursor);
+  const { value: length, readedBytes: llen } = VarInt.read(buf, cursor);
   // let value = new Buffer.from(buf, cursor + llen, length)
   const value = buf.slice(cursor + llen, cursor + llen + length);
   return { val: value, len: length + llen };
 }
 
-export function write_with_length(val, buf, cursor) {
-  const llen = write_varint(val.length, buf, cursor);
+export function writeWithLength(val: Buffer, buf: Buffer, cursor: number) {
+  const llen = VarInt.write(val.length, buf, cursor);
   const slen = val.copy(buf, cursor + llen);
   return llen + slen;
 }

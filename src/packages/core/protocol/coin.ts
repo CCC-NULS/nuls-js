@@ -1,5 +1,5 @@
-import { address_from_hash, read_by_length, readUint64, write_with_length, writeUint64 } from '../utils/serialize';
-import { ADDRESS_LENGTH, HASH_LENGTH, MAX_COIN_SIZE } from './base';
+import { ADDRESS_LENGTH, HASH_LENGTH, MAX_COIN_SIZE } from '../common';
+import { address_from_hash, read_by_length, readUint64, writeUint64, writeWithLength } from '../utils/serialize';
 
 export class Coin {
 
@@ -77,10 +77,10 @@ export class Coin {
     let cursor = 0;
 
     if (this.fromHash != null) {
-      cursor += write_with_length(Buffer.concat([this.fromHash, new Buffer([this.fromIndex])]), output, cursor);
+      cursor += writeWithLength(Buffer.concat([this.fromHash, new Buffer([this.fromIndex])]), output, cursor);
       // cursor += Buffer.concat([new Buffer([this.fromHash.length + 1]), this.fromHash, new Buffer([this.fromIndex])]).copy(output, cursor)
     } else if (this.address) {
-      cursor += write_with_length(this.address, output, 0);
+      cursor += writeWithLength(this.address, output, 0);
     } else { throw new Error('Coin data should have either hash or address'); }
 
     writeUint64(Math.round(this.na), output, cursor);

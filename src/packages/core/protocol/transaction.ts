@@ -1,13 +1,14 @@
+import { ADDRESS_LENGTH, CHEAP_UNIT_FEE, HASH_LENGTH, KB, MAX_COIN_SIZE, PLACE_HOLDER, UNIT_FEE } from '../common';
+import { privateKeyToPublicKey } from '../utils/crypto';
 import {
   address_from_hash, hash_from_address,
-  hash_twice, parse_varint,
-  private_key_to_public_key,
+  hash_twice,
   read_by_length,
   readUint64,
-  write_varint, write_with_length,
-  writeUint64
+  writeUint64,
+  writeWithLength
 } from '../utils/serialize';
-import { ADDRESS_LENGTH, CHEAP_UNIT_FEE, HASH_LENGTH, KB, MAX_COIN_SIZE, PLACE_HOLDER, UNIT_FEE } from './base';
+import { VarInt } from './../utils/serialize/varInt';
 import { Coin } from './coin';
 
 const secp256k1 = require('secp256k1');
@@ -68,7 +69,7 @@ export class Transaction {
 
     cursor = this.parse_data(buffer, cursor);
 
-    const { len: icpos, val: inputCount } = parse_varint(buffer, cursor);
+    const { readedBytes: icpos, value: inputCount } = VarInt.read(buffer, cursor);
     cursor += icpos;
 
     for (let i = 0; i < inputCount; i++) {
@@ -77,7 +78,7 @@ export class Transaction {
       this.inputs.push(coin);
     }
 
-    const { len: ocpos, val: outputCount } = parse_varint(buffer, cursor);
+    const { readedBytes: ocpos, value: outputCount } = VarInt.read(buffer, cursor);
     cursor += ocpos;
     for (let i = 0; i < outputCount; i++) {
       const coin = new Coin();
@@ -113,13 +114,13 @@ export class Transaction {
     cursor += 2;
     output.writeUIntLE(this.time, cursor, 6);
     cursor += 6;
-    cursor += write_with_length(this.remark, output, cursor);
+    cursor += writeWithLength(this.remark, output, cursor);
     cursor = this.write_data(output, cursor);
 
     cursor = this.write_coin_data(output, cursor);
 
     if (!(this.scriptSig === null)) {
-      cursor += write_with_length(this.scriptSig, output, cursor);
+      cursor += writeWithLength(this.scriptSig, output, cursor);
     }
 
     output = output.slice(0, cursor);
@@ -203,7 +204,7 @@ export class Transaction {
       cursor += 6;
     }
 
-    cursor += write_with_length(this.remark, buf, cursor);
+    cursor += writeWithLength(this.remark, buf, cursor);
     cursor = this.write_data(buf, cursor);
 
     cursor = this.write_coin_data(buf, cursor);
@@ -221,18 +222,18 @@ export class Transaction {
   }
 
   public sign(prvKey, hashVarint = false) {
+
     const digest = this.get_digest(hashVarint);
 
-    const pubKey = private_key_to_public_key(prvKey);
-    const pubKey2 = secp256k1.publicKeyCreate(prvKey);
+    const pubKey: Buffer = privateKeyToPublicKey(prvKey);
 
     const sigObj = secp256k1.sign(digest, prvKey);
     const signed = secp256k1.signatureExport(sigObj.signature);
 
     const buf = Buffer.alloc(3 + pubKey.length + signed.length);
-    let cursor = write_with_length(pubKey, buf, 0);
+    let cursor = writeWithLength(pubKey, buf, 0);
     cursor += 1; // we let a zero there for alg ECC type
-    cursor += write_with_length(signed, buf, cursor);
+    cursor += writeWithLength(signed, buf, cursor);
 
     this.scriptSig = buf;
   }
@@ -272,8 +273,8 @@ export class Transaction {
       PLACE_HOLDER.copy(buffer, cursor);
       cursor += PLACE_HOLDER.length;
     } else if (this.type === 3) { // alias
-      cursor += write_with_length(hash_from_address(md.address), buffer, cursor);
-      cursor += write_with_length(hash_from_address(md.alias), buffer, cursor);
+      cursor += writeWithLength(hash_from_address(md.address), buffer, cursor);
+      cursor += writeWithLength(hash_from_address(md.alias), buffer, cursor);
     } else if (this.type === 4) { // register agent
       writeUint64(md.deposit, buffer, cursor);
       cursor += 8;
@@ -300,9 +301,9 @@ export class Transaction {
       cursor += 8;
       writeUint64(Math.round(md.price), buffer, cursor);
       cursor += 8;
-      cursor += write_with_length(Buffer.from(md.methodName, 'utf8'),
+      cursor += writeWithLength(Buffer.from(md.methodName, 'utf8'),
         buffer, cursor);
-      cursor += write_with_length(Buffer.from(md.methodDesc, 'utf8'),
+      cursor += writeWithLength(Buffer.from(md.methodDesc, 'utf8'),
         buffer, cursor);
       buffer[cursor] = md.args.length;
       cursor += 1;
@@ -310,7 +311,7 @@ export class Transaction {
         buffer[cursor] = arg.length;
         cursor += 1;
         for (const argitem of arg) {
-          cursor += write_with_length(Buffer.from(argitem, 'utf8'),
+          cursor += writeWithLength(Buffer.from(argitem, 'utf8'),
             buffer, cursor);
         }
       }
@@ -429,7 +430,7 @@ export class Transaction {
 
   private write_coin_data(output, cursor) {
 
-    cursor += write_varint(this.inputs.length, output, cursor);
+    cursor += VarInt.write(this.inputs.length, output, cursor);
     for (const cinput of this.inputs) {
       const serialized = cinput.serialize();
       serialized.copy(output, cursor);
@@ -437,7 +438,7 @@ export class Transaction {
     }
 
     if (this.outputs.length > 0) {
-      cursor += write_varint(this.outputs.length, output, cursor);
+      cursor += VarInt.write(this.outputs.length, output, cursor);
       for (const coutput of this.outputs) {
         cursor += coutput.serialize().copy(output, cursor);
       }

@@ -8,8 +8,7 @@ import * as shajs from 'sha.js';
 
 const RIPEMD160 = require('ripemd160'); // Holy shit balls Jest and WallayJS is finally happy!
 
-interface IGetAccount
-{
+interface IGetAccount {
 	address: string;
 	encryptedPrivateKey?: string;
 	prikey: string;
@@ -27,8 +26,7 @@ enum ChainIdOptions {
 	mainnet = 'mainnet'
 }
 
-class AccountClass
-{
+export class Account {
 	// private _debug: boolean = false;
 	// private startTime: number;
 
@@ -60,10 +58,8 @@ class AccountClass
 	// 	return Date.now() - this.startTime;
 	// }
 
-	public switchChain(type: ChainIdOptions): number
-	{
-		switch(type)
-		{
+	public switchChain(type: ChainIdOptions): number {
+		switch (type) {
 			case 'testnet':
 				this.chainId = 261;
 				break;
@@ -79,8 +75,7 @@ class AccountClass
 	/**
 	 * Reset all account details
 	 */
-	public resetAccountDetails()
-	{
+	public resetAccountDetails() {
 		this.address = '';
 		this.encryptedPrivateKey = undefined;
 		this.privateKey = '';
@@ -90,8 +85,7 @@ class AccountClass
 	/**
 	 * Get the account generated
 	 */
-	public getAccount(): IGetAccount
-	{
+	public getAccount(): IGetAccount {
 		return {
 			address: this.address,
 			encryptedPrivateKey: this.encryptedPrivateKey,
@@ -109,8 +103,7 @@ class AccountClass
 	 * @param addressType The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76).
 	 * @param chainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70).
 	 */
-	public createCustomAddress(str: string, password: string, caseSensitive: boolean = false, position: CustomAddressPosition = CustomAddressPosition.end, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount
-	{
+	public createCustomAddress(str: string, password: string, caseSensitive: boolean = false, position: CustomAddressPosition = CustomAddressPosition.end, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount {
 		const searchForText = caseSensitive ? str : str.toLowerCase();
 		const appendAddresses = caseSensitive ? ['Nse', 'Nsd'] : ['nse', 'nsd'];
 		const appendAddressesLoop = (usersAddress) => appendAddresses.find((appendAddress) => usersAddress.startsWith(`${appendAddress}${searchForText}`));
@@ -118,13 +111,11 @@ class AccountClass
 			address,
 			user;
 
-		while(!found)
-		{
+		while (!found) {
 			user = this.create(password, addressType, chainId);
 			address = caseSensitive ? user.address : user.address.toLowerCase();
 
-			switch(position)
-			{
+			switch (position) {
 				case CustomAddressPosition.start:
 					found = !!appendAddressesLoop(address);
 					break;
@@ -148,8 +139,7 @@ class AccountClass
 	 * @param addressType The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76).
 	 * @param chainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70).
 	 */
-	public import(privateKey: string, password?: string, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount
-	{
+	public import(privateKey: string, password?: string, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount {
 		return this.createAccount(password, privateKey, addressType, chainId);
 	}
 
@@ -159,8 +149,7 @@ class AccountClass
 	 * @param addressType The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76).
 	 * @param chainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70).
 	 */
-	public create(password?: string, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount
-	{
+	public create(password?: string, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount {
 		return this.createAccount(password, undefined, addressType, chainId);
 	}
 
@@ -171,46 +160,37 @@ class AccountClass
 	 * @param addressType The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76).
 	 * @param chainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70).
 	 */
-	private createAccount(password?: string, privateKey?: string, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount
-	{
+	private createAccount(password?: string, privateKey?: string, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount {
 		this.resetAccountDetails();
 
-		if(privateKey) // If a private key is provided we use that
+		if (privateKey) // If a private key is provided we use that
 		{
-			if(password && this.decryptPrivateKey(password, privateKey)) // If a password exists and it's able to decrypt the private key then we're actually dealing with an encrypted private key
+			if (password && this.decryptPrivateKey(password, privateKey)) // If a password exists and it's able to decrypt the private key then we're actually dealing with an encrypted private key
 			{
 				this.privateKeyBuffer = this.stringToHex(this.decryptPrivateKey(password, privateKey)); // Decrypt it first into a plain text private key and then store the buffer
 			}
-			else
-			{
+			else {
 				this.privateKeyBuffer = this.stringToHex(privateKey); // Turn it into a buffer for reading
 			}
 		}
-		else
-		{
+		else {
 			// Create a random private key
-			do
-			{
+			do {
 				this.privateKeyBuffer = randomBytes(32); // Generates the ECKey
-			} while(!secp256k1.privateKeyVerify(this.privateKeyBuffer));
+			} while (!secp256k1.privateKeyVerify(this.privateKeyBuffer));
 		}
 
-		try
-		{
+		try {
 			this.publicKeyBuffer = secp256k1.publicKeyCreate(this.privateKeyBuffer);
 		}
-		catch(e)
-		{
-			if(password && privateKey)
-			{
+		catch (e) {
+			if (password && privateKey) {
 				throw new Error('Invalid password or encrypted private key provided.');
 			}
-			else if(privateKey)
-			{
+			else if (privateKey) {
 				throw new Error('Invalid private key provided.');
 			}
-			else
-			{
+			else {
 				throw new Error('Invalid private key generated.');
 			}
 		}
@@ -219,8 +199,7 @@ class AccountClass
 		this.publicKey = this.hexToString(this.publicKeyBuffer);
 		this.address = this.createAddress(addressType, chainId);
 
-		if(password)
-		{
+		if (password) {
 			this.encryptedPrivateKey = this.encryptPrivateKey(password);
 		}
 
@@ -232,13 +211,11 @@ class AccountClass
 	/**
 	 * Validate the private key
 	 */
-	private validatePrivateKey(): void
-	{
+	private validatePrivateKey(): void {
 		const msg: Buffer = randomBytes(32);
 		const { signature }: { signature: Buffer } = secp256k1.sign(msg, this.privateKeyBuffer);
 
-		if(!secp256k1.verify(msg, signature, this.publicKeyBuffer))
-		{
+		if (!secp256k1.verify(msg, signature, this.publicKeyBuffer)) {
 			throw new Error('Something went wrong when validating the signature.');
 		}
 	}
@@ -246,16 +223,14 @@ class AccountClass
 	/**
 	 * Converts a hex string to a word array
 	 */
-	private hexWordsArray(str?: string)
-	{
+	private hexWordsArray(str?: string) {
 		return cryptoJS.enc.Hex.parse(str);
 	}
 
 	/**
 	 * Encrypt the generated private key with the password using AES
 	 */
-	private encryptPrivateKey(password: string): string
-	{
+	private encryptPrivateKey(password: string): string {
 		const encryptedKey = cryptoJS.AES.encrypt(
 			this.hexWordsArray(this.privateKey),
 			this.hexWordsArray(this.hexToString(this.sha256(password))),
@@ -270,8 +245,7 @@ class AccountClass
 	/**
 	 * Decrypt the provided private key with the password using AES
 	 */
-	private decryptPrivateKey(password: string, encryptedPrivateKey: string): string
-	{
+	private decryptPrivateKey(password: string, encryptedPrivateKey: string): string {
 		const decryptedKey = cryptoJS.AES.decrypt(
 			cryptoJS.enc.Base64.stringify(this.hexWordsArray(encryptedPrivateKey)),
 			this.hexWordsArray(this.hexToString(this.sha256(password))),
@@ -286,16 +260,14 @@ class AccountClass
 	/**
 	 * Use SHA256 to encrypt the string
 	 */
-	private sha256(str: string | Buffer): Buffer
-	{
+	private sha256(str: string | Buffer): Buffer {
 		return new shajs.sha256().update(str).digest();
 	}
 
 	/**
 	 * Encrypts the private key buffer using sha256 and hash160
 	 */
-	private privateKeyHash(): Buffer
-	{
+	private privateKeyHash(): Buffer {
 		// sha256hash160
 		// https://github.com/nuls-io/nuls/blob/274204b748ed72fdac150637ee758037d64c7ce5/core-module/kernel/src/main/java/io/nuls/kernel/utils/AddressTool.java#L61
 		const hash: Buffer = new RIPEMD160().update(this.sha256(this.publicKeyBuffer)).digest();
@@ -306,8 +278,7 @@ class AccountClass
 	/**
 	 * Creates the public key hash using encryption, chainId, and addressId
 	 */
-	private getPublicKeyHash(addressType, chainId): Buffer
-	{
+	private getPublicKeyHash(addressType, chainId): Buffer {
 		const output: Buffer = Buffer.allocUnsafe(3);
 
 		output.writeInt16LE(chainId, 0);
@@ -319,8 +290,7 @@ class AccountClass
 	/**
 	 * Using the public key create the public address
 	 */
-	private createAddress(addressType, chainId): string
-	{
+	private createAddress(addressType, chainId): string {
 		const publicKeyHash: Buffer = this.getPublicKeyHash(addressType, chainId);
 
 		// https://github.com/nuls-io/nuls/blob/274204b748ed72fdac150637ee758037d64c7ce5/core-module/kernel/src/main/java/io/nuls/kernel/utils/AddressTool.java#L182
@@ -339,16 +309,14 @@ class AccountClass
 	/**
 	 * String to buffer
 	 */
-	private stringToHex(str: string): Buffer
-	{
+	private stringToHex(str: string): Buffer {
 		return Buffer.from(str, 'hex');
 	}
 
 	/**
 	 * Buffer to string
 	 */
-	private hexToString(hex: Buffer): string
-	{
+	private hexToString(hex: Buffer): string {
 		return hex.toString('hex');
 	}
 
@@ -363,8 +331,6 @@ class AccountClass
 	// 	return this._debug;
 	// }
 }
-
-export const Account = new AccountClass();
 
 // Running the API
 // https://github.com/nuls-io/API-server

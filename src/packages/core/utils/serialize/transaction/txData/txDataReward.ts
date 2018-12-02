@@ -38,18 +38,16 @@ export class TxDataRewardSerializer {
   }
 
   /**
-   * Writes value to buf at the specified offset
-   * @param value Number to be written to buf
-   * @param buf Buffer object where the number will be written
-   * @param offset Number of bytes to skip before starting to write. Must satisfy
+   * Writes txDataReward to buf at the specified offset
+   * @param buf Buffer object where the txDataReward will be written
+   * @param offset Number of bytes to skip before starting to write.
    * @returns The number of bytes that has been written
    */
   public static write(buf: Buffer, offset: number): number {
 
     PLACE_HOLDER.copy(buf, offset);
-    offset += PLACE_HOLDER.length;
 
-    return offset;
+    return PLACE_HOLDER.length;
 
   }
 

@@ -13,15 +13,16 @@ export const PLACE_HOLDER = Buffer.from([255, 255, 255, 255]);
 
 // http://dev.nuls.io/protocol/transaction.html#ID-%E5%AE%9A%E4%B9%89
 export enum TransactionType {
-  Reward = 1,     // consensus reward
-  Transfer = 2,   // transfer transaction
-  Aliased = 3,    // set alias
-  Register = 4,   // register consensus node
-  Deposit = 5,    // join consensus
-  Withdraw = 6,   // cancel consensus
-  YellowCard = 7, // yellow card
-  RedCard = 8,    // red card
-  Unregister = 9, // unregister consensus node
+  Reward = 1,         // consensus reward
+  Transfer = 2,       // transfer transaction
+  Aliased = 3,        // set alias
+  Register = 4,       // register consensus node
+  Deposit = 5,        // join consensus
+  Withdraw = 6,       // cancel consensus
+  YellowCard = 7,     // yellow card
+  RedCard = 8,        // red card
+  Unregister = 9,     // unregister consensus node,
+  ContractCall = 101, // contract invocation
 }
 
 export enum TransactionStatus {

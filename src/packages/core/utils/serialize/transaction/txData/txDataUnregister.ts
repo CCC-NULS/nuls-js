@@ -31,12 +31,7 @@ export class TxDataUnregisterSerializer {
    */
   public static read(buf: Buffer, offset: number): ITxDataUnregisterOutput {
 
-    const { readedBytes, data } = AgentHashSerializer.read(buf, offset);
-
-    return {
-      readedBytes,
-      data,
-    };
+    return AgentHashSerializer.read(buf, offset);
 
   }
 

@@ -31,12 +31,7 @@ export class TxDataWithdrawSerializer {
    */
   public static read(buf: Buffer, offset: number): ITxDataWithdrawOutput {
 
-    const { readedBytes, data } = AgentHashSerializer.read(buf, offset);
-
-    return {
-      readedBytes,
-      data,
-    };
+    return AgentHashSerializer.read(buf, offset);
 
   }
 

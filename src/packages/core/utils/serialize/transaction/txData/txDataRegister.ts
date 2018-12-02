@@ -48,9 +48,17 @@ export class TxDataRegisterSerializer {
   public static read(buf: Buffer, offset: number): ITxDataRegisterOutput {
 
     const deposit: number = readUint64LE(buf, offset);
+    offset += 8;
+
     const agentAddress: Address = AddressSerializer.read(buf, offset).data;
+    offset += ADDRESS_LENGTH;
+
     const packingAddress: Address = AddressSerializer.read(buf, offset).data;
+    offset += ADDRESS_LENGTH;
+
     const rewardAddress: Address = AddressSerializer.read(buf, offset).data;
+    offset += ADDRESS_LENGTH;
+
     const commissionRate: number = buf.readDoubleLE(offset);
 
     return {
@@ -75,10 +83,10 @@ export class TxDataRegisterSerializer {
    */
   public static write(data: ITxDataRegisterData, buf: Buffer, offset: number): number {
 
-    writeUint64LE(data.deposit, buf, offset);
-    AddressSerializer.write(data.agentAddress, buf, offset);
-    AddressSerializer.write(data.packingAddress, buf, offset);
-    AddressSerializer.write(data.rewardAddress, buf, offset);
+    offset += writeUint64LE(data.deposit, buf, offset);
+    offset += AddressSerializer.write(data.agentAddress, buf, offset);
+    offset += AddressSerializer.write(data.packingAddress, buf, offset);
+    offset += AddressSerializer.write(data.rewardAddress, buf, offset);
     buf.writeDoubleLE(data.commissionRate, offset);
 
     return TxDataRegisterSerializer.BYTES_LENGTH;

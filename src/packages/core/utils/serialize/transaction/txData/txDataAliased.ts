@@ -39,11 +39,11 @@ export class TxDataAliasedSerializer {
    */
   public static read(buf: Buffer, offset: number): ITxDataAliasedOutput {
 
-    const { readedBytes, data: addressHash } = VarByteSerializer.read(buf, offset);
-    offset += readedBytes;
+    const { data: addressHash, readedBytes } = VarByteSerializer.read(buf, offset);
     const address: Address = addressFromHash(addressHash);
+    offset += readedBytes;
 
-    const { readedBytes: readedBytes2, data: alias } = VarStringSerializer.read(buf, offset);
+    const { data: alias, readedBytes: readedBytes2 } = VarStringSerializer.read(buf, offset);
 
     return {
       readedBytes: readedBytes + readedBytes2,

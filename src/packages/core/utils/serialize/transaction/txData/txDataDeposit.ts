@@ -46,7 +46,11 @@ export class TxDataDepositSerializer {
   public static read(buf: Buffer, offset: number): ITxDataDepositOutput {
 
     const deposit: number = readUint64LE(buf, offset);
+    offset += 8;
+
     const address: Address = AddressSerializer.read(buf, offset).data;
+    offset += ADDRESS_LENGTH;
+
     const agentHash: AgentHash = AgentHashSerializer.read(buf, offset).data;
 
     return {
@@ -69,8 +73,8 @@ export class TxDataDepositSerializer {
    */
   public static write(data: ITxDataDepositData, buf: Buffer, offset: number): number {
 
-    writeUint64LE(data.deposit, buf, offset);
-    AddressSerializer.write(data.address, buf, offset);
+    offset += writeUint64LE(data.deposit, buf, offset);
+    offset += AddressSerializer.write(data.address, buf, offset);
     AgentHashSerializer.write(data.agentHash, buf, offset);
 
     return TxDataDepositSerializer.BYTES_LENGTH;

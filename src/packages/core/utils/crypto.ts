@@ -7,7 +7,8 @@ import { isHex } from './serialize';
 
 export type AddressHash = Buffer;
 export type Address = string;
-export type AgentHash = string;
+export type Hash = string;
+export type AgentHash = Hash;
 
 export function checkPrivateKey(privateKey: string): boolean {
 

@@ -5,6 +5,9 @@ import * as shajs from 'sha.js';
 import { PRIVATE_KEY_LENGTH } from '../common';
 import { isHex } from './serialize';
 
+export type AddressHash = Buffer;
+export type Address = string;
+
 export function checkPrivateKey(privateKey: string): boolean {
 
   if (!isHex(privateKey)) {
@@ -26,7 +29,7 @@ export function checkPrivateKey(privateKey: string): boolean {
   try {
 
     const prvbuffer = Buffer.from(privateKey.substring(2, PRIVATE_KEY_LENGTH), 'hex');
-    privateKeyToPublicKey(prvbuffer);
+    publicKeyFromPrivateKey(prvbuffer);
     return true;
 
   } catch (e) {
@@ -36,19 +39,19 @@ export function checkPrivateKey(privateKey: string): boolean {
   }
 }
 
-export function privateKeyToPublicKey(prv: Buffer): Buffer {
-  return secp256k1.publicKeyCreate(prv);
+export function publicKeyFromPrivateKey(privateKey: Buffer): Buffer {
+  return secp256k1.publicKeyCreate(privateKey);
 }
 
 export function getXOR(bytes: Buffer): number {
   return bytes.reduce((xor: number, value: number) => xor ^ value);
 }
 
-export function addressFromHash(hash: Buffer): string {
+export function addressFromHash(hash: AddressHash): string {
   return bs58.encode(Buffer.concat([hash, Buffer.from([getXOR(hash)])]));
 }
 
-export function hashFromAddress(address: string): Buffer {
+export function hashFromAddress(address: Address): AddressHash {
   const hash: number[] = bs58.decode(address);
   return Buffer.from(hash.slice(0, hash.length - 1));
 }

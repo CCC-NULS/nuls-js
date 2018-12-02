@@ -17,7 +17,7 @@ export function readUint64LE(buffer: Buffer, cursor) {
   return (new Uint64LE(buffer, cursor)).toNumber();
 }
 
-export function writeUint64(data: number, buf: Buffer, offset: number): number {
+export function writeUint64LE(data: number, buf: Buffer, offset: number): number {
   const big = new Uint64LE(data);
   const formatted = big.toBuffer();
   formatted.copy(buf, offset);

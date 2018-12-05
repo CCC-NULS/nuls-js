@@ -1,12 +1,13 @@
-import { TxDataUnregisterSerializer } from './txDataUnregister';
-import { TxDataWithdrawSerializer } from './txDataWithdraw';
-import { IReadedData } from '../..';
+import { TxDataContractCallSerializer, ITxDataContractCallData } from './txDataContractCall';
+import { TxDataUnregisterSerializer, ITxDataUnregisterData } from './txDataUnregister';
+import { TxDataWithdrawSerializer, ITxDataWithdrawData } from './txDataWithdraw';
 import { TransactionType } from '../../../../../../packages/core/common';
-import { TxDataRewardSerializer } from './txDataReward';
-import { TxDataTransferSerializer } from './txDataTransfer';
-import { TxDataAliasedSerializer } from './txDataAliased';
-import { TxDataDepositSerializer } from './txDataDeposit';
-import { TxDataRegisterSerializer } from './txDataRegister';
+import { TxDataRewardSerializer, ITxDataRewardData } from './txDataReward';
+import { TxDataTransferSerializer, ITxDataTransferData } from './txDataTransfer';
+import { TxDataAliasedSerializer, ITxDataAliasedData } from './txDataAliased';
+import { TxDataDepositSerializer, ITxDataDepositData } from './txDataDeposit';
+import { TxDataRegisterSerializer, ITxDataRegisterData } from './txDataRegister';
+import { IReadedData } from '../../common';
 
 /***
   * ### TxData
@@ -17,7 +18,12 @@ import { TxDataRegisterSerializer } from './txDataRegister';
   * | ??   | txData     | ??          | Transaction data   |
  */
 
-export type ITxDataOutput = IReadedData;
+export type ITxDataData = ITxDataRewardData | ITxDataTransferData | ITxDataAliasedData | ITxDataRegisterData |
+  ITxDataDepositData | ITxDataWithdrawData | ITxDataUnregisterData | ITxDataContractCallData;
+
+export interface ITxDataOutput extends IReadedData {
+  data: ITxDataData;
+}
 
 /**
  * Class to handle the protocol TxData type
@@ -55,7 +61,7 @@ export class TxDataSerializer {
         return TxDataUnregisterSerializer.read(buf, offset);
 
       case TransactionType.ContractCall:
-        return TxDataUnregisterSerializer.read(buf, offset);
+        return TxDataContractCallSerializer.read(buf, offset);
 
       default:
         throw new Error('Not implemented');
@@ -95,7 +101,7 @@ export class TxDataSerializer {
         return TxDataUnregisterSerializer.write(data, buf, offset);
 
       case TransactionType.ContractCall:
-        return TxDataUnregisterSerializer.write(data, buf, offset);
+        return TxDataContractCallSerializer.write(data, buf, offset);
 
       default:
         throw new Error('Not implemented');

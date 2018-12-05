@@ -13,9 +13,13 @@ import { ITxDataOutput } from './txData';
   * | ??   | agentHash  | NulsDigestData   | 委托节点地址     |   (joinTxHash??)
  */
 
+export interface ITxDataWithdrawData {
+  agentHash: AgentHash;
+}
+
 export interface ITxDataWithdrawOutput extends ITxDataOutput {
   readedBytes: number;
-  data: AgentHash;
+  data: ITxDataWithdrawData;
 }
 
 /**
@@ -31,7 +35,12 @@ export class TxDataWithdrawSerializer {
    */
   public static read(buf: Buffer, offset: number): ITxDataWithdrawOutput {
 
-    return AgentHashSerializer.read(buf, offset);
+    const { data: agentHash, readedBytes } = AgentHashSerializer.read(buf, offset);
+
+    return {
+      readedBytes,
+      data: { agentHash }
+    };
 
   }
 
@@ -42,9 +51,9 @@ export class TxDataWithdrawSerializer {
    * @param offset Number of bytes to skip before starting to write. Must satisfy
    * @returns The number of bytes that has been written
    */
-  public static write(data: AgentHash, buf: Buffer, offset: number): number {
+  public static write(data: ITxDataWithdrawData, buf: Buffer, offset: number): number {
 
-    return AgentHashSerializer.write(data, buf, offset);
+    return AgentHashSerializer.write(data.agentHash, buf, offset);
 
   }
 

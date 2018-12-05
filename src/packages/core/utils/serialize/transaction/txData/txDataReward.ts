@@ -12,9 +12,13 @@ import { ITxDataOutput } from './txData';
   * | ??   | txData     | byte[]  | 0xFFFFFFFF     |
  */
 
+export interface ITxDataRewardData {
+  placeholder: number;
+}
+
 export interface ITxDataRewardOutput extends ITxDataOutput {
   readedBytes: number;
-  data: number;
+  data: ITxDataRewardData;
 }
 
 /**
@@ -31,8 +35,10 @@ export class TxDataRewardSerializer {
   public static read(buf: Buffer, offset: number): ITxDataRewardOutput {
 
     return {
-      data: buf.readUIntLE(offset + 1, PLACE_HOLDER.length),
-      readedBytes: PLACE_HOLDER.length
+      readedBytes: PLACE_HOLDER.length,
+      data: {
+        placeholder: buf.readUIntLE(offset + 1, PLACE_HOLDER.length)
+      }
     };
 
   }

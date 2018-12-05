@@ -1,4 +1,4 @@
-import { ITxDataRewardOutput, TxDataRewardSerializer } from './txDataReward';
+import { ITxDataRewardOutput, TxDataRewardSerializer, ITxDataRewardData } from './txDataReward';
 
 /***
   * ### TxDataTransfer
@@ -10,6 +10,8 @@ import { ITxDataRewardOutput, TxDataRewardSerializer } from './txDataReward';
   * | ---- | ---------- | ------- | -------------- |
   * | ??   | txData     | byte[]  | 0xFFFFFFFF     |
  */
+
+export type ITxDataTransferData = ITxDataRewardData;
 
 export type ITxDataTransferOutput = ITxDataRewardOutput;
 

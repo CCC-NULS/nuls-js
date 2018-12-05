@@ -5,7 +5,7 @@ import * as url from 'url';
 
 const jimp = require('jimp');
 
-enum LogoColour {
+export enum LogoColour {
 	green = 'green',
 	black = 'black'
 }

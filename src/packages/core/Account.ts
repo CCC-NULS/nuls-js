@@ -15,13 +15,13 @@ interface IGetAccount {
 	pubKey: string;
 }
 
-enum CustomAddressPosition {
+export enum CustomAddressPosition {
 	end = 'end',
 	start = 'start',
 	anywhere = 'anywhere'
 }
 
-enum ChainIdOptions {
+export enum ChainIdOptions {
 	testnet = 'testnet',
 	mainnet = 'mainnet'
 }

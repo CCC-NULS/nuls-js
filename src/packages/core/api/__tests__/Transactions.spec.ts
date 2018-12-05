@@ -1,6 +1,11 @@
-import { APIServerTestNet, Transactions } from '@/index';
+import { Transactions, IAPIConfig } from '..';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
+
+const APIServerTestNet: IAPIConfig = {
+	host: 'http://testnet.apiserver.nuls.io',
+	base: '/nuls'
+};
 
 const mock = new MockAdapter(axios);
 const transaction = new Transactions(APIServerTestNet);

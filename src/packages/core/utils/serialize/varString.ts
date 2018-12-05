@@ -45,7 +45,7 @@ export class VarStringSerializer {
    * @param data String to be written to buf
    * @param buf Buffer object where the string will be written
    * @param offset Number of bytes to skip before starting to write.
-   * @returns The number of bytes that has been written
+   * @returns Offset plus the number of bytes that has been written
    */
   public static write(data: string, buf: Buffer, offset: number): number {
 

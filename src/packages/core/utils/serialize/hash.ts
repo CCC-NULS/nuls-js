@@ -34,13 +34,13 @@ export class HashSerializer {
    * @param data The address to be written to buf
    * @param buf Buffer object where the bytes will be written
    * @param offset Number of bytes to skip before starting to write.
-   * @returns The number of bytes that has been written
+   * @returns Offset plus the number of bytes that has been written
    */
   public static write(data: Hash, buf: Buffer, offset: number): number {
 
-    const writtenBytes = Buffer.from(data, 'hex').copy(buf, offset);
+    offset += Buffer.from(data, 'hex').copy(buf, offset);
 
-    return writtenBytes;
+    return offset;
 
   }
 

@@ -69,15 +69,15 @@ export class TxDataDepositSerializer {
    * @param data txDataDeposit to be written to buf
    * @param buf Buffer object where the txDataDeposit will be written
    * @param offset Number of bytes to skip before starting to write. Must satisfy
-   * @returns The number of bytes that has been written
+   * @returns Offset plus the number of bytes that has been written
    */
   public static write(data: ITxDataDepositData, buf: Buffer, offset: number): number {
 
-    offset += writeUint64LE(data.deposit, buf, offset);
-    offset += AddressSerializer.write(data.address, buf, offset);
-    AgentHashSerializer.write(data.agentHash, buf, offset);
+    offset = writeUint64LE(data.deposit, buf, offset);
+    offset = AddressSerializer.write(data.address, buf, offset);
+    offset = AgentHashSerializer.write(data.agentHash, buf, offset);
 
-    return TxDataDepositSerializer.BYTES_LENGTH;
+    return offset;
 
   }
 

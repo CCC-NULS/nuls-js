@@ -84,24 +84,21 @@ export class TransactionSerializer {
    * @param data Transaction data to be written to buffer
    * @param buf Buffer object where the transaction will be written
    * @param offset Number of bytes to skip before starting to write.
-   * @returns The number of bytes that has been written
+   * @returns Offset plus the number of bytes that has been written
    */
   public static write(data: ITransactionData, buf: Buffer, offset: number = 0): number {
 
-    const initialOffset = offset;
-
-    offset += buf.writeUInt16LE(data.type, offset);
-    offset += buf.writeUIntLE(data.time, offset, 6); // 48 bits
-    offset += VarByteSerializer.write(data.remark, buf, offset);
-    offset += VarByteSerializer.write(data.remark, buf, offset);
-    offset += TxDataSerializer.write(data.txData, buf, offset, data.type);
-    offset += CoinDataSerializer.write(data.coinData, buf, offset);
+    offset = buf.writeUInt16LE(data.type, offset);
+    offset = buf.writeUIntLE(data.time, offset, 6); // 48 bits
+    offset = VarByteSerializer.write(data.remark, buf, offset);
+    offset = TxDataSerializer.write(data.txData, buf, offset, data.type);
+    offset = CoinDataSerializer.write(data.coinData, buf, offset);
 
     if (data.scriptSign) {
-      offset += VarByteSerializer.write(data.scriptSign, buf, offset);
+      offset = VarByteSerializer.write(data.scriptSign, buf, offset);
     }
 
-    return offset - initialOffset;
+    return offset;
 
   }
 

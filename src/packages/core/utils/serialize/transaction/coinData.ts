@@ -70,23 +70,21 @@ export class CoinDataSerializer {
    * @param data CoinData to be written to buf
    * @param buf Buffer object where the number will be written
    * @param offset Number of bytes to skip before starting to write.
-   * @returns The number of bytes that has been written
+   * @returns Offset plus the number of bytes that has been written
    */
   public static write(data: ICoinDataData, buf: Buffer, offset: number): number {
-
-    const initialOffset = offset;
-
-    offset += VarIntSerializer.write(data.inputs.length, buf, offset);
+ 
+    offset = VarIntSerializer.write(data.inputs.length, buf, offset);
     for (const input of data.inputs) {
-      offset += CoinSerializer.write(input, buf, offset);
+      offset = CoinSerializer.write(input, buf, offset);
     }
 
-    offset += VarIntSerializer.write(data.outputs.length, buf, offset);
-    for (const output of data.inputs) {
-      offset += CoinSerializer.write(output, buf, offset);
+    offset = VarIntSerializer.write(data.outputs.length, buf, offset);
+    for (const output of data.outputs) {
+      offset = CoinSerializer.write(output, buf, offset);
     }
 
-    return offset - initialOffset;
+    return offset;
 
   }
 

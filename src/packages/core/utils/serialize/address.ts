@@ -42,14 +42,14 @@ export class AddressSerializer {
    * @param data The address to be written to buf
    * @param buf Buffer object where the bytes will be written
    * @param offset Number of bytes to skip before starting to write.
-   * @returns The number of bytes that has been written
+   * @returns Offset plus the number of bytes that has been written
    */
   public static write(data: Address, buf: Buffer, offset: number): number {
 
     const addressHash: AddressHash = hashFromAddress(data);
-    const writtenBytes = addressHash.copy(buf, offset);
+    offset += addressHash.copy(buf, offset);
 
-    return writtenBytes;
+    return offset;
 
   }
 

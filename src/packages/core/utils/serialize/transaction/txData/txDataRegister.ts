@@ -79,15 +79,15 @@ export class TxDataRegisterSerializer {
    * @param data txDataRegister to be written to buf
    * @param buf Buffer object where the txDataRegister will be written
    * @param offset Number of bytes to skip before starting to write. Must satisfy
-   * @returns The number of bytes that has been written
+   * @returns Offset plus the number of bytes that has been written
    */
   public static write(data: ITxDataRegisterData, buf: Buffer, offset: number): number {
 
-    offset += writeUint64LE(data.deposit, buf, offset);
-    offset += AddressSerializer.write(data.agentAddress, buf, offset);
-    offset += AddressSerializer.write(data.packingAddress, buf, offset);
-    offset += AddressSerializer.write(data.rewardAddress, buf, offset);
-    buf.writeDoubleLE(data.commissionRate, offset);
+    offset = writeUint64LE(data.deposit, buf, offset);
+    offset = AddressSerializer.write(data.agentAddress, buf, offset);
+    offset = AddressSerializer.write(data.packingAddress, buf, offset);
+    offset = AddressSerializer.write(data.rewardAddress, buf, offset);
+    offset = buf.writeDoubleLE(data.commissionRate, offset);
 
     return TxDataRegisterSerializer.BYTES_LENGTH;
 

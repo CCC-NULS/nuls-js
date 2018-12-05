@@ -13,7 +13,7 @@ import { ITxDataOutput } from './txData';
  */
 
 export interface ITxDataRewardData {
-  placeholder: number;
+  placeholder: Buffer;
 }
 
 export interface ITxDataRewardOutput extends ITxDataOutput {
@@ -37,7 +37,7 @@ export class TxDataRewardSerializer {
     return {
       readedBytes: PLACE_HOLDER.length,
       data: {
-        placeholder: buf.readUIntLE(offset + 1, PLACE_HOLDER.length)
+        placeholder: buf.slice(offset, offset + PLACE_HOLDER.length)
       }
     };
 
@@ -47,13 +47,13 @@ export class TxDataRewardSerializer {
    * Writes txDataReward to buf at the specified offset
    * @param buf Buffer object where the txDataReward will be written
    * @param offset Number of bytes to skip before starting to write.
-   * @returns The number of bytes that has been written
+   * @returns Offset plus the number of bytes that has been written
    */
   public static write(buf: Buffer, offset: number): number {
 
     PLACE_HOLDER.copy(buf, offset);
 
-    return PLACE_HOLDER.length;
+    return offset + PLACE_HOLDER.length;
 
   }
 

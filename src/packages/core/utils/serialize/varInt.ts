@@ -71,7 +71,7 @@ export class VarIntSerializer {
    * @param data Number to be written to buf
    * @param buf Buffer object where the number will be written
    * @param offset Number of bytes to skip before starting to write.
-   * @returns The number of bytes that has been written
+   * @returns Offset plus the number of bytes that has been written
    */
   public static write(data: number, buf: Buffer, offset: number): number {
 
@@ -105,7 +105,7 @@ export class VarIntSerializer {
 
     }
 
-    return len;
+    return offset + len;
 
   }
 

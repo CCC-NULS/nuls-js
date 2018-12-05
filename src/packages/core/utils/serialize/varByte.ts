@@ -42,14 +42,14 @@ export class VarByteSerializer {
    * @param data Buffer of bytes to be written to buf
    * @param buf Buffer object where the bytes will be written
    * @param offset Number of bytes to skip before starting to write.
-   * @returns The number of bytes that has been written
+   * @returns Offset plus the number of bytes that has been written
    */
   public static write(data: Buffer, buf: Buffer, offset: number): number {
 
-    let writtenBytes: number = VarIntSerializer.write(data.length, buf, offset);
-    writtenBytes += data.copy(buf, offset + writtenBytes);
+    offset = VarIntSerializer.write(data.length, buf, offset);
+    offset += data.copy(buf, offset);
 
-    return writtenBytes;
+    return offset;
 
   }
 

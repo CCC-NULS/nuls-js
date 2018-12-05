@@ -49,7 +49,7 @@ export class TxDataWithdrawSerializer {
    * @param data txDataDeposit to be written to buf
    * @param buf Buffer object where the txDataDeposit will be written
    * @param offset Number of bytes to skip before starting to write. Must satisfy
-   * @returns The number of bytes that has been written
+   * @returns Offset plus the number of bytes that has been written
    */
   public static write(data: ITxDataWithdrawData, buf: Buffer, offset: number): number {
 

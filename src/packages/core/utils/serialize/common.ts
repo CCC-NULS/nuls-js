@@ -21,5 +21,5 @@ export function writeUint64LE(data: number, buf: Buffer, offset: number): number
   const big = new Uint64LE(data);
   const formatted = big.toBuffer();
   formatted.copy(buf, offset);
-  return formatted.length;
+  return offset + formatted.length;
 }

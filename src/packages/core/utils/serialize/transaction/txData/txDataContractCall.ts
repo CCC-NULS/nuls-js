@@ -95,22 +95,20 @@ export class TxDataContractCallSerializer {
    * @param data txDataContractCall to be written to buf
    * @param buf Buffer object where the txDataContractCall will be written
    * @param offset Number of bytes to skip before starting to write. Must satisfy
-   * @returns The number of bytes that has been written
+   * @returns Offset plus the number of bytes that has been written
    */
   public static write(data: ITxDataContractCallData, buf: Buffer, offset: number): number {
 
-    const initialOffset = offset;
+    offset = AddressSerializer.write(data.sender, buf, offset);
+    offset = AddressSerializer.write(data.contractAddress, buf, offset);
+    offset = writeUint64LE(data.value, buf, offset);
+    offset = writeUint64LE(data.gasLimit, buf, offset);
+    offset = writeUint64LE(data.price, buf, offset);
+    offset = VarStringSerializer.write(data.methodName, buf, offset);
+    offset = VarStringSerializer.write(data.methodDesc, buf, offset);
+    offset = TxDataContractCallSerializer.writeArgs(data.args, buf, offset);
 
-    offset += AddressSerializer.write(data.sender, buf, offset);
-    offset += AddressSerializer.write(data.contractAddress, buf, offset);
-    offset += writeUint64LE(data.value, buf, offset);
-    offset += writeUint64LE(data.gasLimit, buf, offset);
-    offset += writeUint64LE(data.price, buf, offset);
-    offset += VarStringSerializer.write(data.methodName, buf, offset);
-    offset += VarStringSerializer.write(data.methodDesc, buf, offset);
-    offset += TxDataContractCallSerializer.writeArgs(data.args, buf, offset);
-
-    return offset - initialOffset;
+    return offset;
 
   }
 
@@ -122,13 +120,13 @@ export class TxDataContractCallSerializer {
 
     const args: any[] = [];
 
-    for (let i = 0; i <= argsLength; i++) {
+    for (let i = 0; i < argsLength; i++) {
 
       const arglen = buf.readUInt8(offset);
       offset += 1;
 
       const arg: string[] = [];
-      for (let j = 0; j <= arglen; j++) {
+      for (let j = 0; j < arglen; j++) {
 
         const { data, readedBytes } = VarStringSerializer.read(buf, offset);
         offset += readedBytes;
@@ -147,25 +145,24 @@ export class TxDataContractCallSerializer {
     }
 
   }
-
+ 
   private static writeArgs(data: string[][], buf: Buffer, offset: number): number {
 
-    const initialOffset = offset;
-    offset += buf.writeUInt8(data.length, offset);
+    offset = buf.writeUInt8(data.length, offset);
 
     for (const arg of data) {
 
-      offset += buf.writeUInt8(arg.length, offset);
+      offset = buf.writeUInt8(arg.length, offset);
 
       for (const argItem of arg) {
 
-        offset += VarStringSerializer.write(argItem, buf, offset);
+        offset = VarStringSerializer.write(argItem, buf, offset);
 
       }
 
     }
 
-    return offset - initialOffset;
+    return offset;
 
   }
 

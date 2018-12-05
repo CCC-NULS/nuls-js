@@ -60,14 +60,14 @@ export class TxDataAliasedSerializer {
    * @param data txDataAliased to be written to buf
    * @param buf Buffer object where the txDataAliased will be written
    * @param offset Number of bytes to skip before starting to write. Must satisfy
-   * @returns The number of bytes that has been written
+   * @returns Offset plus the number of bytes that has been written
    */
   public static write(data: ITxDataAliasedData, buf: Buffer, offset: number): number {
 
     const addressHash: AddressHash = hashFromAddress(data.address);
-    const writtenBytes = VarByteSerializer.write(addressHash, buf, offset);
+    offset = VarByteSerializer.write(addressHash, buf, offset);
 
-    return writtenBytes;
+    return offset;
 
   }
 

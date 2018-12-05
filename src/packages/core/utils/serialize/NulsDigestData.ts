@@ -54,14 +54,14 @@ export class NulsDigestDataSerializer {
    * @param data String to be written to buf
    * @param buf Buffer object where the string will be written
    * @param offset Number of bytes to skip before starting to write.
-   * @returns The number of bytes that has been written
+   * @returns Offset plus the number of bytes that has been written
    */
   public static write(data: INulsDigestDataData, buf: Buffer, offset: number): number {
 
-    buf.writeUInt8(data.digestAlgType, offset);
-    const writtenBytes = VarStringSerializer.write(data.digest, buf, offset);
+    offset = buf.writeUInt8(data.digestAlgType, offset);
+    offset = VarStringSerializer.write(data.digest, buf, offset);
 
-    return writtenBytes + 1;
+    return offset;
 
   }
 

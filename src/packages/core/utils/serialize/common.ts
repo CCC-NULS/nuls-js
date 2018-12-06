@@ -1,9 +1,7 @@
 import { Uint64LE } from 'int64-buffer';
 
-export const PLACE_HOLDER = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF]);
-
-export interface IReadedData {
-  readedBytes: number;
+export interface IReadData {
+  readBytes: number;
   data: any;
 }
 

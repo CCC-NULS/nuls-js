@@ -3,7 +3,7 @@ import { AddressSerializer } from './../../address';
 import { Address } from '../../../crypto';
 import { ITxDataOutput } from './txData';
 import { ADDRESS_LENGTH } from '../../../../../../packages/core/common';
-import { readUint64LE, IReadedData, writeUint64LE } from '../../common';
+import { readUint64LE, IReadData, writeUint64LE } from '../../common';
 
 /***
   * ### TxDataContractCall
@@ -32,7 +32,7 @@ export interface ITxDataContractCallData {
 }
 
 export interface ITxDataContractCallOutput extends ITxDataOutput {
-  readedBytes: number;
+  readBytes: number;
   data: ITxDataContractCallData;
 }
 
@@ -43,7 +43,7 @@ export class TxDataContractCallSerializer {
 
   /**
    * Reads a txDataContractCall buf at the specified offset
-   * @param buf Buffer object from where the data will be readed
+   * @param buf Buffer object from where the data will be read
    * @param offset Number of bytes to skip before starting to read
    */
   public static read(buf: Buffer, offset: number): ITxDataContractCallOutput {
@@ -65,17 +65,17 @@ export class TxDataContractCallSerializer {
     const price: number = readUint64LE(buf, offset);
     offset += 8;
 
-    const { data: methodName, readedBytes } = VarStringSerializer.read(buf, offset);
-    offset += readedBytes;
+    const { data: methodName, readBytes } = VarStringSerializer.read(buf, offset);
+    offset += readBytes;
 
-    const { data: methodDesc, readedBytes: readedBytes2 } = VarStringSerializer.read(buf, offset);
-    offset += readedBytes2;
+    const { data: methodDesc, readBytes: readBytes2 } = VarStringSerializer.read(buf, offset);
+    offset += readBytes2;
 
-    const { data: args, readedBytes: readedBytes3 } = TxDataContractCallSerializer.readArgs(buf, offset);
-    offset += readedBytes3;
+    const { data: args, readBytes: readBytes3 } = TxDataContractCallSerializer.readArgs(buf, offset);
+    offset += readBytes3;
 
     return {
-      readedBytes: offset - initialOffset,
+      readBytes: offset - initialOffset,
       data: {
         sender,
         contractAddress,
@@ -112,7 +112,7 @@ export class TxDataContractCallSerializer {
 
   }
 
-  private static readArgs(buf: Buffer, offset: number): IReadedData {
+  private static readArgs(buf: Buffer, offset: number): IReadData {
 
     const initialOffset = offset;
     const argsLength: number = buf.readUInt8(offset);
@@ -128,8 +128,8 @@ export class TxDataContractCallSerializer {
       const arg: string[] = [];
       for (let j = 0; j < arglen; j++) {
 
-        const { data, readedBytes } = VarStringSerializer.read(buf, offset);
-        offset += readedBytes;
+        const { data, readBytes } = VarStringSerializer.read(buf, offset);
+        offset += readBytes;
 
         arg.push(data);
 
@@ -140,7 +140,7 @@ export class TxDataContractCallSerializer {
     }
 
     return {
-      readedBytes: offset - initialOffset,
+      readBytes: offset - initialOffset,
       data: args
     }
 

@@ -2,7 +2,7 @@ import { ITransactionOutput } from './transaction';
 import { VarByteSerializer } from '..';
 import { TxDataSerializer, ITxDataData } from './txData/txData';
 import { CoinDataSerializer, ICoinDataData } from './coinData';
-import { IReadedData } from '../common';
+import { IReadData } from '../common';
 
 /***
   * ### Transaction
@@ -27,8 +27,8 @@ export interface ITransactionData {
   scriptSign: Buffer;
 }
 
-export interface ITransactionOutput extends IReadedData {
-  readedBytes: number;
+export interface ITransactionOutput extends IReadData {
+  readBytes: number;
   data: ITransactionData;
 }
 
@@ -40,7 +40,7 @@ export class TransactionSerializer {
 
   /**
    * Reads a tx buf at the specified offset
-   * @param buf Buffer object from where the transaction will be readed
+   * @param buf Buffer object from where the transaction will be read
    * @param offset Number of bytes to skip before starting to read
    */
   public static read(buf: Buffer, offset: number): ITransactionOutput {
@@ -53,20 +53,20 @@ export class TransactionSerializer {
     const time = buf.readUIntLE(offset, 6); // 48 bits
     offset += 6;
 
-    const { data: remark, readedBytes: bytes1 } = VarByteSerializer.read(buf, offset);
+    const { data: remark, readBytes: bytes1 } = VarByteSerializer.read(buf, offset);
     offset += bytes1;
 
-    const { data: txData, readedBytes: bytes2 } = TxDataSerializer.read(buf, offset, type);
+    const { data: txData, readBytes: bytes2 } = TxDataSerializer.read(buf, offset, type);
     offset += bytes2;
 
-    const { data: coinData, readedBytes: bytes3 } = CoinDataSerializer.read(buf, offset);
+    const { data: coinData, readBytes: bytes3 } = CoinDataSerializer.read(buf, offset);
     offset += bytes3;
 
-    const { data: scriptSign, readedBytes: bytes4 } = VarByteSerializer.read(buf, offset);
+    const { data: scriptSign, readBytes: bytes4 } = VarByteSerializer.read(buf, offset);
     offset += bytes4;
 
     return {
-      readedBytes: offset - initialOffset,
+      readBytes: offset - initialOffset,
       data: {
         type,
         time,

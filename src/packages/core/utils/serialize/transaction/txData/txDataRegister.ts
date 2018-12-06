@@ -28,7 +28,7 @@ export interface ITxDataRegisterData {
 }
 
 export interface ITxDataRegisterOutput extends ITxDataOutput {
-  readedBytes: number;
+  readBytes: number;
   data: ITxDataRegisterData;
 }
 
@@ -42,7 +42,7 @@ export class TxDataRegisterSerializer {
 
   /**
    * Reads a txDataRegister buf at the specified offset
-   * @param buf Buffer object from where the data will be readed
+   * @param buf Buffer object from where the data will be read
    * @param offset Number of bytes to skip before starting to read
    */
   public static read(buf: Buffer, offset: number): ITxDataRegisterOutput {
@@ -62,7 +62,7 @@ export class TxDataRegisterSerializer {
     const commissionRate: number = buf.readDoubleLE(offset);
 
     return {
-      readedBytes: TxDataRegisterSerializer.BYTES_LENGTH,
+      readBytes: TxDataRegisterSerializer.BYTES_LENGTH,
       data: {
         deposit,
         agentAddress,

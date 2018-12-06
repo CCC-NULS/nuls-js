@@ -1,4 +1,4 @@
-import { IReadedData } from '.';
+import { IReadData } from '.';
 import { ADDRESS_LENGTH } from '../../common';
 import { Address, AddressHash, addressFromHash, hashFromAddress } from '../crypto';
 
@@ -12,8 +12,8 @@ import { Address, AddressHash, addressFromHash, hashFromAddress } from '../crypt
   * | 23	   | address |  byte[23]	  | 地址           |
  */
 
-export interface IAddressOutput extends IReadedData {
-  readedBytes: number;
+export interface IAddressOutput extends IReadData {
+  readBytes: number;
   data: Address;
 }
 
@@ -25,7 +25,7 @@ export class AddressSerializer {
 
   /**
    * Reads a Address from buf at the specified offset
-   * @param buf Buffer object from where the bytes will be readed
+   * @param buf Buffer object from where the bytes will be read
    * @param offset Number of bytes to skip before starting to read
    */
   public static read(buf: Buffer, offset: number): IAddressOutput {
@@ -33,7 +33,7 @@ export class AddressSerializer {
     const addressHash: AddressHash = buf.slice(offset, offset + ADDRESS_LENGTH);
     const address: Address = addressFromHash(addressHash);
 
-    return { data: address, readedBytes: ADDRESS_LENGTH };
+    return { data: address, readBytes: ADDRESS_LENGTH };
 
   }
 

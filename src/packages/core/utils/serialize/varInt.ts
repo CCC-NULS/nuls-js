@@ -1,4 +1,4 @@
-import { IReadedData } from '.';
+import { IReadData } from '.';
 
 /***
   * ### VarInt
@@ -14,8 +14,8 @@ import { IReadedData } from '.';
   * | > 0xffffffff  | 9    | 0xff + uint64 |
  */
 
-export interface IVarIntOutput extends IReadedData {
-  readedBytes: number;
+export interface IVarIntOutput extends IReadData {
+  readBytes: number;
   data: number;
 }
 
@@ -27,34 +27,34 @@ export class VarIntSerializer {
 
   /**
    * Reads a varInt integer from buf at the specified offset
-   * @param buf Buffer object from where the number will be readed
+   * @param buf Buffer object from where the number will be read
    * @param offset Number of bytes to skip before starting to read
    */
   public static read(buf: Buffer, offset: number): IVarIntOutput {
 
     const first = 0xFF & buf[offset];
-    let readedBytes = 0;
+    let readBytes = 0;
     let data = 0;
 
     if (first < 0xFD) {
 
       data = first;
-      readedBytes = 1;
+      readBytes = 1;
 
     } else if (first === 0xFD) {
 
       data = buf.readUIntLE(offset + 1, 2);
-      readedBytes = 3;
+      readBytes = 3;
 
     } else if (first === 0xFE) {
 
       data = buf.readUIntLE(offset + 1, 4);
-      readedBytes = 5;
+      readBytes = 5;
 
     } else if (first === 0xFF) {
 
       data = buf.readUIntLE(offset + 1, 8);
-      readedBytes = 9;
+      readBytes = 9;
 
     } else {
 
@@ -62,7 +62,7 @@ export class VarIntSerializer {
 
     }
 
-    return { data, readedBytes };
+    return { data, readBytes };
 
   }
 

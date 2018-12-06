@@ -1,9 +1,8 @@
-import { PLACE_HOLDER } from '../../../common';
 import { ITransactionData } from '../../transaction';
 
 export const contractCallTxSerializedExample: string = 'ZQD2a+khZwEABQEBg2SlB9vZkB9Eo9Y/QBoKAU+3f4MFAQKkj16g+uyHXyo6Yn/jmSqCuVaPEwAAAAAAAAAALssAAAAAAAAZAAAAAAAAAA1jcmVhdGVMb3R0ZXJ5rShTdHJpbmcgdGl0bGUsIFN0cmluZyBkZXNjLCBkb3VibGUgdGlja2V0UHJpY2UsIGxvbmcgc3RhcnRUaW1lLCBsb25nIGVuZFRpbWUsIGludCBtaW5QYXJ0aWNpcGFudHMsIGJvb2xlYW4gc2Vjb25kUHJpemVzKSByZXR1cm4gTGNvbS9nbWFpbC9hbWFsY2FyYXo4OS9sb3R0ZXJ5L21vZGVsL0xvdHRlcnk7BwEFVGl0bGUBBERlc2MBATEBDTE1NDI0NjIxNzg2NzYBDTk5NDI0NjIxNzg2NzYBAjEwAQVmYWxzZQEjACCNqhZlcO502hwYGwc+FPFRsLqRF7ApNW2DF6/KQBQy4gAB9J6cMBIAAAAAAAAAAAEXBQEBg2SlB9vZkB9Eo9Y/QBoKAU+3f4PjlYmcMBIAAAAAAAAAAGshAySUJVBSO9nLWF/MI8sCDJF7oT2AYjCF+g4+ZRSubyJyAEcwRQIhANfyKiNrA9umOt97x28CCXc4rXUDappD3UEo34ik9ZclAiBOopGIiP1+YrNuR6QL7RU6CpszHksx9boGcb0ttiivFg==';
 
-export const contractCallTxReadedExample: ITransactionData = {
+export const contractCallTxReadExample: ITransactionData = {
   type: 101,
   time: 1542462204918,
   remark: Buffer.from([]),

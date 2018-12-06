@@ -22,7 +22,7 @@ export interface ITxDataAliasedData {
 }
 
 export interface ITxDataAliasedOutput extends ITxDataOutput {
-  readedBytes: number;
+  readBytes: number;
   data: ITxDataAliasedData;
 }
 
@@ -34,19 +34,19 @@ export class TxDataAliasedSerializer {
 
   /**
    * Reads a txDataAliased buf at the specified offset
-   * @param buf Buffer object from where the data will be readed
+   * @param buf Buffer object from where the data will be read
    * @param offset Number of bytes to skip before starting to read
    */
   public static read(buf: Buffer, offset: number): ITxDataAliasedOutput {
 
-    const { data: addressHash, readedBytes } = VarByteSerializer.read(buf, offset);
+    const { data: addressHash, readBytes } = VarByteSerializer.read(buf, offset);
     const address: Address = addressFromHash(addressHash);
-    offset += readedBytes;
+    offset += readBytes;
 
-    const { data: alias, readedBytes: readedBytes2 } = VarStringSerializer.read(buf, offset);
+    const { data: alias, readBytes: readBytes2 } = VarStringSerializer.read(buf, offset);
 
     return {
-      readedBytes: readedBytes + readedBytes2,
+      readBytes: readBytes + readBytes2,
       data: {
         address,
         alias,

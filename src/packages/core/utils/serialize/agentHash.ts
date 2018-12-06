@@ -6,7 +6,7 @@ import { AgentHash } from '../crypto';
  */
 
 export interface IAgentHashOutput extends IHashOutput {
-  readedBytes: number;
+  readBytes: number;
   data: AgentHash;
 }
 

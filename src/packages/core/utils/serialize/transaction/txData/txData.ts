@@ -7,7 +7,7 @@ import { TxDataTransferSerializer, ITxDataTransferData } from './txDataTransfer'
 import { TxDataAliasedSerializer, ITxDataAliasedData } from './txDataAliased';
 import { TxDataDepositSerializer, ITxDataDepositData } from './txDataDeposit';
 import { TxDataRegisterSerializer, ITxDataRegisterData } from './txDataRegister';
-import { IReadedData } from '../../common';
+import { IReadData } from '../../common';
 
 /***
   * ### TxData
@@ -21,7 +21,7 @@ import { IReadedData } from '../../common';
 export type ITxDataData = ITxDataRewardData | ITxDataTransferData | ITxDataAliasedData | ITxDataRegisterData |
   ITxDataDepositData | ITxDataWithdrawData | ITxDataUnregisterData | ITxDataContractCallData;
 
-export interface ITxDataOutput extends IReadedData {
+export interface ITxDataOutput extends IReadData {
   data: ITxDataData;
 }
 
@@ -33,7 +33,7 @@ export class TxDataSerializer {
 
   /**
    * Reads a txdata integer from buf at the specified offset
-   * @param buf Buffer object from where the number will be readed
+   * @param buf Buffer object from where the number will be read
    * @param offset Number of bytes to skip before starting to read
    */
   public static read(buf: Buffer, offset: number, txType: TransactionType): ITxDataOutput {

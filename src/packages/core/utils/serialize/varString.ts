@@ -1,5 +1,5 @@
 import { VarByteSerializer } from './varByte';
-import { IReadedData } from './common';
+import { IReadData } from './common';
 
 /***
   * ### VarString
@@ -13,8 +13,8 @@ import { IReadedData } from './common';
   * | length | value  | uint8[length] | 字符串本身               |
  */
 
-export interface IVarStringOutput extends IReadedData {
-  readedBytes: number;
+export interface IVarStringOutput extends IReadData {
+  readBytes: number;
   data: string;
 }
 
@@ -26,15 +26,15 @@ export class VarStringSerializer {
   
   /**
    * Reads a varString from buf at the specified offset
-   * @param buf Buffer object from where the bytes will be readed
+   * @param buf Buffer object from where the bytes will be read
    * @param offset Number of bytes to skip before starting to read
    */
   public static read(buf: Buffer, offset: number): IVarStringOutput {
 
-    const { data, readedBytes } = VarByteSerializer.read(buf, offset);
+    const { data, readBytes } = VarByteSerializer.read(buf, offset);
   
     return {
-      readedBytes,
+      readBytes,
       data: data.toString('utf8')
     };
 

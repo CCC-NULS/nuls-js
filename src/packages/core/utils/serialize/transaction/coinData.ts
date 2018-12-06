@@ -1,4 +1,4 @@
-import { IReadedData, VarIntSerializer } from '..';
+import { IReadData, VarIntSerializer } from '..';
 import { ICoinData, CoinSerializer } from './coin';
 
 /***
@@ -16,7 +16,7 @@ export interface ICoinDataData {
   outputs: ICoinData[];
 }
 
-export interface ICoinDataOutput extends IReadedData {
+export interface ICoinDataOutput extends IReadData {
   data: ICoinDataData;
 };
 
@@ -28,35 +28,35 @@ export class CoinDataSerializer {
 
   /**
    * Reads a coinData from buf at the specified offset
-   * @param buf Buffer object from where the number will be readed
+   * @param buf Buffer object from where the number will be read
    * @param offset Number of bytes to skip before starting to read
    */
   public static read(buf: Buffer, offset: number): ICoinDataOutput {
 
     const initialOffset = offset;
 
-    const { data: inputLength, readedBytes } = VarIntSerializer.read(buf, offset);
-    offset += readedBytes;
+    const { data: inputLength, readBytes } = VarIntSerializer.read(buf, offset);
+    offset += readBytes;
     
     const inputs: ICoinData[] = [];
     for (let i = 0; i < inputLength; i++) {
-      const { data: input, readedBytes: inputReadedBytes } = CoinSerializer.read(buf, offset);
-      offset += inputReadedBytes;
+      const { data: input, readBytes: inputReadBytes } = CoinSerializer.read(buf, offset);
+      offset += inputReadBytes;
       inputs.push(input);
     }
 
-    const { data: outputLength, readedBytes: readedBytes2 } = VarIntSerializer.read(buf, offset);
-    offset += readedBytes2;
+    const { data: outputLength, readBytes: readBytes2 } = VarIntSerializer.read(buf, offset);
+    offset += readBytes2;
 
     const outputs: ICoinData[] = [];
     for (let i = 0; i < outputLength; i++) {
-      const { data: output, readedBytes: outputReadedBytes } = CoinSerializer.read(buf, offset);
-      offset += outputReadedBytes;
+      const { data: output, readBytes: outputReadBytes } = CoinSerializer.read(buf, offset);
+      offset += outputReadBytes;
       outputs.push(output);
     }
 
     return {
-      readedBytes: offset - initialOffset,
+      readBytes: offset - initialOffset,
       data: {
         inputs,
         outputs

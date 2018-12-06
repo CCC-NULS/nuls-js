@@ -26,7 +26,7 @@ export interface ITxDataDepositData {
 }
 
 export interface ITxDataDepositOutput extends ITxDataOutput {
-  readedBytes: number;
+  readBytes: number;
   data: ITxDataDepositData;
 }
 
@@ -40,7 +40,7 @@ export class TxDataDepositSerializer {
 
   /**
    * Reads a txDataDeposit buf at the specified offset
-   * @param buf Buffer object from where the data will be readed
+   * @param buf Buffer object from where the data will be read
    * @param offset Number of bytes to skip before starting to read
    */
   public static read(buf: Buffer, offset: number): ITxDataDepositOutput {
@@ -54,7 +54,7 @@ export class TxDataDepositSerializer {
     const agentHash: AgentHash = AgentHashSerializer.read(buf, offset).data;
 
     return {
-      readedBytes: TxDataDepositSerializer.BYTES_LENGTH,
+      readBytes: TxDataDepositSerializer.BYTES_LENGTH,
       data: {
         deposit,
         address,

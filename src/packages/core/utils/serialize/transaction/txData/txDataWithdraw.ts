@@ -18,7 +18,7 @@ export interface ITxDataWithdrawData {
 }
 
 export interface ITxDataWithdrawOutput extends ITxDataOutput {
-  readedBytes: number;
+  readBytes: number;
   data: ITxDataWithdrawData;
 }
 
@@ -30,15 +30,15 @@ export class TxDataWithdrawSerializer {
 
   /**
    * Reads a txDataDeposit buf at the specified offset
-   * @param buf Buffer object from where the data will be readed
+   * @param buf Buffer object from where the data will be read
    * @param offset Number of bytes to skip before starting to read
    */
   public static read(buf: Buffer, offset: number): ITxDataWithdrawOutput {
 
-    const { data: agentHash, readedBytes } = AgentHashSerializer.read(buf, offset);
+    const { data: agentHash, readBytes } = AgentHashSerializer.read(buf, offset);
 
     return {
-      readedBytes,
+      readBytes,
       data: { agentHash }
     };
 

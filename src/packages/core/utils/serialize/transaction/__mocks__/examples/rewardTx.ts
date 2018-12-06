@@ -1,13 +1,13 @@
-import { PLACE_HOLDER } from '../../../common';
+import { TxDataRewardSerializer } from './../../txData/txDataReward';
 import { ITransactionData } from '../../transaction';
 
 export const rewardTxSerializedExample: string = 'AQDgzzp/ZwEA/////wAEFwQjAVnZBZV+EHRNejdxUzprwEueqX+wMRfNAwAAAADpUhMAAAAXBCMBd97NtGpPJOgOZS2Fgyaab9QUz+BsIwgAAAAAAOlSEwAAABcEIwGMqoHy58Py9NOzohXiFWjzKQ4ihCva4wIAAAAA6VITAAAAFwQjAY6z3aDewbM43/jAQIh+ayckeJBbKSFNAAAAAADpUhMAAAAA';
 
-export const rewardTxReadedExample: ITransactionData = {
+export const rewardTxReadExample: ITransactionData = {
   type: 1,
   time: 1544027820000,
   remark: Buffer.from([]),
-  txData: { placeholder: PLACE_HOLDER },
+  txData: { placeholder: TxDataRewardSerializer.PLACE_HOLDER },
   coinData:
   {
     inputs: [],

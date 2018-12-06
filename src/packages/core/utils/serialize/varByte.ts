@@ -1,4 +1,4 @@
-import { IReadedData, VarIntSerializer } from '.';
+import { IReadData, VarIntSerializer } from '.';
 
 /***
   * ### VarByte
@@ -12,8 +12,8 @@ import { IReadedData, VarIntSerializer } from '.';
   * | length | data   | byte[length] | 字符串本身               |
  */
 
-export interface IVarByteOutput extends IReadedData {
-  readedBytes: number;
+export interface IVarByteOutput extends IReadData {
+  readBytes: number;
   data: Buffer;
 }
 
@@ -25,15 +25,15 @@ export class VarByteSerializer {
 
   /**
    * Reads a varByte from buf at the specified offset
-   * @param buf Buffer object from where the bytes will be readed
+   * @param buf Buffer object from where the bytes will be read
    * @param offset Number of bytes to skip before starting to read
    */
   public static read(buf: Buffer, offset: number): IVarByteOutput {
 
-    const { data: bytesToRead, readedBytes } = VarIntSerializer.read(buf, offset);
-    const data: Buffer = buf.slice(offset + readedBytes, offset + readedBytes + bytesToRead);
+    const { data: bytesToRead, readBytes } = VarIntSerializer.read(buf, offset);
+    const data: Buffer = buf.slice(offset + readBytes, offset + readBytes + bytesToRead);
 
-    return { data, readedBytes: readedBytes + bytesToRead };
+    return { data, readBytes: readBytes + bytesToRead };
 
   }
 

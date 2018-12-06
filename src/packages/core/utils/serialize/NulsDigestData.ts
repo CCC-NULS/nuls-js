@@ -1,5 +1,5 @@
 import { VarStringSerializer } from './varString';
-import { IReadedData } from './common';
+import { IReadData } from './common';
 
 /***
   * ### NulsDigestData
@@ -18,8 +18,8 @@ export interface INulsDigestDataData {
   digest: string;
 }
 
-export interface INulsDigestDataOutput extends IReadedData {
-  readedBytes: number;
+export interface INulsDigestDataOutput extends IReadData {
+  readBytes: number;
   data: INulsDigestDataData;
 }
 
@@ -31,16 +31,16 @@ export class NulsDigestDataSerializer {
 
   /**
    * Reads a NulsDigestData from buf at the specified offset
-   * @param buf Buffer object from where the bytes will be readed
+   * @param buf Buffer object from where the bytes will be read
    * @param offset Number of bytes to skip before starting to read
    */
   public static read(buf: Buffer, offset: number): INulsDigestDataOutput {
 
     const digestAlgType = buf.readUInt8(offset);
-    const { data: digest, readedBytes } = VarStringSerializer.read(buf, offset);
+    const { data: digest, readBytes } = VarStringSerializer.read(buf, offset);
 
     return {
-      readedBytes: readedBytes + 1,
+      readBytes: readBytes + 1,
       data: {
         digestAlgType,
         digest

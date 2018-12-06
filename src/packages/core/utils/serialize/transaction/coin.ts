@@ -1,9 +1,12 @@
 import { AddressHash } from './../../crypto';
-import { IReadedData, VarByteSerializer, writeUint64LE, readUint64LE } from '..';
+import { IReadData, VarByteSerializer, writeUint64LE, readUint64LE } from '..';
 
 /***
   * ### Coin
   * https://github.com/nuls-io/nuls/blob/master/core-module/kernel/src/main/java/io/nuls/kernel/model/Coin.java#L77
+  * 
+  * TODO: Implement P2SH address serialization:
+  * https://github.com/nuls-io/nuls/blob/274204b748ed72fdac150637ee758037d64c7ce5/account-ledger-module/base/account-ledger-base/src/main/java/io/nuls/account/ledger/base/service/impl/AccountLedgerServiceImpl.java#L731
   *
   * | Len  | Fields     | Data Type   | Remark             |
   * | ---- | ---------- | ----------- | ------------------ |
@@ -18,7 +21,7 @@ export interface ICoinData {
   lockTime: number;
 }
 
-export interface ICoinOutput extends IReadedData {
+export interface ICoinOutput extends IReadData {
   data: ICoinData;
 };
 
@@ -30,15 +33,15 @@ export class CoinSerializer {
 
   /**
    * Reads a coin from buf at the specified offset
-   * @param buf Buffer object from where the number will be readed
+   * @param buf Buffer object from where the number will be read
    * @param offset Number of bytes to skip before starting to read
    */
   public static read(buf: Buffer, offset: number): ICoinOutput {
 
     const initialOffset = offset;
 
-    const { data: owner, readedBytes } = VarByteSerializer.read(buf, offset);
-    offset += readedBytes;
+    const { data: owner, readBytes } = VarByteSerializer.read(buf, offset);
+    offset += readBytes;
     
     const na = readUint64LE(buf, offset);
     offset += 8;
@@ -47,7 +50,7 @@ export class CoinSerializer {
     offset += 6; // 48 bits
     
     return {
-      readedBytes: offset - initialOffset,
+      readBytes: offset - initialOffset,
       data: {
         owner,
         na,

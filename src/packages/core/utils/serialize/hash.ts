@@ -1,4 +1,4 @@
-import { IReadedData } from '.';
+import { IReadData } from '.';
 import { HASH_LENGTH } from '../../common';
 import { Hash } from '../crypto';
 
@@ -6,8 +6,8 @@ import { Hash } from '../crypto';
   * ### Hash
  */
 
-export interface IHashOutput extends IReadedData {
-  readedBytes: number;
+export interface IHashOutput extends IReadData {
+  readBytes: number;
   data: Hash;
 }
 
@@ -18,14 +18,14 @@ export class HashSerializer {
 
   /**
    * Reads a Hash from buf at the specified offset
-   * @param buf Buffer object from where the bytes will be readed
+   * @param buf Buffer object from where the bytes will be read
    * @param offset Number of bytes to skip before starting to read
    */
   public static read(buf: Buffer, offset: number): IHashOutput {
 
     const data = buf.slice(offset, offset + HASH_LENGTH).toString('hex');
 
-    return { data, readedBytes: HASH_LENGTH };
+    return { data, readBytes: HASH_LENGTH };
 
   }
 

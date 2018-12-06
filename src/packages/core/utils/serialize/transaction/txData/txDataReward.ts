@@ -1,4 +1,3 @@
-import { PLACE_HOLDER } from '../../../../../../packages/core/common';
 import { ITxDataOutput } from './txData';
 
 /***
@@ -17,7 +16,7 @@ export interface ITxDataRewardData {
 }
 
 export interface ITxDataRewardOutput extends ITxDataOutput {
-  readedBytes: number;
+  readBytes: number;
   data: ITxDataRewardData;
 }
 
@@ -27,17 +26,19 @@ export interface ITxDataRewardOutput extends ITxDataOutput {
  */
 export class TxDataRewardSerializer {
 
+  public static PLACE_HOLDER = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF]);
+
   /**
    * Reads a txDataReward buf at the specified offset
-   * @param buf Buffer object from where the number will be readed
+   * @param buf Buffer object from where the number will be read
    * @param offset Number of bytes to skip before starting to read
    */
   public static read(buf: Buffer, offset: number): ITxDataRewardOutput {
 
     return {
-      readedBytes: PLACE_HOLDER.length,
+      readBytes: TxDataRewardSerializer.PLACE_HOLDER.length,
       data: {
-        placeholder: buf.slice(offset, offset + PLACE_HOLDER.length)
+        placeholder: buf.slice(offset, offset + TxDataRewardSerializer.PLACE_HOLDER.length)
       }
     };
 
@@ -51,9 +52,9 @@ export class TxDataRewardSerializer {
    */
   public static write(buf: Buffer, offset: number): number {
 
-    PLACE_HOLDER.copy(buf, offset);
+    TxDataRewardSerializer.PLACE_HOLDER.copy(buf, offset);
 
-    return offset + PLACE_HOLDER.length;
+    return offset + TxDataRewardSerializer.PLACE_HOLDER.length;
 
   }
 

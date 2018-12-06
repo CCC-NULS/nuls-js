@@ -58,14 +58,21 @@ export function hashFromAddress(address: Address): AddressHash {
   return Buffer.from(hash.slice(0, hash.length - 1));
 }
 
-export function hashX2(buffer: Buffer): Buffer {
-  const sha = new shajs.sha256().update(buffer).digest();
-  return new shajs.sha256().update(sha).digest();
+export function sha256(buffer: Buffer): Buffer {
+  return new shajs.sha256().update(buffer).digest();
+}
+
+export function sha256Twice(buffer: Buffer): Buffer {
+  return sha256(sha256(buffer));
+}
+
+export function ripemd160(buffer: Buffer): Buffer {
+  return new RIPEMD160().update(buffer).digest();
 }
 
 export function hashFromPublicKey(publicKey: Buffer, { chainId = 8964, addressType = 1 } = {}): Buffer {
-  const sha = new shajs.sha256().update(publicKey).digest();
-  const pubkeyHash = new RIPEMD160().update(sha).digest();
+  const sha = sha256(publicKey);
+  const pubkeyHash = ripemd160(sha);
   const output = Buffer.allocUnsafe(3);
   output.writeInt16LE(chainId, 0);
   output.writeInt8(addressType, 2);

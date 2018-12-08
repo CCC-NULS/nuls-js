@@ -32,6 +32,43 @@ export interface ITxDataOutput extends IReadData {
 export class TxDataSerializer {
 
   /**
+   * Size of the serialized data
+   * @returns the bytes size of a serialized txData
+   */
+  public static size(data: ITxDataData, txType: TransactionType): number {
+    
+    switch (txType) {
+      case TransactionType.Reward:
+        return TxDataRewardSerializer.size();
+
+      case TransactionType.Transfer:
+        return TxDataTransferSerializer.size();
+
+      case TransactionType.Aliased:
+        return TxDataAliasedSerializer.size(data as ITxDataAliasedData);
+
+      case TransactionType.Register:
+        return TxDataRegisterSerializer.size();
+
+      case TransactionType.Deposit:
+        return TxDataDepositSerializer.size();
+
+      case TransactionType.Withdraw:
+        return TxDataWithdrawSerializer.size();
+
+      case TransactionType.Unregister:
+        return TxDataUnregisterSerializer.size();
+
+      case TransactionType.ContractCall:
+        return TxDataContractCallSerializer.size(data as ITxDataContractCallData);
+
+      default:
+        throw new Error('Not implemented');
+    }
+
+  }
+  
+  /**
    * Reads a txdata integer from buf at the specified offset
    * @param buf Buffer object from where the number will be read
    * @param offset Number of bytes to skip before starting to read

@@ -26,6 +26,34 @@ export interface IVarIntOutput extends IReadData {
 export class VarIntSerializer {
 
   /**
+   * Size of the serialized data
+   * @returns the bytes size of a serialized VarInt
+   */
+  public static size(data: number): number {
+
+    // if negative, it's actually a very large unsigned long value
+    if (data < 0) {
+      // 1 marker + 8 data bytes
+      return 9;
+    }
+    if (data < 0xFD) {
+      // 1 data byte
+      return 1;
+    }
+    if (data <= 0xFFFF) {
+      // 1 marker + 2 data bytes
+      return 3;
+    }
+    if (data <= 0xFFFFFFFF) {
+      // 1 marker + 4 data bytes
+      return 5;
+    }
+    // 1 marker + 8 data bytes
+    return 9;
+
+  }
+
+  /**
    * Reads a varInt integer from buf at the specified offset
    * @param buf Buffer object from where the number will be read
    * @param offset Number of bytes to skip before starting to read
@@ -93,7 +121,7 @@ export class VarIntSerializer {
       buf.writeUIntLE(data, offset + 1, 4);
       len = 5;
 
-    } else if (data <= 0xFFFFFFFF) {
+    } else if (data > 0xFFFFFFFF) {
 
       buf[offset] = 0xFF;
       buf.writeUIntLE(data, offset + 1, 8);

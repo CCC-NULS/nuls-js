@@ -39,6 +39,22 @@ export interface ITransactionOutput extends IReadData {
 export class TransactionSerializer {
 
   /**
+   * Size of the serialized data
+   * @returns the bytes size of a serialized transaction
+   */
+  public static size(data: ITransactionData): number {
+
+    let size: number = 2 + 6;
+    size += VarByteSerializer.size(data.remark);
+    size += TxDataSerializer.size(data.txData, data.type);
+    size += CoinDataSerializer.size(data.coinData);
+    size += VarByteSerializer.size(data.scriptSign);
+
+    return size;
+
+  }
+
+  /**
    * Reads a tx buf at the specified offset
    * @param buf Buffer object from where the transaction will be read
    * @param offset Number of bytes to skip before starting to read

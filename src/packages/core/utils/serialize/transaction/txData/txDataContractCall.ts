@@ -38,8 +38,24 @@ export interface ITxDataContractCallOutput extends ITxDataOutput {
 
 /**
  * Class to handle the protocol TxDataContractCall type
+ * https://github.com/nuls-io/nuls/blob/16e685f2355cc28d0f59f9282122c6c0c63bbe22/contract-module/contract/src/main/java/io/nuls/contract/entity/txdata/CallContractData.java#L41
  */
 export class TxDataContractCallSerializer {
+
+  /**
+   * Size of the serialized data
+   * @returns the bytes size of a serialized txDataContractCall
+   */
+  public static size(data: ITxDataContractCallData): number {
+
+    let size: number = (ADDRESS_LENGTH * 2) + (8 * 3);
+    size += VarStringSerializer.size(data.methodName);
+    size += VarStringSerializer.size(data.methodDesc);
+    size += this.sizeArgs(data.args);
+
+    return size;
+
+  }
 
   /**
    * Reads a txDataContractCall buf at the specified offset
@@ -112,6 +128,26 @@ export class TxDataContractCallSerializer {
 
   }
 
+  private static sizeArgs(data: string[][]): number {
+
+    let size: number = 1;
+
+    for (const arg of data) {
+
+      size += 1;
+
+      for (const argItem of arg) {
+
+        size += VarStringSerializer.size(argItem);
+
+      }
+
+    }
+
+    return size;
+    
+  }
+
   private static readArgs(buf: Buffer, offset: number): IReadData {
 
     const initialOffset = offset;
@@ -145,7 +181,7 @@ export class TxDataContractCallSerializer {
     }
 
   }
- 
+
   private static writeArgs(data: string[][], buf: Buffer, offset: number): number {
 
     offset = buf.writeUInt8(data.length, offset);

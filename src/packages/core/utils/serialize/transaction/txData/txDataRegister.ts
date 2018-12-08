@@ -34,11 +34,21 @@ export interface ITxDataRegisterOutput extends ITxDataOutput {
 
 /**
  * Class to handle the protocol TxDataRegister type
- * http://dev.nuls.io/protocol/transaction.html#TX-TYPE-REGISTER-AGENT
+ * https://github.com/nuls-io/nuls/blob/6e22e5ba554fae9e690faaa3797cdddb49f90c44/consensus-module/poc/consensus-poc-protocol/src/main/java/io/nuls/consensus/poc/protocol/entity/Agent.java#L49
  */
 export class TxDataRegisterSerializer {
 
   private static BYTES_LENGTH = 8 + 8 + (ADDRESS_LENGTH * 3);
+
+  /**
+   * Size of the serialized data
+   * @returns the bytes size of a serialized txDataRegister
+   */
+  public static size(): number {
+    
+    return TxDataRegisterSerializer.BYTES_LENGTH;
+
+  }
 
   /**
    * Reads a txDataRegister buf at the specified offset

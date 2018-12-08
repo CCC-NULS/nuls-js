@@ -32,6 +32,19 @@ export interface ICoinOutput extends IReadData {
 export class CoinSerializer {
 
   /**
+   * Size of the serialized data
+   * @returns the bytes size of a serialized coin
+   */
+  public static size(data: ICoinData): number {
+
+    let size: number = 8 + 6;
+    size += VarByteSerializer.size(data.owner);
+
+    return size;
+
+  }
+
+  /**
    * Reads a coin from buf at the specified offset
    * @param buf Buffer object from where the number will be read
    * @param offset Number of bytes to skip before starting to read

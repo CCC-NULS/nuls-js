@@ -5,10 +5,12 @@ import { ICoinData, CoinSerializer } from './coin';
   * ### CoinData
   * https://github.com/nuls-io/nuls/blob/master/core-module/kernel/src/main/java/io/nuls/kernel/model/CoinData.java
   *
-  * | Len  | Fields     | Data Type   | Remark             |
-  * | ---- | ---------- | ----------- | ------------------ |
-  * | ??   | inputs     | Coin[]      | list of coins      |
-  * | ??   | outputs    | Coin[]      | list of coins      |
+  * | Len  | Fields      | Data Type   | Remark             |
+  * | ---- | ----------- | ----------- | ------------------ |
+  * | ??   | inputsSize  | VarInt      |                    |
+  * | ??   | inputs      | Coin[]      | list of coins      |
+  * | ??   | outputsSize | VarInt      |                    |
+  * | ??   | outputs     | Coin[]      | list of coins      |
   * 
  */
 export interface ICoinDataData {
@@ -27,6 +29,28 @@ export interface ICoinDataOutput extends IReadData {
 export class CoinDataSerializer {
 
   /**
+   * Size of the serialized data
+   * @returns the bytes size of a serialized coinData
+   */
+  public static size(data: ICoinDataData): number {
+
+    let size: number = 0;
+
+    size += VarIntSerializer.size(data.inputs.length);
+    for (const input of data.inputs) {
+      size += CoinSerializer.size(input);
+    }
+
+    size += VarIntSerializer.size(data.outputs.length);
+    for (const output of data.outputs) {
+      size += CoinSerializer.size(output);
+    }
+
+    return size;
+
+  }
+
+  /**
    * Reads a coinData from buf at the specified offset
    * @param buf Buffer object from where the number will be read
    * @param offset Number of bytes to skip before starting to read
@@ -37,7 +61,7 @@ export class CoinDataSerializer {
 
     const { data: inputLength, readBytes } = VarIntSerializer.read(buf, offset);
     offset += readBytes;
-    
+
     const inputs: ICoinData[] = [];
     for (let i = 0; i < inputLength; i++) {
       const { data: input, readBytes: inputReadBytes } = CoinSerializer.read(buf, offset);
@@ -73,7 +97,7 @@ export class CoinDataSerializer {
    * @returns Offset plus the number of bytes that has been written
    */
   public static write(data: ICoinDataData, buf: Buffer, offset: number): number {
- 
+
     offset = VarIntSerializer.write(data.inputs.length, buf, offset);
     for (const input of data.inputs) {
       offset = CoinSerializer.write(input, buf, offset);

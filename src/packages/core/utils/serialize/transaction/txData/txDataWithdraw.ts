@@ -1,6 +1,7 @@
 import { AgentHashSerializer } from '../../agentHash';
 import { AgentHash } from '../../../crypto';
 import { ITxDataOutput } from './txData';
+import { HASH_LENGTH } from '@/packages/core/common';
 
 /***
   * ### TxDataWithdraw
@@ -27,6 +28,18 @@ export interface ITxDataWithdrawOutput extends ITxDataOutput {
  * http://dev.nuls.io/protocol/transaction.html#TX-TYPE-CANCEL-DEPOSIT
  */
 export class TxDataWithdrawSerializer {
+
+  private static BYTES_LENGTH = HASH_LENGTH;
+
+  /**
+   * Size of the serialized data
+   * @returns the bytes size of a serialized txDataWithdraw
+   */
+  public static size(): number {
+    
+    return TxDataWithdrawSerializer.BYTES_LENGTH;
+
+  }
 
   /**
    * Reads a txDataDeposit buf at the specified offset

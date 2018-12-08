@@ -28,9 +28,23 @@ export interface ITxDataAliasedOutput extends ITxDataOutput {
 
 /**
  * Class to handle the protocol TxDataAliased type
- * http://dev.nuls.io/protocol/transaction.html#TX-TYPE-ACCOUNT-ALIAS
+ * https://github.com/nuls-io/nuls/blob/4436795eabe864437de013b83aee0dca0d5400bf/account-module/account/src/main/java/io/nuls/account/model/Alias.java#L41
  */
 export class TxDataAliasedSerializer {
+
+  /**
+   * Size of the serialized data
+   * @returns the bytes size of a serialized txDataAliased
+   */
+  public static size(data: ITxDataAliasedData): number {
+    
+    const addressHash: AddressHash = hashFromAddress(data.address);    
+    let size: number = VarByteSerializer.size(addressHash);
+    size += VarStringSerializer.size(data.alias);
+    
+    return size;
+
+  }
 
   /**
    * Reads a txDataAliased buf at the specified offset
@@ -44,9 +58,10 @@ export class TxDataAliasedSerializer {
     offset += readBytes;
 
     const { data: alias, readBytes: readBytes2 } = VarStringSerializer.read(buf, offset);
+    offset += readBytes2;
 
     return {
-      readBytes: readBytes + readBytes2,
+      readBytes: offset,
       data: {
         address,
         alias,
@@ -66,6 +81,7 @@ export class TxDataAliasedSerializer {
 
     const addressHash: AddressHash = hashFromAddress(data.address);
     offset = VarByteSerializer.write(addressHash, buf, offset);
+    offset = VarStringSerializer.write(data.address, buf, offset);
 
     return offset;
 

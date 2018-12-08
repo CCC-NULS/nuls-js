@@ -24,6 +24,19 @@ export interface IVarByteOutput extends IReadData {
 export class VarByteSerializer {
 
   /**
+   * Size of the serialized data
+   * @returns the bytes size of a serialized VarByte
+   */
+  public static size(data: Buffer): number {
+
+    let size: number = VarIntSerializer.size(data.length);
+    size += data.length;
+
+    return size;
+
+  }
+
+  /**
    * Reads a varByte from buf at the specified offset
    * @param buf Buffer object from where the bytes will be read
    * @param offset Number of bytes to skip before starting to read

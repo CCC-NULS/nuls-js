@@ -23,7 +23,20 @@ export interface IVarStringOutput extends IReadData {
  * http://dev.nuls.io/protocol/index.html#VarString
  */
 export class VarStringSerializer {
+
+  public static DEFAULT_ENCODING: string = 'utf8';
   
+  /**
+   * Size of the serialized data
+   * @returns the bytes size of a serialized VarString
+   */
+  public static size(data: string): number {
+
+    const bytes: Buffer = Buffer.from(data, VarStringSerializer.DEFAULT_ENCODING);
+    return VarByteSerializer.size(bytes);
+
+  }
+
   /**
    * Reads a varString from buf at the specified offset
    * @param buf Buffer object from where the bytes will be read
@@ -35,7 +48,7 @@ export class VarStringSerializer {
   
     return {
       readBytes,
-      data: data.toString('utf8')
+      data: data.toString(VarStringSerializer.DEFAULT_ENCODING)
     };
 
   }
@@ -49,7 +62,7 @@ export class VarStringSerializer {
    */
   public static write(data: string, buf: Buffer, offset: number): number {
 
-    const buffData = Buffer.from(data, 'utf8');
+    const buffData = Buffer.from(data, VarStringSerializer.DEFAULT_ENCODING);
 
     return VarByteSerializer.write(buffData, buf, offset);
 

@@ -1,4 +1,5 @@
 import { ITxDataOutput } from './txData';
+import { PLACE_HOLDER } from '../..';
 
 /***
   * ### TxDataReward (Coinbase)
@@ -26,7 +27,7 @@ export interface ITxDataRewardOutput extends ITxDataOutput {
  */
 export class TxDataRewardSerializer {
 
-  public static PLACE_HOLDER = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF]);
+  public static PLACE_HOLDER = PLACE_HOLDER;
 
   /**
    * Size of the serialized data

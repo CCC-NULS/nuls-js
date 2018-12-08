@@ -1,8 +1,9 @@
+import { VarIntSerializer } from './../varInt';
 import { ITransactionOutput } from './transaction';
 import { VarByteSerializer } from '..';
 import { TxDataSerializer, ITxDataData } from './txData/txData';
 import { CoinDataSerializer, ICoinDataData } from './coinData';
-import { IReadData } from '../common';
+import { IReadData, PLACE_HOLDER } from '../common';
 
 /***
   * ### Transaction
@@ -112,6 +113,44 @@ export class TransactionSerializer {
 
     if (data.scriptSign) {
       offset = VarByteSerializer.write(data.scriptSign, buf, offset);
+    }
+
+    return offset;
+
+  }
+
+  public static sizeHash(data: ITransactionData): number {
+    return TransactionSerializer.size(data) - VarByteSerializer.size(data.scriptSign);
+  }
+
+  // https://github.com/nuls-io/nuls/blob/274204b748ed72fdac150637ee758037d64c7ce5/core-module/kernel/src/main/java/io/nuls/kernel/model/Transaction.java#L91  
+  public static writeHash(data: ITransactionData, buf: Buffer, offset: number = 0, PROTOCOL_VERSION: number = 2): number {
+
+    const size: number = TransactionSerializer.sizeHash(data);
+
+    if (size === 0) {
+
+      PLACE_HOLDER.copy(buf, offset);
+      offset += PLACE_HOLDER.length;
+
+    } else if (PROTOCOL_VERSION == 2) {
+
+      offset = buf.writeUIntLE(data.type, offset, 2); // 16 bits
+      offset = buf.writeUIntLE(data.time, offset, 6); // 48 bits
+
+    } else {
+
+      offset = VarIntSerializer.write(data.type, buf, offset);
+      offset = VarIntSerializer.write(data.time, buf, offset);
+
+    }
+
+    if (size > 0) {
+
+      offset = VarByteSerializer.write(data.remark, buf, offset);
+      offset = TxDataSerializer.write(data.txData, buf, offset, data.type);
+      offset = CoinDataSerializer.write(data.coinData, buf, offset);
+
     }
 
     return offset;

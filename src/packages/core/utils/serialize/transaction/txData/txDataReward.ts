@@ -29,6 +29,16 @@ export class TxDataRewardSerializer {
   public static PLACE_HOLDER = Buffer.from([0xFF, 0xFF, 0xFF, 0xFF]);
 
   /**
+   * Size of the serialized data
+   * @returns the bytes size of a serialized txDataReward
+   */
+  public static size(): number {
+    
+    return TxDataRewardSerializer.PLACE_HOLDER.length;
+
+  }
+
+  /**
    * Reads a txDataReward buf at the specified offset
    * @param buf Buffer object from where the number will be read
    * @param offset Number of bytes to skip before starting to read

@@ -9,14 +9,14 @@ import { readUint64LE, writeUint64LE } from '../..';
 /***
   * ### TxDataDeposit
   * http://dev.nuls.io/protocol/transaction.html#TX-TYPE-JOIN-CONSENSUS
-  *
+  * 
   * ### TX_TYPE_JOIN_CONSENSUS
   *
   * | 尺寸  | 字段       | 数据类型           | 说明           |
   * | ---- | ---------- | ---------------- | -------------- |
   * | 8    | deposit    | byte[] (uint64)  | 委托金额        |
   * | 23   | address    | byte[23]         | 地址            |
-  * | 8    | agentHash  | NulsDigestData   | 委托节点地址     |
+  * | ??   | agentHash  | NulsDigestData   | 委托节点地址     |
  */
 
 export interface ITxDataDepositData {
@@ -32,11 +32,21 @@ export interface ITxDataDepositOutput extends ITxDataOutput {
 
 /**
  * Class to handle the protocol TxDataDeposit type
- * http://dev.nuls.io/protocol/transaction.html#TX-TYPE-JOIN-CONSENSUS
+ * https://github.com/nuls-io/nuls/blob/4436795eabe864437de013b83aee0dca0d5400bf/consensus-module/poc/consensus-poc-protocol/src/main/java/io/nuls/consensus/poc/protocol/entity/Deposit.java#L42
  */
 export class TxDataDepositSerializer {
 
   private static BYTES_LENGTH = 8 + ADDRESS_LENGTH + HASH_LENGTH;
+
+  /**
+   * Size of the serialized data
+   * @returns the bytes size of a serialized txDataDeposit
+   */
+  public static size(): number {
+    
+    return TxDataDepositSerializer.BYTES_LENGTH;
+
+  }
 
   /**
    * Reads a txDataDeposit buf at the specified offset

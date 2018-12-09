@@ -1,4 +1,4 @@
-import { IReadData, VarIntSerializer } from '..';
+import { IReadData, VarIntSerializer } from '../..';
 import { ICoinData, CoinSerializer } from './coin';
 
 /***

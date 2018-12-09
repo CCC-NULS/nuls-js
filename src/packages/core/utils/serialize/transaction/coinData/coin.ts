@@ -1,5 +1,5 @@
-import { AddressHash } from './../../crypto';
-import { IReadData, VarByteSerializer, writeUint64LE, readUint64LE } from '..';
+import { AddressHash } from '../../../crypto';
+import { IReadData, VarByteSerializer, writeUint64LE, readUint64LE } from '../..';
 
 /***
   * ### Coin

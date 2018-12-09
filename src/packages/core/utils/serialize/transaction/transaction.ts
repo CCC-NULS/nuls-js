@@ -2,7 +2,7 @@ import { VarIntSerializer } from './../varInt';
 import { ITransactionOutput } from './transaction';
 import { VarByteSerializer } from '..';
 import { TxDataSerializer, ITxDataData } from './txData/txData';
-import { CoinDataSerializer, ICoinDataData } from './coinData';
+import { CoinDataSerializer, ICoinDataData } from './coinData/coinData';
 import { IReadData, PLACE_HOLDER } from '../common';
 
 /***

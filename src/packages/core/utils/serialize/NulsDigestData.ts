@@ -1,4 +1,4 @@
-import { VarStringSerializer } from './varString';
+import { VarByteSerializer } from './varByte';
 import { IReadData } from './common';
 
 /***
@@ -10,12 +10,12 @@ import { IReadData } from './common';
   * | Len  | Fields        | Data Type | Remark |
   * | ---- | ------------- | --------- | ------ |
   * | 1    | digestAlgType | Byte      | 算法ID |
-  * | ??   | digest        | VarString | 摘要   |
+  * | ??   | digest        | VarByte   | 摘要   |
  */
 
 export interface INulsDigestDataData {
   digestAlgType: number;
-  digest: string;
+  digest: Buffer;
 }
 
 export interface INulsDigestDataOutput extends IReadData {
@@ -37,7 +37,7 @@ export class NulsDigestDataSerializer {
   public static read(buf: Buffer, offset: number): INulsDigestDataOutput {
 
     const digestAlgType = buf.readUInt8(offset);
-    const { data: digest, readBytes } = VarStringSerializer.read(buf, offset);
+    const { data: digest, readBytes } = VarByteSerializer.read(buf, offset);
 
     return {
       readBytes: readBytes + 1,
@@ -59,7 +59,7 @@ export class NulsDigestDataSerializer {
   public static write(data: INulsDigestDataData, buf: Buffer, offset: number): number {
 
     offset = buf.writeUInt8(data.digestAlgType, offset);
-    offset = VarStringSerializer.write(data.digest, buf, offset);
+    offset = VarByteSerializer.write(data.digest, buf, offset);
 
     return offset;
 

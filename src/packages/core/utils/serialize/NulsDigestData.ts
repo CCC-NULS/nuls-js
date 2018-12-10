@@ -30,6 +30,17 @@ export interface INulsDigestDataOutput extends IReadData {
 export class NulsDigestDataSerializer {
 
   /**
+   * Size of the serialized data
+   * @param buf Buffer object from where the bytes will be read
+   * @param data INulsDigestDataData to calculate size
+   */
+  public static size(data: INulsDigestDataData): number {
+
+    return 1 + VarByteSerializer.size(data.digest);
+
+  }
+
+  /**
    * Reads a NulsDigestData from buf at the specified offset
    * @param buf Buffer object from where the bytes will be read
    * @param offset Number of bytes to skip before starting to read

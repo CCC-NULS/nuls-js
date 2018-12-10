@@ -1,4 +1,5 @@
 import { sha256Twice, sha256, ripemd160 } from '../utils/crypto';
+import { INulsDigestDataData } from '../utils/serialize/nulsDigestData';
 
 /***
  * ### NulsDigestData
@@ -12,24 +13,34 @@ export enum NulsDigestDataAlgType {
   DIGEST_ALG_SHA160 = 1
 }
 
+export type IDigestData = INulsDigestDataData;
+
 export class NulsDigestData {
 
   public static HASH_LENGTH: number = 34;
 
   protected static digestAlgType: number = NulsDigestDataAlgType.DIGEST_ALG_SHA256;
 
-  static digest(data: Buffer, digestAlgType: NulsDigestDataAlgType = NulsDigestData.digestAlgType): Buffer {
+  static digest(data: Buffer, digestAlgType: NulsDigestDataAlgType = NulsDigestData.digestAlgType): IDigestData {
+
+    let digest: Buffer;
 
     switch(digestAlgType) {
 
-      case NulsDigestDataAlgType.DIGEST_ALG_SHA256:
-        return sha256Twice(data);
-
       case NulsDigestDataAlgType.DIGEST_ALG_SHA160:
-        return ripemd160(sha256(data));
+        digest = ripemd160(sha256(data));
+
+      default:
+      case NulsDigestDataAlgType.DIGEST_ALG_SHA256:
+        digest = sha256Twice(data);
 
     }
   
+    return {
+      digestAlgType,
+      digest,
+    };
+
   }
 
 }

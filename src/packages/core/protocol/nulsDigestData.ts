@@ -18,7 +18,7 @@ export class NulsDigestData {
 
   protected static digestAlgType: number = NulsDigestDataAlgType.DIGEST_ALG_SHA256;
 
-  static digest(data: Buffer, digestAlgType: NulsDigestDataAlgType) {
+  static digest(data: Buffer, digestAlgType: NulsDigestDataAlgType = NulsDigestData.digestAlgType): Buffer {
 
     switch(digestAlgType) {
 

@@ -26,18 +26,6 @@ export class CoinOwnerUtils {
    */
   public static parse(coinOwner: AddressHash): ICoinOwnerData {
 
-    // cursor += pos;
-    // if (owner.length > ADDRESS_LENGTH) {
-    //   const val = (owner.length - HASH_LENGTH);
-    //   if (val > 1) { throw new Error('Long int for index found'); }
-    //   // raise ValueError("Long int for index found")
-    //   // Not supported
-    //   this.fromHash = owner.slice(0, HASH_LENGTH - owner.length);
-    //   this.fromIndex = owner[owner.length - 1];
-    // } else {
-    //   this.address = owner;
-    // } 
-
     if (coinOwner.length === ADDRESS_LENGTH) {
 
       const { data: address } = AddressSerializer.read(coinOwner, 0);

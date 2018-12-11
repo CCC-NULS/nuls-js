@@ -1,5 +1,5 @@
-import { VarByteSerializer } from './varByte';
-import { IReadData } from './common';
+import { VarByteSerializer } from '../../varByte';
+import { IReadData } from '../../common';
 
 /***
   * ### NulsSignData

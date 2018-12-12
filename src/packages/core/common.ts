@@ -9,7 +9,7 @@ export const CHEAP_UNIT_FEE = 100000;
 export const UNIT_FEE = 1000000;
 export const KB = 1024;
 
-export const PLACE_HOLDER = Buffer.from([255, 255, 255, 255]);
+export const P2SH_ADDRESS_TYPE = 3;
 
 // http://dev.nuls.io/protocol/transaction.html#ID-%E5%AE%9A%E4%B9%89
 export enum TransactionType {

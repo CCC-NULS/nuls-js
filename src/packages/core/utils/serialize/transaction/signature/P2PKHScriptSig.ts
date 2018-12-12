@@ -16,7 +16,7 @@ import { NulsSignDataSerializer, INulsSignDataData } from './nulsSignData';
 
 export interface IP2PKHScriptSigData {
   publicKey: Buffer;
-  nulsSignData: INulsSignDataData;
+  signData: INulsSignDataData;
 }
 
 export interface IP2PKHScriptSigOutput extends IReadData {
@@ -39,7 +39,7 @@ export class P2PKHScriptSigSerializer {
   public static size(data: IP2PKHScriptSigData): number {
 
     let size: number = VarByteSerializer.size(data.publicKey);
-    size += NulsSignDataSerializer.size(data.nulsSignData);
+    size += NulsSignDataSerializer.size(data.signData);
 
     return size;
 
@@ -55,13 +55,13 @@ export class P2PKHScriptSigSerializer {
     const { data: publicKey, readBytes } = VarByteSerializer.read(buf, offset);
     offset += readBytes;
 
-    const { data: nulsSignData, readBytes: readBytes2 } = NulsSignDataSerializer.read(buf, offset);
+    const { data: signData, readBytes: readBytes2 } = NulsSignDataSerializer.read(buf, offset);
 
     return {
       readBytes: readBytes + readBytes2,
       data: {
         publicKey,
-        nulsSignData
+        signData
       }
     };
 
@@ -77,7 +77,7 @@ export class P2PKHScriptSigSerializer {
   public static write(data: IP2PKHScriptSigData, buf: Buffer, offset: number): number {
 
     offset = VarByteSerializer.write(data.publicKey, buf, offset);
-    offset = NulsSignDataSerializer.write(data.nulsSignData, buf, offset);
+    offset = NulsSignDataSerializer.write(data.signData, buf, offset);
 
     return offset;
 

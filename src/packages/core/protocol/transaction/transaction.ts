@@ -4,6 +4,7 @@ import { TransferTransaction } from './transferTransaction';
 import { CoinData } from '../coin/coinData';
 import { NulsDigestData, IDigestData } from '../nulsDigestData';
 import { NulsDigestDataSerializer } from '../../utils/serialize/nulsDigestData';
+import { createTransactionSignature } from '../../utils/signature';
 
 export abstract class Transaction {
 
@@ -57,6 +58,14 @@ export abstract class Transaction {
   coinData(coinData: CoinData) {
 
     this._coinData = coinData;
+
+  }
+
+  // TODO: Implement all kinds of signatures (P2PKH, P2PS, etc...)
+  sign(privateKey: string) {
+    
+    const privateKeyBuffer: Buffer = Buffer.from(privateKey, 'hex');
+    this._signature = createTransactionSignature(this, privateKeyBuffer);
 
   }
 

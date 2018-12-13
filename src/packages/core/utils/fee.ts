@@ -6,61 +6,47 @@
  */
 
 // TODO: Use BigNumber to handle nuls amounts
-export const MIN_PRICE_PRE_1024_BYTES = 100000;
-export const OTHER_PRECE_PRE_1024_BYTES = 1000000;
+export const MIN_FEE_PRICE_1024_BYTES = 100000;
+export const MAX_FEE_PRICE_1024_BYTES = 1000000;
 const KB = 1024;
 
 /**
- * According to the transaction size calculate the handling fee
+ * Retrieves the minimum fee for the given transaction size
  * @param size size of the transaction
  */
-export function getTransferFee(size: number) {
-
-    let fee = (MIN_PRICE_PRE_1024_BYTES * (size / KB));
-
-    if (size % KB > 0) {
-        fee += MIN_PRICE_PRE_1024_BYTES;
-    }
-
-    return fee;
-
+export function getMinFee(size: number) {
+  return getFee(size, MIN_FEE_PRICE_1024_BYTES);
 }
 
 /**
- * According to the transaction size calculate the handling fee
+ * Retrieves the maximun fee for the given transaction size
  * @param size size of the transaction
  */
 export function getMaxFee(size: number) {
-
-    let fee = (OTHER_PRECE_PRE_1024_BYTES * (size / KB));
-
-    if (size % KB > 0) {
-        fee += OTHER_PRECE_PRE_1024_BYTES;
-    }
-
-    return fee;
-
+  return getFee(size, MAX_FEE_PRICE_1024_BYTES);
 }
 
 /**
  * According to the transaction size calculate the handling fee
  * @param size size of the transaction
+ * @param feePrice price of the fee per block (1MB)
  */
-export function getFee(size: number, price: number) {
+export function getFee(size: number, feePrice: number) {
 
-    if (price < MIN_PRICE_PRE_1024_BYTES) {
-        throw new Error('Incorrect fee');
-    }
-    if (price > OTHER_PRECE_PRE_1024_BYTES) {
-        throw new Error('Incorrect fee');
-    }
+  if (feePrice < MIN_FEE_PRICE_1024_BYTES) {
+    throw new Error('Fee price per block too low');
+  }
 
-    let fee = (price * (size / KB));
+  if (feePrice > MAX_FEE_PRICE_1024_BYTES) {
+    throw new Error('Fee price per block too high');
+  }
 
-    if (size % KB > 0) {
-        fee += price;
-    }
+  let fee = (feePrice * (size / KB));
 
-    return fee;
+  if (size % KB > 0) {
+    fee += feePrice;
+  }
+
+  return fee;
 
 }

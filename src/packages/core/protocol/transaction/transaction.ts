@@ -5,6 +5,7 @@ import { CoinData } from '../coin/coinData';
 import { NulsDigestData, IDigestData } from '../nulsDigestData';
 import { NulsDigestDataSerializer } from '../../utils/serialize/nulsDigestData';
 import { createTransactionSignature } from '../../utils/signature';
+import { MIN_FEE_PRICE_1024_BYTES, getFee } from '../../utils/fee';
 
 export abstract class Transaction {
 
@@ -13,7 +14,7 @@ export abstract class Transaction {
   protected _remark!: Buffer;
   protected _txData!: any;
   protected _coinData: CoinData = new CoinData();
-  protected _signature!: Buffer;
+  protected _signature!: Buffer | undefined;
 
   static fromBytes(bytes: string) {
 
@@ -23,7 +24,7 @@ export abstract class Transaction {
 
   }
 
-  static fromRawData(rawData: ITransactionData) {
+  static fromRawData(rawData: ITransactionData): Transaction {
 
     let tx: Transaction;
 
@@ -35,9 +36,36 @@ export abstract class Transaction {
 
     }
 
-    tx.remark(rawData.remark);
-    tx.time(rawData.time);
-    tx.coinData(CoinData.fromRawData(rawData.coinData));
+    return tx;
+
+  }
+
+  protected static _fromRawData<T extends Transaction>(rawData: ITransactionData, tx: T): T {
+
+    if (rawData.type !== tx._type) {
+      throw new Error(`Error reading Transaction from rawData (Incompatible types: ${rawData.type} !== ${tx._type})`);
+    }
+
+    tx._type = rawData.type;
+    tx._remark = rawData.remark;
+    tx._time = rawData.time;
+    tx._coinData = CoinData.fromRawData(rawData.coinData);
+    tx._signature = rawData.scriptSign;
+
+    return tx;
+
+  }
+
+  protected static toRawData(tx: Transaction): ITransactionData {
+
+    return {
+      type: tx._type,
+      time: tx._time,
+      remark: tx._remark,
+      txData: tx._txData,
+      coinData: CoinData.toRawData(tx._coinData),
+      scriptSign: tx._signature
+    };
 
   }
 
@@ -61,27 +89,18 @@ export abstract class Transaction {
 
   }
 
-  // getFee() {
-  //   const maxSize = this.get_max_size();
-  //   let unitFee = UNIT_FEE;
-  //   if ((this.type === 2) || (this.type === 101)) {
-  //     unitFee = CHEAP_UNIT_FEE;
-  //   }
+  getFee(feePrice: number = MIN_FEE_PRICE_1024_BYTES): number {
 
-  //   let fee = unitFee * Math.floor(maxSize / KB); // per kb
+    const transactionData: ITransactionData = Transaction.toRawData(this);
+    const transactionSize: number = TransactionSerializer.size(transactionData);
 
-  //   if (maxSize % KB > 0) {
-  //     // why is it needed, to be sure we have at least the fee ?
-  //     // or am I doing a bad port from java, where they work with int and not mutable ?
-  //     fee += unitFee;
-  //   }
+    return getFee(transactionSize, feePrice);
 
-  //   return fee;
-  // }
+  }
 
   // TODO: Implement all kinds of signatures (P2PKH, P2PS, etc...)
   sign(privateKey: string) {
-    
+
     const privateKeyBuffer: Buffer = Buffer.from(privateKey, 'hex');
     this._signature = createTransactionSignature(this, privateKeyBuffer);
 
@@ -102,14 +121,7 @@ export abstract class Transaction {
   // https://github.com/nuls-io/nuls/blob/274204b748ed72fdac150637ee758037d64c7ce5/core-module/kernel/src/main/java/io/nuls/kernel/model/Transaction.java#L213
   getDigest(): IDigestData {
 
-    const transactionData: ITransactionData = {
-      type: this._type,
-      time: this._time,
-      remark: this._remark,
-      txData: this._txData,
-      coinData: CoinData.toRawData(this._coinData),
-      scriptSign: this._signature
-    };
+    const transactionData: ITransactionData = Transaction.toRawData(this);
 
     const transactionHashSize: number = TransactionSerializer.sizeHash(transactionData);
     const transactionHash: Buffer = Buffer.allocUnsafe(transactionHashSize);

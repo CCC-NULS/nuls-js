@@ -25,7 +25,7 @@ export interface ITransactionData {
   remark: Buffer;
   txData: ITxDataData;
   coinData: ICoinDataData;
-  scriptSign: Buffer;
+  scriptSign?: Buffer;
 }
 
 export interface ITransactionOutput extends IReadData {
@@ -49,7 +49,10 @@ export class TransactionSerializer {
     size += VarByteSerializer.size(data.remark);
     size += TxDataSerializer.size(data.txData, data.type);
     size += CoinDataSerializer.size(data.coinData);
-    size += VarByteSerializer.size(data.scriptSign);
+
+    if (data.scriptSign) {
+      size += VarByteSerializer.size(data.scriptSign);
+    }
 
     return size;
 
@@ -82,17 +85,22 @@ export class TransactionSerializer {
     const { data: scriptSign, readBytes: bytes4 } = VarByteSerializer.read(buf, offset);
     offset += bytes4;
 
-    return {
+    const output: ITransactionOutput = {
       readBytes: offset - initialOffset,
       data: {
         type,
         time,
         remark,
         txData,
-        coinData,
-        scriptSign
+        coinData
       }
     };
+
+    if (scriptSign.length > 0) {
+      output.data.scriptSign = scriptSign;
+    }
+
+    return output;
 
   }
 
@@ -120,7 +128,13 @@ export class TransactionSerializer {
   }
 
   public static sizeHash(data: ITransactionData): number {
-    return TransactionSerializer.size(data) - VarByteSerializer.size(data.scriptSign);
+
+    const scriptSignSize = data.scriptSign
+      ? VarByteSerializer.size(data.scriptSign)
+      : 0;
+
+    return TransactionSerializer.size(data) - scriptSignSize;
+
   }
 
   // https://github.com/nuls-io/nuls/blob/274204b748ed72fdac150637ee758037d64c7ce5/core-module/kernel/src/main/java/io/nuls/kernel/model/Transaction.java#L91  

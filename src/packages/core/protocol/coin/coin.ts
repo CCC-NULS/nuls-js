@@ -5,7 +5,7 @@ export class Coin {
   constructor(
     public na: number,
     public lockTime: number,
-    public owner?: string
+    public owner?: Buffer
   ) { }
 
 }
@@ -17,7 +17,7 @@ export class CoinInput extends Coin {
     public fromIndex: number,
     na: number,
     lockTime: number,
-    owner?: string
+    owner?: Buffer
   ) {
     super(na, lockTime, owner);
   }
@@ -30,7 +30,7 @@ export class CoinOutput extends Coin {
     public address: Address,
     na: number,
     lockTime: number,
-    owner?: string
+    owner?: Buffer
   ) {
     super(na, lockTime, owner);
   }

@@ -41,6 +41,49 @@ export class CoinData {
 
   }
 
+  static toRawData(coinData: CoinData): ICoinDataData {
+
+    let rawData: ICoinDataData = {
+      inputs: [],
+      outputs: []
+    };
+
+    coinData.inputs.forEach((input: CoinInput) => {
+
+      if (input.fromHash && input.fromIndex) {
+
+        const owner: Buffer = CoinOwnerUtils.create(input);
+
+        rawData.inputs.push({
+          owner,
+          na: input.na,
+          lockTime: input.lockTime,
+        });
+
+      }
+
+    });
+
+    coinData.outputs.forEach((ouput: CoinOutput) => {
+
+      if (ouput.address) {
+
+        const owner: Buffer = CoinOwnerUtils.create(ouput);
+
+        rawData.outputs.push({
+          owner,
+          na: ouput.na,
+          lockTime: ouput.lockTime,
+        });
+
+      }
+
+    });
+
+    return rawData;
+
+  }
+
   static fromUTXO(utxo: any) {
 
     return new CoinData();

@@ -12,7 +12,7 @@ export abstract class Transaction {
   protected _time: number = new Date().getTime();
   protected _remark!: Buffer;
   protected _txData!: any;
-  protected _coinData!: any;
+  protected _coinData: CoinData = new CoinData();
   protected _signature!: Buffer;
 
   static fromBytes(bytes: string) {
@@ -61,6 +61,24 @@ export abstract class Transaction {
 
   }
 
+  // getFee() {
+  //   const maxSize = this.get_max_size();
+  //   let unitFee = UNIT_FEE;
+  //   if ((this.type === 2) || (this.type === 101)) {
+  //     unitFee = CHEAP_UNIT_FEE;
+  //   }
+
+  //   let fee = unitFee * Math.floor(maxSize / KB); // per kb
+
+  //   if (maxSize % KB > 0) {
+  //     // why is it needed, to be sure we have at least the fee ?
+  //     // or am I doing a bad port from java, where they work with int and not mutable ?
+  //     fee += unitFee;
+  //   }
+
+  //   return fee;
+  // }
+
   // TODO: Implement all kinds of signatures (P2PKH, P2PS, etc...)
   sign(privateKey: string) {
     
@@ -89,7 +107,7 @@ export abstract class Transaction {
       time: this._time,
       remark: this._remark,
       txData: this._txData,
-      coinData: this._coinData,
+      coinData: CoinData.toRawData(this._coinData),
       scriptSign: this._signature
     };
 

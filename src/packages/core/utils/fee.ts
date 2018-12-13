@@ -6,8 +6,8 @@
  */
 
 // TODO: Use BigNumber to handle nuls amounts
-const MIN_PRICE_PRE_1024_BYTES = 100000;
-const OTHER_PRECE_PRE_1024_BYTES = 1000000;
+export const MIN_PRICE_PRE_1024_BYTES = 100000;
+export const OTHER_PRECE_PRE_1024_BYTES = 1000000;
 const KB = 1024;
 
 /**

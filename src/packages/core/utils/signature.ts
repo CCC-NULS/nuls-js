@@ -1,9 +1,9 @@
-import { Transaction } from '../protocol/transaction';
 import { IDigestData } from '../protocol/nulsDigestData';
 import * as secp256k1 from 'secp256k1';
 import { publicKeyFromPrivateKey } from './crypto';
 import { P2PKHScriptSigSerializer, IP2PKHScriptSigData } from './serialize/transaction/signature/P2PKHScriptSig';
 import { INulsSignDataData } from './serialize/transaction/signature/nulsSignData';
+import { BaseTransaction } from '../protocol/transaction/baseTransaction';
 
 // https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/script/P2PHKSignature.java#L44
 export type IP2PHKSignature = IP2PKHScriptSigData;
@@ -19,7 +19,7 @@ export type SignatureHash = Buffer;
 
 // https://github.com/nuls-io/nuls/blob/6e22e5ba554fae9e690faaa3797cdddb49f90c44/core-module/kernel/src/main/java/io/nuls/kernel/script/SignatureUtil.java#L147
 // TODO: Implement P2SH "P2PKHScriptSignature"
-export function createTransactionSignature(tx: Transaction, privateKey: Buffer): SignatureHash {
+export function createTransactionSignature(tx: BaseTransaction, privateKey: Buffer): SignatureHash {
   
   const signatureData: IP2PHKSignature = createSignatureByEckey(tx, privateKey);
   
@@ -33,7 +33,7 @@ export function createTransactionSignature(tx: Transaction, privateKey: Buffer):
 }
 
 // https://github.com/nuls-io/nuls/blob/6e22e5ba554fae9e690faaa3797cdddb49f90c44/core-module/kernel/src/main/java/io/nuls/kernel/script/SignatureUtil.java#L193
-function createSignatureByEckey(tx: Transaction, privateKey: Buffer): IP2PHKSignature {
+function createSignatureByEckey(tx: BaseTransaction, privateKey: Buffer): IP2PHKSignature {
 
   const publicKey: Buffer = publicKeyFromPrivateKey(privateKey);
   const signData: INulsSignData = signDigest(tx, privateKey);
@@ -46,7 +46,7 @@ function createSignatureByEckey(tx: Transaction, privateKey: Buffer): IP2PHKSign
 }
 
 // https://github.com/nuls-io/nuls/blob/6e22e5ba554fae9e690faaa3797cdddb49f90c44/core-module/kernel/src/main/java/io/nuls/kernel/script/SignatureUtil.java#L400
-function signDigest(tx: Transaction, privateKey: Buffer): INulsSignData {
+function signDigest(tx: BaseTransaction, privateKey: Buffer): INulsSignData {
 
   const digestData: IDigestData = tx.getDigest();
 

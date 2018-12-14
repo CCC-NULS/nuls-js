@@ -1,39 +1,28 @@
 import { Address } from './../../utils/crypto';
 import { ICoinDataData } from '../../utils/serialize/transaction/coinData/coinData';
 import { ICoinData } from '../../utils/serialize/transaction/coinData/coin';
-import { CoinOwnerUtils, ICoinOwnerData } from '../../utils/coinOwner';
 import { CoinInput, CoinOutput } from './coin';
 
 export class CoinData {
 
-  private inputs: CoinInput[] = [];
-  private outputs: CoinOutput[] = [];
+  public inputs: CoinInput[] = [];
+  public outputs: CoinOutput[] = [];
 
   static fromRawData(rawData: ICoinDataData): CoinData {
 
     let coinData = new CoinData();
 
-    rawData.inputs.forEach((input: ICoinData) => {
+    rawData.inputs.forEach((inputRawData: ICoinData) => {
 
-      const ownerData: ICoinOwnerData = CoinOwnerUtils.parse(input.owner);
-
-      if (ownerData.fromHash && ownerData.fromIndex) {
-
-        coinData.addInput(ownerData.fromHash, ownerData.fromIndex, input.na, input.lockTime);
-
-      }
+      const input: CoinInput = CoinInput.fromRawData(inputRawData);
+      coinData.inputs.push(input);
 
     });
 
-    rawData.outputs.forEach((ouput: ICoinData) => {
+    rawData.outputs.forEach((outputRawData: ICoinData) => {
 
-      const ownerData: ICoinOwnerData = CoinOwnerUtils.parse(ouput.owner);
-
-      if (ownerData.address) {
-
-        coinData.addOutput(ownerData.address, ouput.na, ouput.lockTime);
-
-      }
+      const output: CoinOutput = CoinOutput.fromRawData(outputRawData);
+      coinData.outputs.push(output);
 
     });
 
@@ -50,33 +39,15 @@ export class CoinData {
 
     coinData.inputs.forEach((input: CoinInput) => {
 
-      if (input.fromHash && input.fromIndex) {
-
-        const owner: Buffer = CoinOwnerUtils.create(input);
-
-        rawData.inputs.push({
-          owner,
-          na: input.na,
-          lockTime: input.lockTime,
-        });
-
-      }
+      const inputRawData: ICoinData = CoinInput.toRawData(input);
+      rawData.inputs.push(inputRawData);
 
     });
 
-    coinData.outputs.forEach((ouput: CoinOutput) => {
+    coinData.outputs.forEach((output: CoinOutput) => {
 
-      if (ouput.address) {
-
-        const owner: Buffer = CoinOwnerUtils.create(ouput);
-
-        rawData.outputs.push({
-          owner,
-          na: ouput.na,
-          lockTime: ouput.lockTime,
-        });
-
-      }
+      const outputRawData: ICoinData = CoinOutput.toRawData(output);
+      rawData.outputs.push(outputRawData);
 
     });
 

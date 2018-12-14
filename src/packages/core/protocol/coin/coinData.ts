@@ -6,8 +6,8 @@ import { CoinInput, CoinOutput } from './coin';
 
 export class CoinData {
 
-  private inputs!: CoinInput[];
-  private outputs!: CoinOutput[];
+  private inputs: CoinInput[] = [];
+  private outputs: CoinOutput[] = [];
 
   static fromRawData(rawData: ICoinDataData): CoinData {
 

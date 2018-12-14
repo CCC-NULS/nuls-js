@@ -1,7 +1,7 @@
 import { AgentHashSerializer } from '../../agentHash';
 import { AgentHash } from '../../../crypto';
 import { ITxDataOutput } from './txData';
-import { HASH_LENGTH } from '@/packages/core/common';
+import { HASH_LENGTH } from '../../../../common';
 
 /***
   * ### TxDataWithdraw

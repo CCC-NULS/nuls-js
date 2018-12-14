@@ -1,3 +1,4 @@
+import { UTXO } from './../utxo';
 import { TransactionType } from '../../common';
 import { TransactionSerializer, ITransactionData } from '../../utils/serialize/transaction/transaction';
 import { TransferTransaction } from './transferTransaction';
@@ -15,6 +16,8 @@ export abstract class Transaction {
   protected _txData!: any;
   protected _coinData: CoinData = new CoinData();
   protected _signature!: Buffer | undefined;
+
+  protected constructor() {}
 
   static fromBytes(bytes: string) {
 
@@ -66,6 +69,22 @@ export abstract class Transaction {
       coinData: CoinData.toRawData(tx._coinData),
       scriptSign: tx._signature
     };
+
+  }
+
+  static fromUtxos(utxos: UTXO[]): Transaction {
+    throw new Error('Not implemented');
+  };
+
+  protected static _fromUtxos<T extends Transaction>(utxos: UTXO[], tx: T): T {
+    
+    utxos.forEach((utxo: UTXO) => {
+
+      tx._coinData.addInput(utxo.hash, utxo.idx, utxo.value, utxo.lockTime);
+
+    });
+
+    return tx;
 
   }
 

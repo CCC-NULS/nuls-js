@@ -6,17 +6,19 @@ import { NulsDigestData, IDigestData } from '../nulsDigestData';
 import { NulsDigestDataSerializer } from '../../utils/serialize/nulsDigestData';
 import { createTransactionSignature } from '../../utils/signature';
 import { MIN_FEE_PRICE_1024_BYTES, getFee } from '../../utils/fee';
+import { IAPIConfig } from '../..';
+import { UtxoApi } from '../../api/utxo';
 
 export abstract class BaseTransaction {
 
+  protected static TX_FEE_PRICE = MIN_FEE_PRICE_1024_BYTES;
   protected _type!: TransactionType;
   protected _time: number = new Date().getTime();
   protected _remark!: Buffer;
   protected _txData!: any;
   protected _coinData: CoinData = new CoinData();
   protected _signature!: Buffer | undefined;
-
-  protected constructor() {}
+  protected _change!: string;
 
   static fromBytes(bytes: string) {
     throw new Error('Not implemented');
@@ -60,7 +62,7 @@ export abstract class BaseTransaction {
   };
 
   protected static _fromUtxos<T extends BaseTransaction>(utxos: UTXO[], tx: T): T {
-    
+
     utxos.forEach((utxo: UTXO) => {
 
       tx._coinData.addInput(utxo.hash, utxo.idx, utxo.value, utxo.lockTime);
@@ -68,6 +70,21 @@ export abstract class BaseTransaction {
     });
 
     return tx;
+
+  }
+
+  static async fromAddress(address: string, config: IAPIConfig): Promise<BaseTransaction> {
+    throw new Error('Not implemented');
+  };
+
+  protected static async _fromAddress<T extends BaseTransaction>(address: string, config: IAPIConfig, tx: T): Promise<T> {
+
+    tx._change = address;
+
+    const api = new UtxoApi(config);
+    const utxos = await api.getUtxos(address);
+
+    return BaseTransaction._fromUtxos(utxos, tx);
 
   }
 
@@ -85,18 +102,15 @@ export abstract class BaseTransaction {
 
   }
 
-  coinData(coinData: CoinData) {
+  change(address: string) {
 
-    this._coinData = coinData;
+    this._change = address;
 
   }
 
-  getFee(feePrice: number = MIN_FEE_PRICE_1024_BYTES): number {
+  getFee(): number {
 
-    const transactionData: ITransactionData = BaseTransaction.toRawData(this);
-    const transactionSize: number = TransactionSerializer.size(transactionData);
-
-    return getFee(transactionSize, feePrice);
+    return this._coinData.getFee();
 
   }
 
@@ -130,6 +144,26 @@ export abstract class BaseTransaction {
     TransactionSerializer.writeHash(transactionData, transactionHash);
 
     return NulsDigestData.digest(transactionHash);
+
+  }
+
+  protected coinData(coinData: CoinData) {
+
+    this._coinData = coinData;
+
+  }
+
+  protected calculateFee(feePrice: number = BaseTransaction.TX_FEE_PRICE): number {
+
+    const transactionSize: number = this.size();
+    return getFee(transactionSize, feePrice);
+
+  }
+
+  protected size(): number {
+
+    const transactionData: ITransactionData = BaseTransaction.toRawData(this);
+    return TransactionSerializer.size(transactionData);
 
   }
 

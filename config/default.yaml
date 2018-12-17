@@ -5,6 +5,16 @@ nuls:
       host: http://testnet.apiserver.nuls.io
       port: ''
       base: /nuls
+    transaction:
+      host: https://nuls.world
+      port: 443
+      base: /api/contract/
+    utxo:
+      host: https://nuls.world
+      port: 443
+      base: ''
+      resources:
+        address: /addresses/outputs/__ADDRESS__.json
     contract:
       host: http://localhost
       port: 8001

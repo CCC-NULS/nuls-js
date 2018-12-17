@@ -21,4 +21,23 @@ export class APIServerClass {
 			timeout: config.nuls.api.timeout
 		});
 	}
+
+	protected getResource(name: string, ...args: string[]) {
+
+		if (!this.resources || !this.resources[name]) {
+			throw new Error('Wrong API config');
+		}
+
+		const resource = this.resources[name];
+
+		args.forEach((arg: string) => {
+
+			resource.replace(/__([A-Z]+?)__/, arg);
+
+		});
+
+		return resource;
+
+	}
+
 }

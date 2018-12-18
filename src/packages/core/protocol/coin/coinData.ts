@@ -55,12 +55,6 @@ export class CoinData {
 
   }
 
-  static fromUTXO(utxo: any) {
-
-    return new CoinData();
-
-  }
-
   addOutput(address: Address, value: number, lockTime: number = -1) {
 
     this.outputs.push(new CoinOutput(address, value, lockTime));
@@ -74,13 +68,17 @@ export class CoinData {
   }
 
   // https://github.com/nuls-io/nuls/blob/6e22e5ba554fae9e690faaa3797cdddb49f90c44/core-module/kernel/src/main/java/io/nuls/kernel/model/CoinData.java#L139
-  getFee() {
+  getFee(): number {
 
     const inputs = this.inputs.reduce((prev: number, curr: CoinInput) => prev + curr.na, 0);
     const outputs = this.outputs.reduce((prev: number, curr: CoinOutput) => prev + curr.na, 0);
 
     return inputs - outputs;
 
+  }
+
+  getUnspent(): number {
+    return this.getFee();
   }
 
 }

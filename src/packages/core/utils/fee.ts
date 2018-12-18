@@ -29,7 +29,7 @@ export function getMaxFee(size: number) {
 /**
  * According to the transaction size calculate the handling fee
  * @param size size of the transaction
- * @param feePrice price of the fee per block (1MB)
+ * @param feePrice price of the fee per block (1KB)
  */
 export function getFee(size: number, feePrice: number) {
 

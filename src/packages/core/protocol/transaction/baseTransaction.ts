@@ -6,7 +6,7 @@ import { NulsDigestData, IDigestData } from '../nulsDigestData';
 import { NulsDigestDataSerializer } from '../../utils/serialize/nulsDigestData';
 import { createTransactionSignature } from '../../utils/signature';
 import { MIN_FEE_PRICE_1024_BYTES, getFee } from '../../utils/fee';
-import { IAPIConfig } from '../..';
+import { IAPIConfig, CoinInput, CoinOutput } from '../..';
 import { UtxoApi } from '../../api/utxo';
 
 export abstract class BaseTransaction {
@@ -18,7 +18,10 @@ export abstract class BaseTransaction {
   protected _txData!: any;
   protected _coinData: CoinData = new CoinData();
   protected _signature!: Buffer | undefined;
-  protected _change!: string;
+
+  private _utxos: CoinInput[] = [];
+  private _changeAddress!: string;
+  private _changeOutputIndex: number | undefined;
 
   static fromBytes(bytes: string) {
     throw new Error('Not implemented');
@@ -65,7 +68,10 @@ export abstract class BaseTransaction {
 
     utxos.forEach((utxo: UTXO) => {
 
-      tx._coinData.addInput(utxo.hash, utxo.idx, utxo.value, utxo.lockTime);
+      const input: CoinInput = new CoinInput(utxo.hash, utxo.idx, utxo.value, utxo.lockTime);
+
+      tx._utxos.push(input);
+      tx._coinData.inputs.push(input);
 
     });
 
@@ -79,7 +85,7 @@ export abstract class BaseTransaction {
 
   protected static async _fromAddress<T extends BaseTransaction>(address: string, config: IAPIConfig, tx: T): Promise<T> {
 
-    tx._change = address;
+    tx._changeAddress = address;
 
     const api = new UtxoApi(config);
     const utxos = await api.getUtxos(address);
@@ -88,23 +94,30 @@ export abstract class BaseTransaction {
 
   }
 
-  time(time: number) {
+  time(time: number): this {
 
     this._time = time;
+    return this;
 
   }
 
-  remark(remark: string | Buffer) {
+  remark(remark: string | Buffer): this {
 
     remark = typeof remark === 'string'
       ? Buffer.from(remark, 'utf8')
       : remark;
+    
+    this.calculateInputsAndChangeOutput();
+    return this;
 
   }
 
-  change(address: string) {
+  change(address: string): this {
 
-    this._change = address;
+    this._changeAddress = address;
+
+    this.calculateInputsAndChangeOutput();
+    return this;
 
   }
 
@@ -147,9 +160,20 @@ export abstract class BaseTransaction {
 
   }
 
-  protected coinData(coinData: CoinData) {
+  protected addOutput(address: string, amount: number): this {
+
+    const output: CoinOutput = new CoinOutput(address, amount);
+    this._coinData.outputs.push(output);
+
+    this.calculateInputsAndChangeOutput();
+    return this;
+
+  }
+
+  protected coinData(coinData: CoinData): this {
 
     this._coinData = coinData;
+    return this;
 
   }
 
@@ -164,6 +188,98 @@ export abstract class BaseTransaction {
 
     const transactionData: ITransactionData = BaseTransaction.toRawData(this);
     return TransactionSerializer.size(transactionData);
+
+  }
+
+  protected removeChangeOutput() {
+    if (this._changeOutputIndex !== undefined) {
+      this._coinData.outputs.splice(this._changeOutputIndex, 1);
+    }
+  }
+
+  // https://github.com/nuls-io/nuls/blob/6e22e5ba554fae9e690faaa3797cdddb49f90c44/account-ledger-module/account-ledger/src/main/java/io/nuls/account/ledger/util/CoinDataTool.java#L44
+  // https://github.com/nuls-io/nuls/blob/041ddb94a856d41b5456e28a5a885bbce994cd03/account-ledger-module/base/account-ledger-base/src/main/java/io/nuls/account/ledger/base/service/impl/AccountLedgerServiceImpl.java#L782
+  // TODO: Improve this method... 
+  protected calculateInputsAndChangeOutput(): void {
+
+    this.removeChangeOutput();
+    this._coinData.getUnspent();
+
+    const utxos: CoinInput[] = this._utxos;
+    this._coinData.inputs = [];
+
+    const amount: number = this._coinData.outputs.reduce((prev: number, curr: CoinOutput) => prev + curr.na, 0);
+
+    let totalAvailable = 0;
+    let totalToSpent = 0;
+
+    for (let input of utxos) {
+
+      this._coinData.inputs.push(input);
+      totalAvailable += input.na;
+
+      // TODO: Not the more efficient way to calculate fees, but the easiest one. Optimize it getting the size from the Coin!
+      let fee: number = this.calculateFee();
+      totalToSpent = amount + fee;
+
+      // In this case we should calculate a change output coin to send the remaining amount
+      if (totalAvailable > totalToSpent) {
+
+        const changeNa = totalAvailable - totalToSpent;
+
+        // if the change coin was already added in the previous iteration, we just update the na
+        if (this._changeOutputIndex !== undefined) {
+
+          const changeOutput: CoinOutput = this._coinData.outputs[this._changeOutputIndex];
+          changeOutput.na = changeNa;
+
+        } else {
+
+          // Prevent from burning nuls
+          if (!this._changeAddress) {
+            throw new Error('Change address must be specified');
+          }
+
+          const changeCoin = new CoinOutput(this._changeAddress, changeNa);
+          this._coinData.outputs.unshift(changeCoin);
+          this._changeOutputIndex = 0;
+          const changeOutput: CoinOutput = this._coinData.outputs[this._changeOutputIndex];
+
+          // Recalculating fees with the new size after adding the change output
+          const oldTotalToSpent = totalToSpent;
+          fee = this.calculateFee();
+          totalToSpent = amount + fee;
+
+          // if after adding the change output, the inputs are not enough to pay the new fees,
+          // add one more input and do the calculation again
+          if (totalAvailable < totalToSpent) {
+            continue;
+          }
+
+          changeOutput.na = totalAvailable - totalToSpent;
+
+          // if after adding the change output, the change amount is equal to the new fees, better to do not add the output
+          if (changeOutput.na === 0) {
+            this._coinData.outputs.shift();
+            totalToSpent = oldTotalToSpent;
+          }
+
+        }
+
+      }
+
+      // If we have enough inputs to pay the transaction, break the loop  
+      if (totalAvailable >= totalToSpent) {
+        return;
+      }
+
+    }
+
+    if (totalAvailable < totalToSpent) {
+
+      this._coinData.inputs = [...this._utxos];
+
+    }
 
   }
 

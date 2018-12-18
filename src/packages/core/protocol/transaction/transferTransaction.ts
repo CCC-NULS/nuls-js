@@ -37,13 +37,14 @@ export class TransferTransaction extends BaseTransaction {
 
   };
 
-  to(address: string, value: number = MIN_FEE_PRICE_1024_BYTES) {
+  to(address: string, amount: number): this {
 
-    this._coinData.addOutput(address, value);
+    this.addOutput(address, amount);
+    return this;
 
   }
 
-  calculateFee(): number {
+  protected calculateFee(): number {
 
     return super.calculateFee(MIN_FEE_PRICE_1024_BYTES);
 

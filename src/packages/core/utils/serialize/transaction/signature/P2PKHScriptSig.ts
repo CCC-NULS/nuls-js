@@ -31,6 +31,8 @@ export interface IP2PKHScriptSigOutput extends IReadData {
  */
 export class P2PKHScriptSigSerializer {
 
+  public static SERIALIZE_LENGTH = 110;
+
   /**
    * Size of the serialized data
    * @param buf Buffer object from where the bytes will be read

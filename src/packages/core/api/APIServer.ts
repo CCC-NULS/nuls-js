@@ -28,11 +28,11 @@ export class APIServerClass {
 			throw new Error('Wrong API config');
 		}
 
-		const resource = this.resources[name];
+		let resource = this.resources[name];
 
 		args.forEach((arg: string) => {
 
-			resource.replace(/__([A-Z]+?)__/, arg);
+			resource = resource.replace(/__([A-Z]+?)__/, arg);
 
 		});
 

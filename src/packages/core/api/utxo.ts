@@ -1,5 +1,6 @@
 import * as config from 'config';
 import { APIServerClass, IAPIConfig } from './APIServer';
+import { UTXO } from '../protocol';
 
 export class UtxoApi extends APIServerClass {
 
@@ -7,10 +8,10 @@ export class UtxoApi extends APIServerClass {
     super(conf);
   }
 
-  async getUtxos(address: string): Promise<any> {
+  async getUtxos(address: string): Promise<UTXO[]> {
 
-    const resource: string =this.getResource('utxos', address);
-    return await this.api.get(resource);
+    const resource: string =this.getResource('address', address);
+    return (await this.api.get(resource)).data.outputs;
 
   }
 

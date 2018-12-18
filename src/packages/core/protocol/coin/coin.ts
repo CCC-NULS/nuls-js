@@ -6,7 +6,7 @@ export class Coin {
 
   constructor(
     public na: number,
-    public lockTime: number = -1
+    public lockTime: number = 0
   ) { }
 
 }
@@ -45,7 +45,7 @@ export class CoinInput extends Coin {
     public fromHash: string,
     public fromIndex: number,
     na: number,
-    lockTime: number = -1
+    lockTime: number = 0
   ) {
     super(na, lockTime);
   }
@@ -92,7 +92,7 @@ export class CoinOutput extends Coin {
   constructor(
     public address: Address,
     na: number,
-    lockTime: number = -1
+    lockTime: number = 0
   ) {
     super(na, lockTime);
   }

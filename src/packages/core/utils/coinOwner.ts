@@ -65,7 +65,7 @@ export class CoinOwnerUtils {
 
     let owner: Buffer;
 
-    if (data.fromHash && data.fromIndex) {
+    if (data.fromHash != undefined && data.fromIndex != undefined) {
 
       const fromIndex: Buffer = Buffer.alloc(VarIntSerializer.size(data.fromIndex));
       VarIntSerializer.write(data.fromIndex, fromIndex, 0);
@@ -75,7 +75,7 @@ export class CoinOwnerUtils {
         fromIndex
       ]);
 
-    } else if (data.address) {
+    } else if (data.address != undefined) {
 
       owner = Buffer.alloc(ADDRESS_LENGTH);
       AddressSerializer.write(data.address, owner, 0);

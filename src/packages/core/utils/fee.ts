@@ -41,7 +41,7 @@ export function getFee(size: number, feePrice: number) {
     throw new Error('Fee price per block too high');
   }
 
-  let fee = (feePrice * (size / KB));
+  let fee = (feePrice * Math.floor(size / KB));
 
   if (size % KB > 0) {
     fee += feePrice;

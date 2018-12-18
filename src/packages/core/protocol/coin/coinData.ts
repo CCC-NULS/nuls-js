@@ -55,13 +55,13 @@ export class CoinData {
 
   }
 
-  addOutput(address: Address, value: number, lockTime: number = -1) {
+  addOutput(address: Address, value: number, lockTime: number = 0) {
 
     this.outputs.push(new CoinOutput(address, value, lockTime));
 
   }
 
-  addInput(fromHash: string, fromIndex: number, value: number, lockTime: number = -1) {
+  addInput(fromHash: string, fromIndex: number, value: number, lockTime: number = 0) {
 
     this.inputs.push(new CoinInput(fromHash, fromIndex, value, lockTime));
 

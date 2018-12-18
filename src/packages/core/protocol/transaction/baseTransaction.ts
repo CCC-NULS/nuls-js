@@ -14,7 +14,7 @@ export abstract class BaseTransaction {
   protected static TX_FEE_PRICE = MIN_FEE_PRICE_1024_BYTES;
   protected _type!: TransactionType;
   protected _time: number = new Date().getTime();
-  protected _remark!: Buffer;
+  protected _remark: Buffer = Buffer.from([]);
   protected _txData!: any;
   protected _coinData: CoinData = new CoinData();
   protected _signature!: Buffer | undefined;
@@ -103,7 +103,7 @@ export abstract class BaseTransaction {
 
   remark(remark: string | Buffer): this {
 
-    remark = typeof remark === 'string'
+    this._remark = typeof remark === 'string'
       ? Buffer.from(remark, 'utf8')
       : remark;
     
@@ -135,7 +135,7 @@ export abstract class BaseTransaction {
 
   }
 
-  getHash(): string {
+  protected getHash(): string {
 
     const digestData: IDigestData = this.getDigest();
     const digestSize: number = NulsDigestDataSerializer.size(digestData);
@@ -148,7 +148,7 @@ export abstract class BaseTransaction {
   }
 
   // https://github.com/nuls-io/nuls/blob/274204b748ed72fdac150637ee758037d64c7ce5/core-module/kernel/src/main/java/io/nuls/kernel/model/Transaction.java#L213
-  getDigest(): IDigestData {
+  protected getDigest(): IDigestData {
 
     const transactionData: ITransactionData = BaseTransaction.toRawData(this);
 
@@ -194,7 +194,16 @@ export abstract class BaseTransaction {
   protected removeChangeOutput() {
     if (this._changeOutputIndex !== undefined) {
       this._coinData.outputs.splice(this._changeOutputIndex, 1);
+      this._changeOutputIndex = undefined;
     }
+  }
+
+  protected clearSignatures() {
+    this._signature = undefined;
+  }
+
+  protected resetInputs() {
+    this._coinData.inputs = [...this._utxos];
   }
 
   // https://github.com/nuls-io/nuls/blob/6e22e5ba554fae9e690faaa3797cdddb49f90c44/account-ledger-module/account-ledger/src/main/java/io/nuls/account/ledger/util/CoinDataTool.java#L44
@@ -203,7 +212,7 @@ export abstract class BaseTransaction {
   protected calculateInputsAndChangeOutput(): void {
 
     this.removeChangeOutput();
-    this._coinData.getUnspent();
+    this.clearSignatures();
 
     const utxos: CoinInput[] = this._utxos;
     this._coinData.inputs = [];
@@ -237,7 +246,9 @@ export abstract class BaseTransaction {
 
           // Prevent from burning nuls
           if (!this._changeAddress) {
-            throw new Error('Change address must be specified');
+            this.resetInputs();
+            return;
+            // throw new Error('Change address must be specified');
           }
 
           const changeCoin = new CoinOutput(this._changeAddress, changeNa);
@@ -277,7 +288,7 @@ export abstract class BaseTransaction {
 
     if (totalAvailable < totalToSpent) {
 
-      this._coinData.inputs = [...this._utxos];
+      this.resetInputs();
 
     }
 

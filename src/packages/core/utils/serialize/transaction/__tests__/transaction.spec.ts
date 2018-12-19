@@ -3,7 +3,7 @@ import { ITransactionData, TransactionSerializer } from '../transaction';
 import { ITxDataRewardData, TxDataRewardSerializer } from '../txData/txDataReward';
 import { rewardTxSerializedExample, rewardTxReadExample, contractCallTxSerializedExample, contractCallTxReadExample } from '../__mocks__';
 import { ITxDataContractCallData } from '../txData/txDataContractCall';
-import { ICoinData } from '../coin';
+import { ICoinData } from '../coinData/coin';
 
 fdescribe('TransactionSerializer', () => {
 

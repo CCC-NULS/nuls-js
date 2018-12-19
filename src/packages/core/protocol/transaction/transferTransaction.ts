@@ -16,6 +16,13 @@ export class TransferTransaction extends BaseTransaction {
     placeholder: PLACE_HOLDER
   };
 
+  static fromBytes(bytes: Buffer) {
+
+    let tx = new TransferTransaction();
+    return this._fromBytes(bytes, tx);
+
+  }
+
   static fromRawData(rawData: ITransactionData): TransferTransaction {
 
     let tx = new TransferTransaction();

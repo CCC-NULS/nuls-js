@@ -24,8 +24,26 @@ export abstract class BaseTransaction {
   private _changeAddress!: string;
   private _changeOutputIndex: number | undefined;
 
-  static fromBytes(bytes: string) {
+  static fromBytes(bytes: Buffer): BaseTransaction {
     throw new Error('Not implemented');
+  }
+
+  protected static _fromBytes<T extends BaseTransaction>(bytes: Buffer, tx: T): T {
+    
+    const rawData: ITransactionData = TransactionSerializer.read(bytes, 0).data;
+    return this._fromRawData(rawData, tx);
+
+  }
+
+  static toBytes(tx: BaseTransaction): Buffer {
+
+    const rawData: ITransactionData = this.toRawData(tx);
+    const bytesLength: number = TransactionSerializer.size(rawData);
+    const bytes = Buffer.allocUnsafe(bytesLength);
+    TransactionSerializer.write(rawData, bytes, 0);
+
+    return bytes;
+
   }
 
   static fromRawData(rawData: ITransactionData): BaseTransaction {
@@ -134,6 +152,12 @@ export abstract class BaseTransaction {
     const privateKeyBuffer: Buffer = getPrivateKeyBuffer(privateKey);
     this._signature = createTransactionSignature(this, privateKeyBuffer);
     return this;
+
+  }
+
+  serialize(): string {
+    
+    return BaseTransaction.toBytes(this).toString('hex');
 
   }
 

@@ -13,11 +13,10 @@ export class Transaction extends BaseTransaction {
   protected _coinData: CoinData = new CoinData();
   protected _signature!: Buffer | undefined;
 
-  static fromBytes(bytes: string) {
+  static fromBytes(bytes: Buffer): BaseTransaction {
 
-    const bf = Buffer.from(bytes, 'base64');
-    const transactionRawData: ITransactionData = TransactionSerializer.read(bf, 0).data;
-    Transaction.fromRawData(transactionRawData);
+    const rawData: ITransactionData = TransactionSerializer.read(bytes, 0).data;
+    return Transaction.fromRawData(rawData);
 
   }
 

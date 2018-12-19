@@ -2,8 +2,9 @@ import * as bs58 from 'bs58';
 import * as RIPEMD160 from 'ripemd160';
 import * as secp256k1 from 'secp256k1';
 import * as shajs from 'sha.js';
-import { PRIVATE_KEY_LENGTH } from '../common';
 import { isHex } from './serialize';
+
+export const PRIVATE_KEY_LENGTH = 66;
 
 export type AddressHash = Buffer;
 export type Address = string;
@@ -40,6 +41,17 @@ export function checkPrivateKey(privateKey: string): boolean {
 
   }
 }
+
+export function getPrivateKeyBuffer(privateKey: string): Buffer {
+
+  if(!checkPrivateKey(privateKey)) {
+    throw new Error('Invalid private key');
+  }
+
+  return Buffer.from(privateKey.substring(2, PRIVATE_KEY_LENGTH), 'hex');
+
+}
+
 
 export function publicKeyFromPrivateKey(privateKey: Buffer): Buffer {
   return secp256k1.publicKeyCreate(privateKey);

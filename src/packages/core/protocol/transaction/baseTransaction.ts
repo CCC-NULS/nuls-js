@@ -8,6 +8,7 @@ import { createTransactionSignature } from '../../utils/signature';
 import { MIN_FEE_PRICE_1024_BYTES, getFee } from '../../utils/fee';
 import { IAPIConfig, CoinInput, CoinOutput } from '../..';
 import { UtxoApi } from '../../api/utxo';
+import { getPrivateKeyBuffer } from '../../utils/crypto';
 
 export abstract class BaseTransaction {
 
@@ -128,10 +129,11 @@ export abstract class BaseTransaction {
   }
 
   // TODO: Implement all kinds of signatures (P2PKH, P2PS, etc...)
-  sign(privateKey: string) {
+  sign(privateKey: string): this {
 
-    const privateKeyBuffer: Buffer = Buffer.from(privateKey, 'hex');
+    const privateKeyBuffer: Buffer = getPrivateKeyBuffer(privateKey);
     this._signature = createTransactionSignature(this, privateKeyBuffer);
+    return this;
 
   }
 
@@ -148,7 +150,7 @@ export abstract class BaseTransaction {
   }
 
   // https://github.com/nuls-io/nuls/blob/274204b748ed72fdac150637ee758037d64c7ce5/core-module/kernel/src/main/java/io/nuls/kernel/model/Transaction.java#L213
-  protected getDigest(): IDigestData {
+  getDigest(): IDigestData {
 
     const transactionData: ITransactionData = BaseTransaction.toRawData(this);
 

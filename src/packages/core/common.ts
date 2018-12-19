@@ -1,6 +1,5 @@
 export const HASH_LENGTH = 34;
 export const ADDRESS_LENGTH = 23;
-export const PRIVATE_KEY_LENGTH = 66;
 export const MAX_COIN_SIZE = HASH_LENGTH + 2 + 8 + 6;
 
 export const P2SH_ADDRESS_TYPE = 3;

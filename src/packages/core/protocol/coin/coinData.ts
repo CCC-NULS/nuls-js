@@ -67,11 +67,23 @@ export class CoinData {
 
   }
 
+  getInputsTotalValue(): number {
+
+    return this.inputs.reduce((prev: number, curr: CoinInput) => prev + curr.na, 0);
+
+  }
+
+  getOutputsTotalValue(): number {
+
+    return this.outputs.reduce((prev: number, curr: CoinOutput) => prev + curr.na, 0);
+
+  }
+
   // https://github.com/nuls-io/nuls/blob/6e22e5ba554fae9e690faaa3797cdddb49f90c44/core-module/kernel/src/main/java/io/nuls/kernel/model/CoinData.java#L139
   getFee(): number {
 
-    const inputs = this.inputs.reduce((prev: number, curr: CoinInput) => prev + curr.na, 0);
-    const outputs = this.outputs.reduce((prev: number, curr: CoinOutput) => prev + curr.na, 0);
+    const inputs = this.getInputsTotalValue();
+    const outputs = this.getOutputsTotalValue();
 
     return inputs - outputs;
 

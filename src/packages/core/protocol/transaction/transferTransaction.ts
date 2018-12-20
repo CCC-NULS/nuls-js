@@ -4,8 +4,7 @@ import { ITransactionData } from '../../utils/serialize/transaction/transaction'
 import { ITxDataTransferData } from '../../utils/serialize/transaction/txData/txDataTransfer';
 import { MIN_FEE_PRICE_1024_BYTES } from '../../utils/fee';
 import { UTXO } from '..';
-import { BaseTransaction } from './baseTransaction';
-import { IAPIConfig } from '../..';
+import { BaseTransaction, TransactionConfig } from './baseTransaction';
 
 // https://github.com/nuls-io/nuls/blob/041ddb94a856d41b5456e28a5a885bbce994cd03/account-ledger-module/base/account-ledger-base/src/main/java/io/nuls/account/ledger/base/service/impl/AccountLedgerServiceImpl.java#L457
 // https://github.com/nuls-io/nuls/blob/041ddb94a856d41b5456e28a5a885bbce994cd03/account-ledger-module/base/account-ledger-base/src/main/java/io/nuls/account/ledger/base/service/impl/AccountLedgerServiceImpl.java#L741
@@ -30,10 +29,10 @@ export class TransferTransaction extends BaseTransaction {
 
   }
 
-  static async fromAddress(address: string, config: IAPIConfig): Promise<TransferTransaction> {
+  static async fromAddress(address: string, config?: TransactionConfig): Promise<TransferTransaction> {
     
     let tx = new TransferTransaction();
-    return this._fromAddress<TransferTransaction>(address, config, tx);
+    return this._fromAddress<TransferTransaction>(address, tx, config);
 
   };
 

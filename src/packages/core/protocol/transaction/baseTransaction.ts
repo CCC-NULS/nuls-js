@@ -1,4 +1,4 @@
-import { UTXO } from './../utxo';
+import { UTXO, Utxo } from './../utxo';
 import { TransactionType } from '../../common';
 import { TransactionSerializer, ITransactionData } from '../../utils/serialize/transaction/transaction';
 import { CoinData } from '../coin/coinData';
@@ -6,9 +6,15 @@ import { NulsDigestData, IDigestData } from '../nulsDigestData';
 import { NulsDigestDataSerializer } from '../../utils/serialize/nulsDigestData';
 import { createTransactionSignature } from '../../utils/signature';
 import { MIN_FEE_PRICE_1024_BYTES, getFee } from '../../utils/fee';
-import { IAPIConfig, CoinInput, CoinOutput } from '../..';
-import { UtxoApi } from '../../api/utxo';
+import { IAPIConfig, CoinInput, CoinOutput, TransactionApi } from '../..';
 import { getPrivateKeyBuffer } from '../../utils/crypto';
+
+export type TransactionHash = string;
+export type TransactionHex = string;
+
+export interface TransactionConfig {
+  api: IAPIConfig;
+}
 
 export abstract class BaseTransaction {
 
@@ -23,13 +29,14 @@ export abstract class BaseTransaction {
   private _utxos: CoinInput[] = [];
   private _changeAddress!: string;
   private _changeOutputIndex: number | undefined;
+  private _config!: TransactionConfig;
 
   static fromBytes(bytes: Buffer): BaseTransaction {
     throw new Error('Not implemented');
   }
 
   protected static _fromBytes<T extends BaseTransaction>(bytes: Buffer, tx: T): T {
-    
+
     const rawData: ITransactionData = TransactionSerializer.read(bytes, 0).data;
     return this._fromRawData(rawData, tx);
 
@@ -98,19 +105,44 @@ export abstract class BaseTransaction {
 
   }
 
-  static async fromAddress(address: string, config: IAPIConfig): Promise<BaseTransaction> {
+  static async fromAddress(address: string, config: TransactionConfig): Promise<BaseTransaction> {
     throw new Error('Not implemented');
   };
 
-  protected static async _fromAddress<T extends BaseTransaction>(address: string, config: IAPIConfig, tx: T): Promise<T> {
+  protected static async _fromAddress<T extends BaseTransaction>(address: string, tx: T, config?: TransactionConfig): Promise<T> {
 
     tx._changeAddress = address;
 
-    const api = new UtxoApi(config);
-    const utxos = await api.getUtxos(address);
+    if (config) {
+      tx.config(config);
+    }
+
+    const apiConfig: any = tx._config ? tx._config.api : undefined;
+    const utxos = await Utxo.getUtxos(apiConfig);
 
     return BaseTransaction._fromUtxos(utxos, tx);
 
+  }
+
+  static async send(tx: BaseTransaction, config?: TransactionConfig): Promise<TransactionHash> {
+    
+    if (config) {
+      tx.config(config);
+    }
+    
+    const apiConfig: any = tx._config ? tx._config.api : undefined;
+    const api = new TransactionApi(apiConfig);
+    const txHex: TransactionHex = tx.serialize();
+
+    // TODO: Catch errors
+    return await api.broadcast(txHex);
+
+  }
+
+  config(config: TransactionConfig) {
+
+    this._config = config;
+    
   }
 
   time(time: number): this {
@@ -125,7 +157,7 @@ export abstract class BaseTransaction {
     this._remark = typeof remark === 'string'
       ? Buffer.from(remark, 'utf8')
       : remark;
-    
+
     this.calculateInputsAndChangeOutput();
     return this;
 
@@ -155,13 +187,31 @@ export abstract class BaseTransaction {
 
   }
 
-  serialize(): string {
-    
+  serialize(safe: boolean = true): TransactionHex {
+
+    if (safe) {
+
+      if (this._coinData.getUnspent() < 0) {
+        throw new Error('Not enough input balance to do the transaction');
+      }
+
+    }
+
     return BaseTransaction.toBytes(this).toString('hex');
 
   }
 
-  protected getHash(): string {
+  send(tx: BaseTransaction, config?: TransactionConfig): Promise<TransactionHash> {
+
+    if (config) {
+      this.config(config);
+    }
+
+    return BaseTransaction.send(tx, this._config);
+
+  }
+
+  protected getHash(): TransactionHash {
 
     const digestData: IDigestData = this.getDigest();
     const digestSize: number = NulsDigestDataSerializer.size(digestData);

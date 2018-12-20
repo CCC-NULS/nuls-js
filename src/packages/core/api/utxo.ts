@@ -4,13 +4,13 @@ import { UTXO } from '../protocol';
 
 export class UtxoApi extends APIServerClass {
 
-  constructor(conf: IAPIConfig = config.nuls.api.utxo) {
+  constructor(conf: IAPIConfig = config.nuls.api.explorer) {
     super(conf);
   }
 
   async getUtxos(address: string): Promise<UTXO[]> {
 
-    const resource: string =this.getResource('address', address);
+    const resource: string = this.getResource('utxos', address);
     return (await this.api.get(resource)).data.outputs;
 
   }

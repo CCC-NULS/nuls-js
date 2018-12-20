@@ -3,23 +3,13 @@ nuls:
     timeout: 5000
     apiserver:
       host: http://testnet.apiserver.nuls.io
-      port: ''
       base: /nuls
-    transaction:
+    explorer:
       host: https://nuls.world
-      port: 443
-      base: /api/contract/
-    utxo:
-      host: https://nuls.world
-      port: 443
       base: ''
       resources:
-        address: /addresses/outputs/__ADDRESS__.json
-    contract:
-      host: http://localhost
-      port: 8001
-      base: /api/contract/
-      resources:
-        methods: /info/wallet/__ADDRESS__
-        view: /view
-        call: /call
+        utxos: /addresses/outputs/__ADDRESS__.json
+        broadcast: /broadcast
+        methods: /api/contract/info/wallet/__ADDRESS__
+        view: /api/contract/view
+        call: /api/contract/call

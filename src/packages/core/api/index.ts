@@ -1,4 +1,4 @@
-export * from './Transfer';
 export * from './APIServer';
-export * from './Transactions';
+export * from './transactions';
 export * from './contract';
+export * from './utxo';

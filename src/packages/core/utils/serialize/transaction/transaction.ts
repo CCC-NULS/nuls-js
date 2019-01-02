@@ -25,7 +25,7 @@ export interface ITransactionData {
   remark: Buffer;
   txData: ITxDataData;
   coinData: ICoinDataData;
-  scriptSign?: Buffer;
+  scriptSign: Buffer;
 }
 
 export interface ITransactionOutput extends IReadData {
@@ -49,14 +49,16 @@ export class TransactionSerializer {
     size += VarByteSerializer.size(data.remark);
     size += TxDataSerializer.size(data.txData, data.type);
     size += CoinDataSerializer.size(data.coinData);
-
-    if (data.scriptSign) {
-      size += VarByteSerializer.size(data.scriptSign);
-    }
+    size += VarByteSerializer.size(data.scriptSign);
 
     return size;
 
   }
+
+  // AQDgzzp/ZwEA/////wAEFwQjAVnZBZV+EHRNejdxUzprwEueqX+wMRfNAwAAAADpUhMAAAAXBCMBd97NtGpPJOgOZS2Fgyaab9QUz+BsIwgAAAAAAOlSEwAAABcEIwGMqoHy58Py9NOzohXiFWjzKQ4ihCva4wIAAAAA6VITAAAAFwQjAY6z3aDewbM43/jAQIh+ayckeJBbKSFNAAAAAADpUhMAAAAA
+
+  // AQDgzzp/ZwEA/////wAEFwQjAVnZBZV+EHRNejdxUzprwEueqX+wMRfNAwAAAADpUhMAAAAXBCMBd97NtGpPJOgOZS2Fgyaab9QUz+BsIwgAAAAAAOlSEwAAABcEIwGMqoHy58Py9NOzohXiFWjzKQ4ihCva4wIAAAAA6VITAAAAFwQjAY6z3aDewbM43/jAQIh+ayckeJBbKSFNAAAAAADpUhMAAAA
+
 
   /**
    * Reads a tx buf at the specified offset
@@ -92,13 +94,10 @@ export class TransactionSerializer {
         time,
         remark,
         txData,
-        coinData
+        coinData,
+        scriptSign
       }
     };
-
-    if (scriptSign.length > 0) {
-      output.data.scriptSign = scriptSign;
-    }
 
     return output;
 
@@ -129,10 +128,7 @@ export class TransactionSerializer {
 
   public static sizeHash(data: ITransactionData): number {
 
-    const scriptSignSize = data.scriptSign
-      ? VarByteSerializer.size(data.scriptSign)
-      : 0;
-
+    const scriptSignSize = VarByteSerializer.size(data.scriptSign);
     return TransactionSerializer.size(data) - scriptSignSize;
 
   }

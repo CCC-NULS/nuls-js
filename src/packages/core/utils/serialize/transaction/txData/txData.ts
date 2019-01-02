@@ -4,7 +4,7 @@ import { TxDataWithdrawSerializer, ITxDataWithdrawData } from './txDataWithdraw'
 import { TransactionType } from '../../../../../../packages/core/common';
 import { TxDataRewardSerializer, ITxDataRewardData } from './txDataReward';
 import { TxDataTransferSerializer, ITxDataTransferData } from './txDataTransfer';
-import { TxDataAliasedSerializer, ITxDataAliasedData } from './txDataAliased';
+import { TxDataAliasSerializer, ITxDataAliasData } from './txDataAlias';
 import { TxDataDepositSerializer, ITxDataDepositData } from './txDataDeposit';
 import { TxDataRegisterSerializer, ITxDataRegisterData } from './txDataRegister';
 import { IReadData } from '../../common';
@@ -18,7 +18,7 @@ import { IReadData } from '../../common';
   * | ??   | txData     | ??          | Transaction data   |
  */
 
-export type ITxDataData = ITxDataRewardData | ITxDataTransferData | ITxDataAliasedData | ITxDataRegisterData |
+export type ITxDataData = ITxDataRewardData | ITxDataTransferData | ITxDataAliasData | ITxDataRegisterData |
   ITxDataDepositData | ITxDataWithdrawData | ITxDataUnregisterData | ITxDataContractCallData;
 
 export interface ITxDataOutput extends IReadData {
@@ -44,8 +44,8 @@ export class TxDataSerializer {
       case TransactionType.Transfer:
         return TxDataTransferSerializer.size();
 
-      case TransactionType.Aliased:
-        return TxDataAliasedSerializer.size(data as ITxDataAliasedData);
+      case TransactionType.Alias:
+        return TxDataAliasSerializer.size(data as ITxDataAliasData);
 
       case TransactionType.Register:
         return TxDataRegisterSerializer.size();
@@ -82,8 +82,8 @@ export class TxDataSerializer {
       case TransactionType.Transfer:
         return TxDataTransferSerializer.read(buf, offset);
 
-      case TransactionType.Aliased:
-        return TxDataAliasedSerializer.read(buf, offset);
+      case TransactionType.Alias:
+        return TxDataAliasSerializer.read(buf, offset);
 
       case TransactionType.Register:
         return TxDataRegisterSerializer.read(buf, offset);
@@ -122,8 +122,8 @@ export class TxDataSerializer {
       case TransactionType.Transfer:
         return TxDataTransferSerializer.write(buf, offset);
 
-      case TransactionType.Aliased:
-        return TxDataAliasedSerializer.write(data, buf, offset);
+      case TransactionType.Alias:
+        return TxDataAliasSerializer.write(data, buf, offset);
 
       case TransactionType.Register:
         return TxDataRegisterSerializer.write(data, buf, offset);

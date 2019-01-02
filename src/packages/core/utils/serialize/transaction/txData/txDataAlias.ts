@@ -1,11 +1,11 @@
-import { Address, AddressHash, hashFromAddress } from './../../../crypto';
-import { VarStringSerializer } from './../../varString';
+import { Address, AddressHash, hashFromAddress } from '../../../crypto';
+import { VarStringSerializer } from '../../varString';
 import { addressFromHash } from '../../../crypto';
 import { VarByteSerializer } from '../../varByte';
 import { ITxDataOutput } from './txData';
 
 /***
-  * ### TxDataAliased
+  * ### TxDataAlias
   * http://dev.nuls.io/protocol/transaction.html#TX-TYPE-ACCOUNT-ALIAS
   *
   * ### TX_TYPE_ACCOUNT_ALIAS
@@ -16,28 +16,28 @@ import { ITxDataOutput } from './txData';
   * | ??   | alias      | VarString  |  昵称          |
  */
 
-export interface ITxDataAliasedData {
+export interface ITxDataAliasData {
   address: Address;
   alias: string;
 }
 
-export interface ITxDataAliasedOutput extends ITxDataOutput {
+export interface ITxDataAliasOutput extends ITxDataOutput {
   readBytes: number;
-  data: ITxDataAliasedData;
+  data: ITxDataAliasData;
 }
 
 /**
- * Class to handle the protocol TxDataAliased type
+ * Class to handle the protocol TxDataAlias type
  * https://github.com/nuls-io/nuls/blob/4436795eabe864437de013b83aee0dca0d5400bf/account-module/account/src/main/java/io/nuls/account/model/Alias.java#L41
  */
-export class TxDataAliasedSerializer {
+export class TxDataAliasSerializer {
 
   /**
    * Size of the serialized data
-   * @returns the bytes size of a serialized txDataAliased
+   * @returns the bytes size of a serialized txDataAlias
    */
-  public static size(data: ITxDataAliasedData): number {
-    
+  public static size(data: ITxDataAliasData): number {
+
     const addressHash: AddressHash = hashFromAddress(data.address);    
     let size: number = VarByteSerializer.size(addressHash);
     size += VarStringSerializer.size(data.alias);
@@ -47,11 +47,13 @@ export class TxDataAliasedSerializer {
   }
 
   /**
-   * Reads a txDataAliased buf at the specified offset
+   * Reads a txDataAlias buf at the specified offset
    * @param buf Buffer object from where the data will be read
    * @param offset Number of bytes to skip before starting to read
    */
-  public static read(buf: Buffer, offset: number): ITxDataAliasedOutput {
+  public static read(buf: Buffer, offset: number): ITxDataAliasOutput {
+
+    const initialOffset = offset;
 
     const { data: addressHash, readBytes } = VarByteSerializer.read(buf, offset);
     const address: Address = addressFromHash(addressHash);
@@ -61,7 +63,7 @@ export class TxDataAliasedSerializer {
     offset += readBytes2;
 
     return {
-      readBytes: offset,
+      readBytes: offset - initialOffset,
       data: {
         address,
         alias,
@@ -71,17 +73,17 @@ export class TxDataAliasedSerializer {
   }
 
   /**
-   * Writes txDataAliased to buf at the specified offset
-   * @param data txDataAliased to be written to buf
-   * @param buf Buffer object where the txDataAliased will be written
+   * Writes txDataAlias to buf at the specified offset
+   * @param data txDataAlias to be written to buf
+   * @param buf Buffer object where the txDataAlias will be written
    * @param offset Number of bytes to skip before starting to write. Must satisfy
    * @returns Offset plus the number of bytes that has been written
    */
-  public static write(data: ITxDataAliasedData, buf: Buffer, offset: number): number {
+  public static write(data: ITxDataAliasData, buf: Buffer, offset: number): number {
 
     const addressHash: AddressHash = hashFromAddress(data.address);
     offset = VarByteSerializer.write(addressHash, buf, offset);
-    offset = VarStringSerializer.write(data.address, buf, offset);
+    offset = VarStringSerializer.write(data.alias, buf, offset);
 
     return offset;
 

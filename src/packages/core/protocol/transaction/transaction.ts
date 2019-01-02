@@ -1,17 +1,10 @@
 import { TransactionType } from '../../common';
 import { TransactionSerializer, ITransactionData } from '../../utils/serialize/transaction/transaction';
 import { TransferTransaction } from './transferTransaction';
-import { CoinData } from '../coin/coinData';
 import { BaseTransaction } from './baseTransaction';
+import { AliasTransaction } from './aliasTransaction';
 
 export class Transaction extends BaseTransaction {
-
-  protected _type!: TransactionType;
-  protected _time: number = new Date().getTime();
-  protected _remark!: Buffer;
-  protected _txData!: any;
-  protected _coinData: CoinData = new CoinData();
-  protected _signature!: Buffer | undefined;
 
   static fromBytes(bytes: Buffer): BaseTransaction {
 
@@ -25,6 +18,9 @@ export class Transaction extends BaseTransaction {
     let tx: BaseTransaction;
 
     switch (rawData.type) {
+
+      case TransactionType.Alias:
+        tx = AliasTransaction.fromRawData(rawData);
 
       case TransactionType.Transfer:
       default:

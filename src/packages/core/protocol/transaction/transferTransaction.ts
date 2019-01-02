@@ -2,7 +2,6 @@ import { PLACE_HOLDER } from './../../utils/serialize/common';
 import { TransactionType } from '../../common';
 import { ITransactionData } from '../../utils/serialize/transaction/transaction';
 import { ITxDataTransferData } from '../../utils/serialize/transaction/txData/txDataTransfer';
-import { MIN_FEE_PRICE_1024_BYTES } from '../../utils/fee';
 import { UTXO } from '..';
 import { BaseTransaction, TransactionConfig } from './baseTransaction';
 
@@ -47,12 +46,6 @@ export class TransferTransaction extends BaseTransaction {
 
     this.addOutput(address, amount);
     return this;
-
-  }
-
-  protected calculateFee(): number {
-
-    return super.calculateFee(MIN_FEE_PRICE_1024_BYTES);
 
   }
 

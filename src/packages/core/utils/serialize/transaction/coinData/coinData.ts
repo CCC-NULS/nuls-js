@@ -1,6 +1,5 @@
 import { IReadData, VarIntSerializer } from '../..';
 import { ICoinData, CoinSerializer } from './coin';
-import { CoinOwnerUtils } from '../../../coinOwner';
 
 /***
   * ### CoinData

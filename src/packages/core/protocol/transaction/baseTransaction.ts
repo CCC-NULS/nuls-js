@@ -19,18 +19,19 @@ export interface TransactionConfig {
 
 export abstract class BaseTransaction {
 
-  protected static TX_FEE_PRICE = MIN_FEE_PRICE_1024_BYTES;
   protected _type!: TransactionType;
   protected _time: number = new Date().getTime();
   protected _remark: Buffer = Buffer.from([]);
   protected _txData!: any;
   protected _coinData: CoinData = new CoinData();
-  protected _signature!: Buffer | undefined;
+  protected _signature: Buffer = Buffer.from([]);
+
+  protected _fee_price = MIN_FEE_PRICE_1024_BYTES;
+  protected _changeAddress!: string;
+  protected _config: TransactionConfig = {};
 
   private _utxos: CoinInput[] = [];
-  private _changeAddress!: string;
   private _changeOutputIndex: number | undefined;
-  private _config: TransactionConfig = {};
 
   static fromBytes(bytes: Buffer): BaseTransaction {
     throw new Error('Not implemented');
@@ -208,7 +209,7 @@ export abstract class BaseTransaction {
 
     if (this._config.safeCheck) {
 
-      if (!this._signature) {
+      if (this._signature.length === 0) {
         throw new Error('The transaction is not signed');
       }
 
@@ -260,10 +261,10 @@ export abstract class BaseTransaction {
 
   }
 
-  protected calculateFee(feePrice: number = BaseTransaction.TX_FEE_PRICE): number {
+  protected calculateFee(): number {
 
     const transactionSize: number = this.size();
-    return getFee(transactionSize, feePrice);
+    return getFee(transactionSize, this._fee_price);
 
   }
 
@@ -282,7 +283,7 @@ export abstract class BaseTransaction {
   }
 
   protected clearSignatures() {
-    this._signature = undefined;
+    this._signature = Buffer.from([]);
   }
 
   protected resetInputs() {

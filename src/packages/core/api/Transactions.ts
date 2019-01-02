@@ -5,7 +5,7 @@ import { TransactionHash } from '../protocol/transaction/baseTransaction';
 export class TransactionApi extends APIServerClass {
 
 	constructor(conf: IAPIConfig = config.nuls.api.explorer) {
-		super(conf);
+		super({ ...config.nuls.api.explorer, ...conf });
 	}
 
 	async broadcast(txHex: string): Promise<TransactionHash> {

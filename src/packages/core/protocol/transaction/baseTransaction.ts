@@ -13,7 +13,8 @@ export type TransactionHash = string;
 export type TransactionHex = string;
 
 export interface TransactionConfig {
-  api: IAPIConfig;
+  api?: IAPIConfig;
+  safeCheck?: boolean;
 }
 
 export abstract class BaseTransaction {
@@ -29,7 +30,7 @@ export abstract class BaseTransaction {
   private _utxos: CoinInput[] = [];
   private _changeAddress!: string;
   private _changeOutputIndex: number | undefined;
-  private _config!: TransactionConfig;
+  private _config: TransactionConfig = {};
 
   static fromBytes(bytes: Buffer): BaseTransaction {
     throw new Error('Not implemented');
@@ -113,12 +114,9 @@ export abstract class BaseTransaction {
 
     tx._changeAddress = address;
 
-    if (config) {
-      tx.config(config);
-    }
+    tx.config(config);
 
-    const apiConfig: any = tx._config ? tx._config.api : undefined;
-    const utxos = await Utxo.getUtxos(apiConfig);
+    const utxos = await Utxo.getUtxos(address, tx._config.api);
 
     return BaseTransaction._fromUtxos(utxos, tx);
 
@@ -126,12 +124,9 @@ export abstract class BaseTransaction {
 
   static async send(tx: BaseTransaction, config?: TransactionConfig): Promise<TransactionHash> {
     
-    if (config) {
-      tx.config(config);
-    }
+    tx.config(config);
     
-    const apiConfig: any = tx._config ? tx._config.api : undefined;
-    const api = new TransactionApi(apiConfig);
+    const api = new TransactionApi(tx._config.api);
     const txHex: TransactionHex = tx.serialize();
 
     // TODO: Catch errors
@@ -139,9 +134,17 @@ export abstract class BaseTransaction {
 
   }
 
-  config(config: TransactionConfig) {
+  constructor(config?: TransactionConfig) {
+    this.config(config);
+  }
 
-    this._config = config;
+  config(config?: TransactionConfig) {
+
+    if (config) {
+      this._config = config;
+    }
+
+    return this;
     
   }
 
@@ -187,9 +190,9 @@ export abstract class BaseTransaction {
 
   }
 
-  serialize(safe: boolean = true): TransactionHex {
+  serialize(): TransactionHex {
 
-    if (safe) {
+    if (this._config.safeCheck) {
 
       if (this._coinData.getUnspent() < 0) {
         throw new Error('Not enough input balance to do the transaction');
@@ -201,13 +204,17 @@ export abstract class BaseTransaction {
 
   }
 
-  send(tx: BaseTransaction, config?: TransactionConfig): Promise<TransactionHash> {
+  async send(): Promise<TransactionHash> {
 
-    if (config) {
-      this.config(config);
+    if (this._config.safeCheck) {
+
+      if (!this._signature) {
+        throw new Error('The transaction is not signed');
+      }
+
     }
 
-    return BaseTransaction.send(tx, this._config);
+    return await BaseTransaction.send(this, this._config);
 
   }
 

@@ -32,18 +32,23 @@ export class AliasTransaction extends BaseTransaction {
   }
 
   static async fromAddress(address: string, config?: TransactionConfig): Promise<AliasTransaction> {
-    
+
     let tx = new AliasTransaction();
     return this._fromAddress<AliasTransaction>(address, tx, config);
 
   };
 
   static fromUtxos(utxos: UTXO[]): AliasTransaction {
-    
+
     let tx = new AliasTransaction();
     return this._fromUtxos<AliasTransaction>(utxos, tx);
 
   };
+
+  constructor() {
+    super();
+    this.addOutput(BLACK_HOLE_ADDRESS, AliasTransaction.ALIAS_NA);
+  }
 
   alias(address: string, alias: string): this {
 
@@ -51,8 +56,6 @@ export class AliasTransaction extends BaseTransaction {
       address,
       alias
     };
-
-    this.addOutput(BLACK_HOLE_ADDRESS, AliasTransaction.ALIAS_NA);
 
     if (!this._changeAddress) {
       this.change(address);

@@ -3,7 +3,7 @@ import { TransactionType } from '../../common';
 import { ITransactionData } from '../../utils/serialize/transaction/transaction';
 import { MAX_FEE_PRICE_1024_BYTES } from '../../utils/fee';
 import { UTXO } from '..';
-import { BaseTransaction, TransactionConfig, TransactionHex } from './baseTransaction';
+import { BaseTransaction, TransactionConfig } from './baseTransaction';
 import { ITxDataAliasData } from '../../utils/serialize/transaction/txData/txDataAlias';
 
 // https://github.com/nuls-io/nuls/blob/6e22e5ba554fae9e690faaa3797cdddb49f90c44/account-module/base/account-base/src/main/java/io/nuls/account/service/AliasService.java#L110
@@ -61,12 +61,12 @@ export class AliasTransaction extends BaseTransaction {
       this.change(address);
     }
 
-    this.calculateInputsAndChangeOutput();
+    this.updateInputsAndOutputs();
     return this;
 
   }
 
-  serialize(): TransactionHex {
+  protected validateTxData(): boolean {
 
     if (this._config.safeCheck) {
 
@@ -76,7 +76,7 @@ export class AliasTransaction extends BaseTransaction {
 
     }
 
-    return super.serialize();
+    return super.validateTxData();
 
   }
 

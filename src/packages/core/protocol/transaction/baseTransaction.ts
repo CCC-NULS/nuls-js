@@ -28,7 +28,9 @@ export abstract class BaseTransaction {
 
   protected _fee_price = MIN_FEE_PRICE_1024_BYTES;
   protected _changeAddress!: string;
-  protected _config: TransactionConfig = {};
+  protected _config: TransactionConfig = {
+    safeCheck: true
+  };
 
   private _utxos: CoinInput[] = [];
   private _changeOutputIndex: number | undefined;
@@ -124,9 +126,9 @@ export abstract class BaseTransaction {
   }
 
   static async send(tx: BaseTransaction, config?: TransactionConfig): Promise<TransactionHash> {
-    
+
     tx.config(config);
-    
+
     const api = new TransactionApi(tx._config.api);
     const txHex: TransactionHex = tx.serialize();
 
@@ -142,11 +144,11 @@ export abstract class BaseTransaction {
   config(config?: TransactionConfig) {
 
     if (config) {
-      this._config = config;
+      this._config = { ...this._config, ...config };
     }
 
     return this;
-    
+
   }
 
   time(time: number): this {
@@ -162,7 +164,7 @@ export abstract class BaseTransaction {
       ? Buffer.from(remark, 'utf8')
       : remark;
 
-    this.calculateInputsAndChangeOutput();
+    this.updateInputsAndOutputs();
     return this;
 
   }
@@ -171,7 +173,7 @@ export abstract class BaseTransaction {
 
     this._changeAddress = address;
 
-    this.calculateInputsAndChangeOutput();
+    this.updateInputsAndOutputs();
     return this;
 
   }
@@ -185,6 +187,8 @@ export abstract class BaseTransaction {
   // TODO: Implement all kinds of signatures (P2PKH, P2PS, etc...)
   sign(privateKey: string): this {
 
+    this.validateTxData();
+
     const privateKeyBuffer: Buffer = getPrivateKeyBuffer(privateKey);
     this._signature = createTransactionSignature(this, privateKeyBuffer);
     return this;
@@ -192,6 +196,8 @@ export abstract class BaseTransaction {
   }
 
   serialize(): TransactionHex {
+
+    this.validateTxData();
 
     if (this._config.safeCheck) {
 
@@ -207,27 +213,11 @@ export abstract class BaseTransaction {
 
   async send(): Promise<TransactionHash> {
 
-    if (this._config.safeCheck) {
-
-      if (this._signature.length === 0) {
-        throw new Error('The transaction is not signed');
-      }
-
+    if (this._signature.length === 0) {
+      throw new Error('The transaction is not signed');
     }
 
     return await BaseTransaction.send(this, this._config);
-
-  }
-
-  protected getHash(): TransactionHash {
-
-    const digestData: IDigestData = this.getDigest();
-    const digestSize: number = NulsDigestDataSerializer.size(digestData);
-    const hash: Buffer = Buffer.allocUnsafe(digestSize);
-
-    NulsDigestDataSerializer.write(digestData, hash, 0);
-
-    return hash.toString('hex');
 
   }
 
@@ -244,13 +234,38 @@ export abstract class BaseTransaction {
 
   }
 
-  protected addOutput(address: string, amount: number): this {
+  protected getHash(): TransactionHash {
 
-    const output: CoinOutput = new CoinOutput(address, amount);
-    this._coinData.outputs.push(output);
+    const digestData: IDigestData = this.getDigest();
+    const digestSize: number = NulsDigestDataSerializer.size(digestData);
+    const hash: Buffer = Buffer.allocUnsafe(digestSize);
 
-    this.calculateInputsAndChangeOutput();
-    return this;
+    NulsDigestDataSerializer.write(digestData, hash, 0);
+
+    return hash.toString('hex');
+
+  }
+
+  protected validateTxData(): boolean {
+
+    if (this._config.safeCheck) {
+
+      if (!this._txData) {
+        throw new Error('Transaction data is not filled');
+      }
+
+    }
+
+    return true;
+
+  }
+
+  protected addOutput(address: string, amount: number, lockTime?: number): number {
+
+    const index: number = this._coinData.addOutput(address, amount, lockTime);
+
+    this.updateInputsAndOutputs();
+    return index;
 
   }
 
@@ -293,7 +308,18 @@ export abstract class BaseTransaction {
   // https://github.com/nuls-io/nuls/blob/6e22e5ba554fae9e690faaa3797cdddb49f90c44/account-ledger-module/account-ledger/src/main/java/io/nuls/account/ledger/util/CoinDataTool.java#L44
   // https://github.com/nuls-io/nuls/blob/041ddb94a856d41b5456e28a5a885bbce994cd03/account-ledger-module/base/account-ledger-base/src/main/java/io/nuls/account/ledger/base/service/impl/AccountLedgerServiceImpl.java#L782
   // TODO: Improve this method... 
-  protected calculateInputsAndChangeOutput(): void {
+  protected updateInputsAndOutputs(extraFee: number = 0): void {
+
+    // Dont waste time calculating inputs and outputs when there are errors validating txData
+    try {
+
+      this.validateTxData();
+
+    } catch (e) {
+
+      return;
+
+    }
 
     this.removeChangeOutput();
     this.clearSignatures();
@@ -301,7 +327,7 @@ export abstract class BaseTransaction {
     const utxos: CoinInput[] = this._utxos;
     this._coinData.inputs = [];
 
-    const amount: number = this._coinData.outputs.reduce((prev: number, curr: CoinOutput) => prev + curr.na, 0);
+    const amount: number = this._coinData.outputs.reduce((prev: number, curr: CoinOutput) => prev + curr.na, 0) + extraFee;
 
     let totalAvailable = 0;
     let totalToSpent = 0;

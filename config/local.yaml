@@ -1,0 +1,7 @@
+nuls:
+  api:
+    timeout: 10000
+    apiserver:
+      host: http://testnet.apiserver.nuls.io
+    explorer:
+      host: http://localhost:8080

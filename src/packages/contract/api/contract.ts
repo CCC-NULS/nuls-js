@@ -1,20 +1,20 @@
 import * as config from 'config';
 import { APIServerClass, IAPIConfig } from '../../core/api/APIServer';
 
-export type ContractMethodArgCustomType = string; // example: 'Lcom/gmail/amalcaraz89/lottery/model/Lottery;'
-export type ContractMethodArgType = 'String' | 'double' | 'long' | 'int' | 'boolean' | 'Address' | 'BigInteger';
-export type ContractMethodRetType = ContractMethodArgType | ContractMethodArgCustomType;
+export type ContractMethodsArgCustomType = string; // example: 'Lcom/gmail/amalcaraz89/lottery/model/Lottery;'
+export type ContractMethodsArgType = 'String' | 'double' | 'long' | 'int' | 'boolean' | 'Address' | 'BigInteger';
+export type ContractMethodsRetType = ContractMethodsArgType | ContractMethodsArgCustomType;
 
 export interface IContractGetMethodsResponse {
   methods: Array<{
     name: string;
     desc: string;
     args: Array<{
-      type: ContractMethodArgType;
+      type: ContractMethodsArgType;
       name: string;
       required: boolean;
     }>;
-    returnArg: ContractMethodRetType; // or 'void'
+    returnArg: ContractMethodsRetType; // or 'void'
     view: boolean;
     event: boolean;
     payable: boolean;
@@ -43,7 +43,7 @@ export class ContractApi extends APIServerClass {
 
   }
 
-  async view(contractAddress: string, methodName: string, methodDesc: string, ...args: string[]): Promise<any> {
+  async view(contractAddress: string, methodName: string, methodDesc?: string, ...args: string[]): Promise<any> {
 
     const resource: string = this.getResource('contractView', contractAddress);
     const body: IContractViewRequest = {

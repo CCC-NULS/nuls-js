@@ -5,11 +5,10 @@ nuls:
       host: http://testnet.apiserver.nuls.io
       base: /nuls
     explorer:
-      host: https://nuls.world
+      host: https://testnet.nuls.world
       base: ''
       resources:
         utxos: /addresses/outputs/__ADDRESS__.json
         broadcast: /broadcast
-        methods: /api/contract/info/wallet/__ADDRESS__
-        view: /api/contract/view
-        call: /api/contract/call
+        contractMethods: /addresses/contracts/__ADDRESS__/methods.json
+        contractView: /addresses/contracts/call

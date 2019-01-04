@@ -24,7 +24,7 @@ export class APIServerClass {
 	protected getResource(name: string, ...args: string[]) {
 
 		if (!this.resources || !this.resources[name]) {
-			throw new Error('Wrong API config');
+			throw new Error(`The api resource "${name}" does not exists in the config`);
 		}
 
 		let resource = this.resources[name];

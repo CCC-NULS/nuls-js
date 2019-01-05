@@ -141,7 +141,7 @@ export abstract class BaseTransaction {
     this.config(config);
   }
 
-  config(config?: TransactionConfig) {
+  config(config?: TransactionConfig): this {
 
     if (config) {
       this._config = { ...this._config, ...config };

@@ -1,16 +1,11 @@
-import { Address } from '../../core/utils/crypto';
-import { CONTRACT_MIN_GAS_PRICE, CONTRACT_MAX_GAS_LIMIT } from '../common';
-import { BaseTransaction, TransactionConfig } from '../../core/protocol/transaction/baseTransaction';
-import { TransactionType } from '../../core/common';
-import { ITransactionData } from '../../core/utils/serialize/transaction/transaction';
-import { UTXO, CoinOutput } from '../..';
-import { ITxDataContractCallData } from '../../core/utils/serialize/transaction/txData/txDataContractCall';
-import { MIN_FEE_PRICE_1024_BYTES } from '../../core/utils/fee';
-
-export type ContractCallArg = string | string[];
-export type ContractCallArgs = ContractCallArg[];
-
-
+import { Address } from '../../../core/utils/crypto';
+import { CONTRACT_MIN_GAS_PRICE, CONTRACT_MAX_GAS_LIMIT } from '../../common';
+import { BaseTransaction, TransactionConfig } from '../../../core/protocol/transaction/baseTransaction';
+import { TransactionType } from '../../../core/common';
+import { ITransactionData } from '../../../core/utils/serialize/transaction/transaction';
+import { UTXO, CoinOutput, ContractCallArgs, ContractCallArg } from '../../..';
+import { ITxDataContractCallData } from '../../../core/utils/serialize/transaction/txData/txDataContractCall';
+import { MIN_FEE_PRICE_1024_BYTES } from '../../../core/utils/fee';
 
 // https://github.com/nuls-io/nuls/blob/305c56ca546407a74298a729f2588511781e624a/contract-module/base/contract-tx/src/main/java/io/nuls/contract/service/impl/ContractTxServiceImpl.java#L655
 export class ContractCallTransaction extends BaseTransaction {
@@ -96,6 +91,24 @@ export class ContractCallTransaction extends BaseTransaction {
 
     this._txData.gasLimit = gasLimit;
     this._txData.price = gasPrice;
+
+    this.updateInputsAndOutputs();
+    return this;
+
+  }
+
+  gasPrice(gasPrice: number = CONTRACT_MIN_GAS_PRICE) {
+
+    this._txData.price = gasPrice;
+
+    this.updateInputsAndOutputs();
+    return this;
+
+  }
+
+  gasLimit(gasLimit: number = CONTRACT_MAX_GAS_LIMIT) {
+
+    this._txData.gasLimit = gasLimit;
 
     this.updateInputsAndOutputs();
     return this;

@@ -3,29 +3,34 @@ import { APIServerClass, IAPIConfig } from '../../core/api/APIServer';
 
 export type ContractMethodsArgCustomType = string; // example: 'Lcom/gmail/amalcaraz89/lottery/model/Lottery;'
 export type ContractMethodsArgType = 'String' | 'double' | 'long' | 'int' | 'boolean' | 'Address' | 'BigInteger';
-export type ContractMethodsRetType = ContractMethodsArgType | ContractMethodsArgCustomType;
+export type ContractMethodsRetType = ContractMethodsArgType | ContractMethodsArgCustomType | 'void';
 
-export interface IContractGetMethodsResponse {
-  methods: Array<{
-    name: string;
-    desc: string;
-    args: Array<{
-      type: ContractMethodsArgType;
-      name: string;
-      required: boolean;
-    }>;
-    returnArg: ContractMethodsRetType; // or 'void'
-    view: boolean;
-    event: boolean;
-    payable: boolean;
-  }>
+export type ContractCallArg = string | string[];
+export type ContractCallArgs = ContractCallArg[];
+
+export interface IContractMethodArg {
+  type: ContractMethodsArgType;
+  name: string;
+  required: boolean;
+};
+
+export interface IContractMethod {
+  name: string;
+  desc: string;
+  args: IContractMethodArg[];
+  returnArg: ContractMethodsRetType;
+  view: boolean;
+  event: boolean;
+  payable: boolean;
 }
+
+export type IContractGetMethodsResponse = IContractMethod[];
 
 export interface IContractViewRequest {
   contractAddress: string;
   methodName: string;
   methodDesc?: string;
-  args: string[];
+  args: ContractCallArgs;
 }
 
 export type IContractViewResponse = string;
@@ -43,7 +48,7 @@ export class ContractApi extends APIServerClass {
 
   }
 
-  async view(contractAddress: string, methodName: string, methodDesc?: string, ...args: string[]): Promise<any> {
+  async view(contractAddress: string, methodName: string, methodDesc?: string, ...args: ContractCallArgs): Promise<IContractViewResponse> {
 
     const resource: string = this.getResource('contractView', contractAddress);
     const body: IContractViewRequest = {
@@ -57,6 +62,7 @@ export class ContractApi extends APIServerClass {
       body.methodDesc = methodDesc;
     }
 
+    // TODO: Improve error response codes
     return (await this.api.post(resource, body)).data.result;
 
   }

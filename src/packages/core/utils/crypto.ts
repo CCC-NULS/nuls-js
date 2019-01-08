@@ -4,7 +4,7 @@ import * as secp256k1 from 'secp256k1';
 import * as shajs from 'sha.js';
 import { isHex } from './serialize';
 
-export const PRIVATE_KEY_LENGTH = 66;
+export const PRIVATE_KEY_LENGTH = 64;
 
 export type AddressHash = Buffer;
 export type Address = string;
@@ -21,17 +21,17 @@ export function isValidPrivateKey(privateKey: string): boolean {
     return false;
   }
 
-  if (privateKey.length !== PRIVATE_KEY_LENGTH) {
-    return false;
+  if (privateKey.substr(0, 2) === '00') {
+    privateKey = privateKey.substr(2);
   }
 
-  if (privateKey.substring(0, 2) !== '00') {
+  if (privateKey.length !== PRIVATE_KEY_LENGTH) {
     return false;
   }
 
   try {
 
-    const prvbuffer = Buffer.from(privateKey.substring(2, PRIVATE_KEY_LENGTH), 'hex');
+    const prvbuffer = Buffer.from(privateKey, 'hex');
     publicKeyFromPrivateKey(prvbuffer);
     return true;
 
@@ -52,7 +52,11 @@ export function getPrivateKeyBuffer(privateKey: string): Buffer {
     throw new Error('Invalid private key');
   }
 
-  return Buffer.from(privateKey.substring(2, PRIVATE_KEY_LENGTH), 'hex');
+  if (privateKey.substr(0, 2) === '00') {
+    privateKey = privateKey.substr(2);
+  }
+
+  return Buffer.from(privateKey, 'hex');
 
 }
 

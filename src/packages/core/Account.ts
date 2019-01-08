@@ -1,10 +1,9 @@
 import * as bs58 from 'bs58';
 import { randomBytes } from 'crypto';
 import * as cryptoJS from 'crypto-js';
-// import RIPEMD160 from 'ripemd160'; // Works for Jest
-// import * as RIPEMD160 from 'ripemd160'; // Works for WallabyJS // Recommended for Typescript
 import * as secp256k1 from 'secp256k1';
 import * as shajs from 'sha.js';
+import { getPrivateKeyBuffer } from './utils';
 
 const RIPEMD160 = require('ripemd160'); // Holy shit balls Jest and WallayJS is finally happy!
 
@@ -21,9 +20,14 @@ export enum CustomAddressPosition {
 	anywhere = 'anywhere'
 }
 
-export enum ChainIdOptions {
-	testnet = 'testnet',
-	mainnet = 'mainnet'
+export enum AddressType {
+	Default = 1,
+	Contract = 2
+}
+
+export enum ChainIdType {
+	Testnet = 261,
+	Mainnet = 8964
 }
 
 export class Account {
@@ -31,9 +35,9 @@ export class Account {
 	// private startTime: number;
 
 	/** ChainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70) */
-	public chainId: number = 8964;
+	public chainId: ChainIdType = ChainIdType.Mainnet;
 	/** Address type The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76) */
-	public addressType: number = 1;
+	public addressType: AddressType = AddressType.Default;
 
 	/** Private key of the public address */
 	private privateKey: string = '';
@@ -50,25 +54,8 @@ export class Account {
 	/** The IV used for encrypting and decrypting private keys [View the NULS repo on IV](https://github.com/nuls-io/nuls/blob/4436795eabe864437de013b83aee0dca0d5400bf/tools-module/tools/src/main/java/io/nuls/core/tools/crypto/EncryptedData.java#L38) */
 	private iv = this.hexWordsArray('0000000000000000');
 
-	/**
-	 * Old debug function to be used if needed
-	 */
-	// logTime()
-	// {
-	// 	return Date.now() - this.startTime;
-	// }
-
-	public switchChain(type: ChainIdOptions): number {
-		switch (type) {
-			case 'testnet':
-				this.chainId = 261;
-				break;
-			case 'mainnet':
-			default:
-				this.chainId = 8964;
-				break;
-		}
-
+	public switchChain(type: ChainIdType): number {
+		this.chainId = type;
 		return this.chainId;
 	}
 
@@ -103,7 +90,7 @@ export class Account {
 	 * @param addressType The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76).
 	 * @param chainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70).
 	 */
-	public createCustomAddress(str: string, password: string, caseSensitive: boolean = false, position: CustomAddressPosition = CustomAddressPosition.end, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount {
+	public createCustomAddress(str: string, password: string, caseSensitive: boolean = false, position: CustomAddressPosition = CustomAddressPosition.end, addressType: AddressType = this.addressType, chainId: ChainIdType = this.chainId): IGetAccount {
 		const searchForText = caseSensitive ? str : str.toLowerCase();
 		const appendAddresses = caseSensitive ? ['Nse', 'Nsd'] : ['nse', 'nsd'];
 		const appendAddressesLoop = (usersAddress) => appendAddresses.find((appendAddress) => usersAddress.startsWith(`${appendAddress}${searchForText}`));
@@ -139,7 +126,7 @@ export class Account {
 	 * @param addressType The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76).
 	 * @param chainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70).
 	 */
-	public import(privateKey: string, password?: string, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount {
+	public import(privateKey: string, password?: string, addressType: AddressType = this.addressType, chainId: ChainIdType = this.chainId): IGetAccount {
 		return this.createAccount(password, privateKey, addressType, chainId);
 	}
 
@@ -149,7 +136,7 @@ export class Account {
 	 * @param addressType The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76).
 	 * @param chainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70).
 	 */
-	public create(password?: string, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount {
+	public create(password?: string, addressType: AddressType = this.addressType, chainId: ChainIdType = this.chainId): IGetAccount {
 		return this.createAccount(password, undefined, addressType, chainId);
 	}
 
@@ -160,17 +147,16 @@ export class Account {
 	 * @param addressType The default address type, a chain can contain several address types, and the address type is contained in the address. [View the NULS repo on addressType](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L76).
 	 * @param chainId The default chain id (NULS main chain), the chain id affects the generation of the address. [View the NULS repo on chainId](https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/context/NulsContext.java#L70).
 	 */
-	private createAccount(password?: string, privateKey?: string, addressType: number = this.addressType, chainId: number = this.chainId): IGetAccount {
+	private createAccount(password?: string, privateKey?: string, addressType: AddressType = this.addressType, chainId: ChainIdType = this.chainId): IGetAccount {
 		this.resetAccountDetails();
 
-		if (privateKey) // If a private key is provided we use that
-		{
-			if (password && this.decryptPrivateKey(password, privateKey)) // If a password exists and it's able to decrypt the private key then we're actually dealing with an encrypted private key
-			{
-				this.privateKeyBuffer = this.stringToHex(this.decryptPrivateKey(password, privateKey)); // Decrypt it first into a plain text private key and then store the buffer
+		if (privateKey) { // If a private key is provided we use that
+
+			if (password && this.decryptPrivateKey(password, privateKey)) { // If a password exists and it's able to decrypt the private key then we're actually dealing with an encrypted private key
+				this.privateKeyBuffer = getPrivateKeyBuffer(this.decryptPrivateKey(password, privateKey)); // Decrypt it first into a plain text private key and then store the buffer
 			}
 			else {
-				this.privateKeyBuffer = this.stringToHex(privateKey); // Turn it into a buffer for reading
+				this.privateKeyBuffer = getPrivateKeyBuffer(privateKey); // Turn it into a buffer for reading
 			}
 		}
 		else {
@@ -307,29 +293,12 @@ export class Account {
 	}
 
 	/**
-	 * String to buffer
-	 */
-	private stringToHex(str: string): Buffer {
-		return Buffer.from(str, 'hex');
-	}
-
-	/**
 	 * Buffer to string
 	 */
 	private hexToString(hex: Buffer): string {
 		return hex.toString('hex');
 	}
 
-	// set debug(value: boolean)
-	// {
-	// 	this._debug = value;
-	// 	this.createAccount();
-	// }
-	//
-	// get debug()
-	// {
-	// 	return this._debug;
-	// }
 }
 
 // Running the API

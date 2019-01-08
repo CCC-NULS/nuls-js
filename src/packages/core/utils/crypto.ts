@@ -25,13 +25,13 @@ export function isValidPrivateKey(privateKey: string): boolean {
     return false;
   }
 
-  if (privateKey.substring(0, 2) !== '00') {
-    return false;
+  if (privateKey.substr(0, 2) === '00') {
+    privateKey = privateKey.substr(2, PRIVATE_KEY_LENGTH);
   }
 
   try {
 
-    const prvbuffer = Buffer.from(privateKey.substring(2, PRIVATE_KEY_LENGTH), 'hex');
+    const prvbuffer = Buffer.from(privateKey, 'hex');
     publicKeyFromPrivateKey(prvbuffer);
     return true;
 
@@ -52,7 +52,11 @@ export function getPrivateKeyBuffer(privateKey: string): Buffer {
     throw new Error('Invalid private key');
   }
 
-  return Buffer.from(privateKey.substring(2, PRIVATE_KEY_LENGTH), 'hex');
+  if (privateKey.substr(0, 2) === '00') {
+    privateKey = privateKey.substr(2, PRIVATE_KEY_LENGTH);
+  }
+
+  return Buffer.from(privateKey, 'hex');
 
 }
 

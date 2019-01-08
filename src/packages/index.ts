@@ -1,5 +1,5 @@
 export { TransactionType } from './core/common';
-export * from './core/Account';
+export * from './core/account';
 export * from './core/QRCode';
 export { IAPIConfig } from './core/api';
 export {

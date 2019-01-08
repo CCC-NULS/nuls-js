@@ -11,7 +11,7 @@ export type Address = string;
 export type Hash = string;
 export type AgentHash = Hash;
 
-export function checkPrivateKey(privateKey: string): boolean {
+export function isValidPrivateKey(privateKey: string): boolean {
 
   if (!isHex(privateKey)) {
     return false;
@@ -42,9 +42,13 @@ export function checkPrivateKey(privateKey: string): boolean {
   }
 }
 
+export function isValidAddress(address: string): boolean {
+  return /^(Ns|TT)([a-zA-Z-0-9]{30})$/.test(address);
+}
+
 export function getPrivateKeyBuffer(privateKey: string): Buffer {
 
-  if(!checkPrivateKey(privateKey)) {
+  if(!isValidPrivateKey(privateKey)) {
     throw new Error('Invalid private key');
   }
 

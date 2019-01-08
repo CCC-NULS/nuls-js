@@ -1,7 +1,7 @@
 import { Address } from './../../core/utils/crypto';
-import { ContractApi, IContractGetMethodsResponse, IContractMethod, IContractViewResponse, IContractMethodArg } from '../api/contract';
-import { IAPIConfig, ContractCallTransaction, UTXO, Utxo, Account, ContractCallArgs } from '../..';
-import { TransactionHash } from '../../core/protocol/transaction/baseTransaction';
+import { ContractApi, IContractGetMethodsResponse, IContractMethod, IContractViewResponse, IContractMethodArg, ContractCallArgs } from '../api/contract';
+import { IAPIConfig, ContractCallTransaction, UTXO, Utxo, Account } from '../..';
+import { TransactionHash } from '../../core/protocol';
 
 export interface ContractConfig {
   api?: IAPIConfig;
@@ -38,9 +38,9 @@ export class Contract {
   static async at(contractAddress: string, config?: ContractConfig): Promise<Contract> {
 
     const contract = new Contract();
-    contract._api = new ContractApi();
     contract._contractAddress = contractAddress;
     contract.config(config);
+    contract._api = new ContractApi(contract._config.api);
 
     try {
 

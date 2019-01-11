@@ -1,8 +1,8 @@
 import { IDigestData } from '../protocol/nulsDigestData';
 import * as secp256k1 from 'secp256k1';
 import { publicKeyFromPrivateKey } from './crypto';
-import { P2PKHScriptSigSerializer, IP2PKHScriptSigData } from './serialize/transaction/signature/P2PKHScriptSig';
-import { INulsSignDataData } from './serialize/transaction/signature/nulsSignData';
+import { P2PKHScriptSigSerializer, IP2PKHScriptSigData } from './serialize/signature/P2PKHScriptSig';
+import { INulsSignDataData } from './serialize/signature/nulsSignData';
 import { BaseTransaction } from '../protocol/transaction/baseTransaction';
 
 // https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/script/P2PHKSignature.java#L44

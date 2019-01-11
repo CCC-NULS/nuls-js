@@ -1,5 +1,5 @@
-import { VarByteSerializer } from '../../varByte';
-import { IReadData } from '../../common';
+import { VarByteSerializer } from '../varByte';
+import { IReadData } from '../common';
 
 /***
   * ### NulsSignData
@@ -49,6 +49,8 @@ export class NulsSignDataSerializer {
   public static read(buf: Buffer, offset: number): INulsSignDataOutput {
 
     const signAlgType = buf.readUInt8(offset);
+    offset += 1;
+    
     const { data: signature, readBytes } = VarByteSerializer.read(buf, offset);
 
     return {

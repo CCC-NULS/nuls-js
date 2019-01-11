@@ -7,7 +7,7 @@ import { IReadData, PLACE_HOLDER } from '../common';
 
 /***
   * ### Transaction
-  * http://dev.nuls.io/protocol/index.html#Transaction
+  * http://dev.nuls.io/NULSInfrastructure/generalProtocol.html#transactions
   *
   * | Len  | Fields     | Data Type   | Remark            |
   * | ---- | ---------- | ----------- | ----------------- |
@@ -35,7 +35,7 @@ export interface ITransactionOutput extends IReadData {
 
 /**
  * Class to handle the protocol Transaction type
- * http://dev.nuls.io/protocol/index.html#Transaction
+ * http://dev.nuls.io/NULSInfrastructure/generalProtocol.html#transactions
  */
 export class TransactionSerializer {
 

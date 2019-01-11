@@ -1,4 +1,4 @@
-import { IReadData } from '../../common';
+import { IReadData } from '../common';
 import { VarByteSerializer } from '../..';
 import { NulsSignDataSerializer, INulsSignDataData } from './nulsSignData';
 

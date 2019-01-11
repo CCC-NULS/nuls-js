@@ -4,6 +4,7 @@ import { Hash } from '../crypto';
 
 /***
   * ### Hash
+  * Hash === NulsDigestData.toString('hex')
  */
 
 export interface IHashOutput extends IReadData {
@@ -15,6 +16,12 @@ export interface IHashOutput extends IReadData {
  * Class to handle the protocol Hash type
  */
 export class HashSerializer {
+
+  public static size(): number {
+
+    return HASH_LENGTH;
+
+  }
 
   /**
    * Reads a Hash from buf at the specified offset

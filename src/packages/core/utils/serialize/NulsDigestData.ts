@@ -48,6 +48,8 @@ export class NulsDigestDataSerializer {
   public static read(buf: Buffer, offset: number): INulsDigestDataOutput {
 
     const digestAlgType = buf.readUInt8(offset);
+    offset += 1;
+    
     const { data: digest, readBytes } = VarByteSerializer.read(buf, offset);
 
     return {

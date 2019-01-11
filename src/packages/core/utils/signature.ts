@@ -20,15 +20,9 @@ export type SignatureHash = Buffer;
 // https://github.com/nuls-io/nuls/blob/6e22e5ba554fae9e690faaa3797cdddb49f90c44/core-module/kernel/src/main/java/io/nuls/kernel/script/SignatureUtil.java#L147
 // TODO: Implement P2SH "P2PKHScriptSignature"
 export function createTransactionSignature(tx: BaseTransaction, privateKey: Buffer): SignatureHash {
-  
+
   const signatureData: IP2PHKSignature = createSignatureByEckey(tx, privateKey);
-  
-  const signatureSize: number = P2PKHScriptSigSerializer.size(signatureData);
-  const signatureHash: SignatureHash = Buffer.allocUnsafe(signatureSize);
-
-  P2PKHScriptSigSerializer.write(signatureData, signatureHash, 0);
-
-  return signatureHash;
+  return getSignatureHash(signatureData);
 
 }
 
@@ -57,5 +51,24 @@ function signDigest(tx: BaseTransaction, privateKey: Buffer): INulsSignData {
     signAlgType: NulsSignDataAlgTypes.ECC,
     signature
   };
+
+}
+
+export function getSignatureHash(signatureData: IP2PHKSignature): SignatureHash {
+
+  const signatureSize: number = P2PKHScriptSigSerializer.size(signatureData);
+  const signatureHash: SignatureHash = Buffer.allocUnsafe(signatureSize);
+
+  P2PKHScriptSigSerializer.write(signatureData, signatureHash, 0);
+
+  return signatureHash;
+
+}
+
+export function getSignatureFromHash(signatureHash: SignatureHash): IP2PHKSignature {
+
+  const { data } = P2PKHScriptSigSerializer.read(signatureHash, 0);
+
+  return data;
 
 }

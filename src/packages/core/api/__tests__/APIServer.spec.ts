@@ -6,7 +6,7 @@ describe('APIServer', () => {
 		jest.clearAllMocks();
 	});
 
-	test.only('the api server is optional and has our default value', () => {
+	test('the api server is optional and has our default value', () => {
 
 		const APIServer: IAPIConfig = {
 			host: 'https://apiserver.apiserver.nuls.io',

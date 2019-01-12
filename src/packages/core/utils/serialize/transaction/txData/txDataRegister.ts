@@ -99,7 +99,7 @@ export class TxDataRegisterSerializer {
     offset = AddressSerializer.write(data.rewardAddress, buf, offset);
     offset = buf.writeDoubleLE(data.commissionRate, offset);
 
-    return TxDataRegisterSerializer.BYTES_LENGTH;
+    return offset;
 
   }
 

@@ -1,6 +1,5 @@
 export const HASH_LENGTH = 34;
 export const ADDRESS_LENGTH = 23;
-
 export const P2SH_ADDRESS_TYPE = 3;
 
 export const BLACK_HOLE_ADDRESS = 'Nse5FeeiYk1opxdc5RqYpEWkiUDGNuLs';

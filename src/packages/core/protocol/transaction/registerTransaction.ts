@@ -4,7 +4,7 @@ import { ITransactionData } from '../../utils/serialize/transaction/transaction'
 import { BaseTransaction, TransactionConfig } from './baseTransaction';
 import { ITxDataRegisterData } from '../../utils/serialize/transaction/txData/txDataRegister';
 import { UTXO } from '../utxo';
-import { MAX_FEE_PRICE_1024_BYTES } from '../../utils';
+import { MAX_FEE_PRICE_1024_BYTES, nulsToNa } from '../../utils';
 
 // https://github.com/nuls-official/nuls/blob/4c60055c9fae38c66c62b432e0b634117e2876fe/consensus-module/poc/consensus-poc-protocol/src/main/java/io/nuls/consensus/poc/protocol/tx/CreateAgentTransaction.java#L38
 // https://github.com/nuls-official/nuls/blob/4c60055c9fae38c66c62b432e0b634117e2876fe/consensus-module/poc/consensus-poc-rpc/src/main/java/io/nuls/consensus/poc/rpc/resource/PocConsensusResource.java#L447
@@ -116,7 +116,11 @@ export class RegisterTransaction extends BaseTransaction {
       }
 
       if (!this._txData.commissionRate || (this._txData.commissionRate < 10 || this._txData.commissionRate > 100)) {
-        throw new Error('Invalid commission rate');
+        throw new Error('Invalid commission rate, should be between [10, 100]');
+      }
+
+      if (!this._txData.deposit || this._txData.deposit < nulsToNa(20000)) {
+        throw new Error('Invalid deposit, should be equal or greater than 20000 nuls');
       }
 
     }

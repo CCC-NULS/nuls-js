@@ -6,8 +6,9 @@ import { NulsDigestData, IDigestData } from '../nulsDigestData';
 import { NulsDigestDataSerializer } from '../../utils/serialize/nulsDigestData';
 import { createTransactionSignature } from '../../utils/signature';
 import { MIN_FEE_PRICE_1024_BYTES, getFee } from '../../utils/fee';
-import { IAPIConfig, CoinInput, CoinOutput, TransactionApi } from '../..';
 import { getPrivateKeyBuffer } from '../../utils/crypto';
+import { IAPIConfig, TransactionApi } from '../../api';
+import { CoinInput, CoinOutput } from '../coin';
 
 export type TransactionHash = string;
 export type TransactionHex = string;
@@ -64,7 +65,7 @@ export abstract class BaseTransaction {
   protected static _fromRawData<T extends BaseTransaction>(rawData: ITransactionData, tx: T): T {
 
     if (rawData.type !== tx._type) {
-      throw new Error(`Error reading Transaction from rawData (Incompatible types: ${rawData.type} !== ${tx._type})`);
+      throw new Error(`Error reading Transaction from rawData (Incompatible types: ${TransactionType[rawData.type]} !== ${TransactionType[tx._type]})`);
     }
 
     tx._type = rawData.type;

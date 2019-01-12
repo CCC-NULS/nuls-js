@@ -1,7 +1,7 @@
-import { Transaction } from './../transaction/transaction';
 import { BlockHeader, BlockHex } from './blockHeader';
 import { BlockSerializer, IBlockData } from '../../utils/serialize/block/block';
 import { BaseTransaction } from '../transaction';
+import { Transaction } from '../transaction/transaction';
 import { ITransactionData } from '../../utils/serialize/transaction/transaction';
 
 export class Block {

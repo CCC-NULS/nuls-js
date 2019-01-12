@@ -1,8 +1,9 @@
 import { TransactionType } from '../../common';
 import { TransactionSerializer, ITransactionData } from '../../utils/serialize/transaction/transaction';
 import { TransferTransaction } from './transferTransaction';
-import { BaseTransaction } from './baseTransaction';
 import { AliasTransaction } from './aliasTransaction';
+import { BaseTransaction } from './baseTransaction';
+import { RewardTransaction } from './rewardTransaction';
 
 export class Transaction extends BaseTransaction {
 
@@ -15,39 +16,44 @@ export class Transaction extends BaseTransaction {
 
   static fromRawData(rawData: ITransactionData): BaseTransaction {
 
-    let tx: BaseTransaction;
-
     switch (rawData.type) {
 
+      case TransactionType.Reward:
+        return RewardTransaction.fromRawData(rawData);
+
+
       case TransactionType.Alias:
-        tx = AliasTransaction.fromRawData(rawData);
+        return AliasTransaction.fromRawData(rawData);
 
       case TransactionType.Transfer:
+        return TransferTransaction.fromRawData(rawData);
+
       default:
-        tx = TransferTransaction.fromRawData(rawData);
+        throw new Error(`Transaction type ${TransactionType[rawData.type]} not supported`);
 
     }
-
-    return tx;
 
   }
 
   static toRawData(tx: BaseTransaction): ITransactionData {
 
-    let rawData: ITransactionData;
+    const type: TransactionType = tx.getType();
 
-    switch (tx.getType()) {
+    switch (type) {
+
+      case TransactionType.Reward:
+        return RewardTransaction.toRawData(tx);
 
       case TransactionType.Alias:
-        rawData = AliasTransaction.toRawData(tx);
+        return AliasTransaction.toRawData(tx);
 
       case TransactionType.Transfer:
+        return TransferTransaction.toRawData(tx);
+
       default:
-        rawData = TransferTransaction.toRawData(tx);
+        throw new Error(`Transaction type ${TransactionType[type]} not supported`);
 
     }
-
-    return rawData;
 
   }
 

@@ -159,9 +159,7 @@ export class Account {
 				}
 				else
 				{
-					console.log(privateKey);
 					this.privateKeyBuffer = getPrivateKeyBuffer(privateKey); // Turn it into a buffer for reading
-					console.log(privateKey);
 				}
 			}
 			catch (err) {

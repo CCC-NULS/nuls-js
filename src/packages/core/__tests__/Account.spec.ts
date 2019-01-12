@@ -2,7 +2,7 @@ import { AddressType, ChainIdType, CustomAddressPosition } from '@/index';
 
 jest.mock('crypto');
 
-describe.only('create new accounts', () => {
+describe('create new accounts', () => {
 	let account: Account;
 
 	describe('valid private key', () => {

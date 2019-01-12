@@ -1,3 +1,4 @@
+import { BlockHeader } from './../protocol/block/BlockHeader';
 import { IDigestData } from '../protocol/nulsDigestData';
 import * as secp256k1 from 'secp256k1';
 import { publicKeyFromPrivateKey } from './crypto';
@@ -17,6 +18,10 @@ export type INulsSignData = INulsSignDataData;
 
 export type SignatureHash = Buffer;
 
+export interface IDigestible {
+  getDigest(): IDigestData;
+};
+
 // https://github.com/nuls-io/nuls/blob/6e22e5ba554fae9e690faaa3797cdddb49f90c44/core-module/kernel/src/main/java/io/nuls/kernel/script/SignatureUtil.java#L147
 // TODO: Implement P2SH "P2PKHScriptSignature"
 export function createTransactionSignature(tx: BaseTransaction, privateKey: Buffer): SignatureHash {
@@ -26,11 +31,18 @@ export function createTransactionSignature(tx: BaseTransaction, privateKey: Buff
 
 }
 
+export function createBlockSignature(blockHeader: BlockHeader, privateKey: Buffer): SignatureHash {
+
+  const signatureData: IP2PHKSignature = createSignatureByEckey(blockHeader, privateKey);
+  return getSignatureHash(signatureData);
+
+}
+
 // https://github.com/nuls-io/nuls/blob/6e22e5ba554fae9e690faaa3797cdddb49f90c44/core-module/kernel/src/main/java/io/nuls/kernel/script/SignatureUtil.java#L193
-function createSignatureByEckey(tx: BaseTransaction, privateKey: Buffer): IP2PHKSignature {
+function createSignatureByEckey(digestible: IDigestible, privateKey: Buffer): IP2PHKSignature {
 
   const publicKey: Buffer = publicKeyFromPrivateKey(privateKey);
-  const signData: INulsSignData = signDigest(tx, privateKey);
+  const signData: INulsSignData = signDigest(digestible, privateKey);
 
   return {
     publicKey,
@@ -40,9 +52,9 @@ function createSignatureByEckey(tx: BaseTransaction, privateKey: Buffer): IP2PHK
 }
 
 // https://github.com/nuls-io/nuls/blob/6e22e5ba554fae9e690faaa3797cdddb49f90c44/core-module/kernel/src/main/java/io/nuls/kernel/script/SignatureUtil.java#L400
-function signDigest(tx: BaseTransaction, privateKey: Buffer): INulsSignData {
+function signDigest(digestible: IDigestible, privateKey: Buffer): INulsSignData {
 
-  const digestData: IDigestData = tx.getDigest();
+  const digestData: IDigestData = digestible.getDigest();
 
   const sigResult = secp256k1.sign(digestData.digest, privateKey);
   const signature: Buffer = secp256k1.signatureExport(sigResult.signature);

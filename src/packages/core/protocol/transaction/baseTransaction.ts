@@ -68,8 +68,9 @@ export abstract class BaseTransaction {
     }
 
     tx._type = rawData.type;
-    tx._remark = rawData.remark;
     tx._time = rawData.time;
+    tx._remark = rawData.remark;
+    tx._txData = rawData.txData;
     tx._coinData = CoinData.fromRawData(rawData.coinData);
     tx._signature = rawData.scriptSign;
 
@@ -101,7 +102,7 @@ export abstract class BaseTransaction {
       const input: CoinInput = new CoinInput(utxo.hash, utxo.idx, utxo.value, utxo.lockTime);
 
       tx._utxos.push(input);
-      tx._coinData.inputs.push(input);
+      tx._coinData.getInputs().push(input);
 
     });
 
@@ -139,6 +140,10 @@ export abstract class BaseTransaction {
 
   constructor(config?: TransactionConfig) {
     this.config(config);
+  }
+
+  getType(): TransactionType {
+    return this._type;
   }
 
   config(config?: TransactionConfig): this {
@@ -292,7 +297,7 @@ export abstract class BaseTransaction {
 
   protected removeChangeOutput() {
     if (this._changeOutputIndex !== undefined) {
-      this._coinData.outputs.splice(this._changeOutputIndex, 1);
+      this._coinData.getOutputs().splice(this._changeOutputIndex, 1);
       this._changeOutputIndex = undefined;
     }
   }
@@ -302,7 +307,7 @@ export abstract class BaseTransaction {
   }
 
   protected resetInputs() {
-    this._coinData.inputs = [...this._utxos];
+    this._coinData.inputs([...this._utxos]);
   }
 
   // https://github.com/nuls-io/nuls/blob/6e22e5ba554fae9e690faaa3797cdddb49f90c44/account-ledger-module/account-ledger/src/main/java/io/nuls/account/ledger/util/CoinDataTool.java#L44
@@ -325,16 +330,16 @@ export abstract class BaseTransaction {
     this.clearSignatures();
 
     const utxos: CoinInput[] = this._utxos;
-    this._coinData.inputs = [];
+    this._coinData.inputs([]);
 
-    const amount: number = this._coinData.outputs.reduce((prev: number, curr: CoinOutput) => prev + curr.na, 0) + extraFee;
+    const amount: number = this._coinData.getOutputs().reduce((prev: number, curr: CoinOutput) => prev + curr.na, 0) + extraFee;
 
     let totalAvailable = 0;
     let totalToSpent = 0;
 
     for (let input of utxos) {
 
-      this._coinData.inputs.push(input);
+      this._coinData.getInputs().push(input);
       totalAvailable += input.na;
 
       // TODO: Not the more efficient way to calculate fees, but the easiest one. Optimize it getting the size from the Coin!
@@ -349,7 +354,7 @@ export abstract class BaseTransaction {
         // if the change coin was already added in the previous iteration, we just update the na
         if (this._changeOutputIndex !== undefined) {
 
-          const changeOutput: CoinOutput = this._coinData.outputs[this._changeOutputIndex];
+          const changeOutput: CoinOutput = this._coinData.getOutputs()[this._changeOutputIndex];
           changeOutput.na = changeNa;
 
         } else {
@@ -362,9 +367,9 @@ export abstract class BaseTransaction {
           }
 
           const changeCoin = new CoinOutput(this._changeAddress, changeNa);
-          this._coinData.outputs.unshift(changeCoin);
+          this._coinData.getOutputs().unshift(changeCoin);
           this._changeOutputIndex = 0;
-          const changeOutput: CoinOutput = this._coinData.outputs[this._changeOutputIndex];
+          const changeOutput: CoinOutput = this._coinData.getOutputs()[this._changeOutputIndex];
 
           // Recalculating fees with the new size after adding the change output
           const oldTotalToSpent = totalToSpent;
@@ -381,7 +386,7 @@ export abstract class BaseTransaction {
 
           // if after adding the change output, the change amount is equal to the new fees, better to do not add the output
           if (changeOutput.na === 0) {
-            this._coinData.outputs.shift();
+            this._coinData.getOutputs().shift();
             totalToSpent = oldTotalToSpent;
           }
 

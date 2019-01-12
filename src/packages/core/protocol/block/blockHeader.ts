@@ -1,6 +1,11 @@
 import { BlockHeaderSerializer, IBlockHeaderData } from '../../utils/serialize/block/blockHeader';
-import { Hash } from '../../utils/crypto';
-import { getSignatureHash, getSignatureFromHash } from '../../utils';
+import { Hash, getPrivateKeyBuffer } from '../../utils/crypto';
+import { getSignatureHash, getSignatureFromHash, createBlockSignature } from '../../utils';
+import { IDigestData, NulsDigestData } from '../nulsDigestData';
+import { NulsDigestDataSerializer } from '../../utils/serialize/nulsDigestData';
+
+export type BlockHash = string;
+export type BlockHex = string;
 
 export class BlockHeader {
 
@@ -52,7 +57,7 @@ export class BlockHeader {
 
   }
 
-  protected static toRawData(blockHeader: BlockHeader): IBlockHeaderData {
+  static toRawData(blockHeader: BlockHeader): IBlockHeaderData {
 
     return {
       preHash: blockHeader._preHash,
@@ -70,6 +75,51 @@ export class BlockHeader {
 
     const transactionData: IBlockHeaderData = BlockHeader.toRawData(this);
     return BlockHeaderSerializer.size(transactionData);
+
+  }
+
+  // signature(signature: Buffer) {
+  //   this._signature = signature;
+  // }
+
+  // https://github.com/nuls-io/nuls/blob/df9a9db1855be2fe57db81947a50f4eab57471d2/core-module/kernel/src/main/java/io/nuls/kernel/model/BlockHeader.java#L113
+  getDigest(): IDigestData {
+
+    // serialize without signature
+    const signature: Buffer = this._signature;
+    this._signature = Buffer.from([]);
+
+    const blockBytes: Buffer = BlockHeader.toBytes(this);
+    const digest: IDigestData = NulsDigestData.digest(blockBytes);
+
+    // restore signature after serialization
+    this._signature = signature;
+
+    return digest;
+
+  }
+
+  protected getHash(): BlockHash {
+
+    const digestData: IDigestData = this.getDigest();
+    
+    const digestSize: number = NulsDigestDataSerializer.size(digestData);
+    const hash: Buffer = Buffer.allocUnsafe(digestSize);
+    NulsDigestDataSerializer.write(digestData, hash, 0);
+
+    return hash.toString('hex');
+
+  }
+
+  getTxCount(): number {
+    return this._txCount;
+  }
+
+  sign(privateKey: string): this {
+
+    const privateKeyBuffer: Buffer = getPrivateKeyBuffer(privateKey);
+    this._signature = createBlockSignature(this, privateKeyBuffer);
+    return this;
 
   }
 

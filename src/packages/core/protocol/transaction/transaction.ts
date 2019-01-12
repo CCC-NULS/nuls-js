@@ -9,7 +9,7 @@ export class Transaction extends BaseTransaction {
   static fromBytes(bytes: Buffer): BaseTransaction {
 
     const rawData: ITransactionData = TransactionSerializer.read(bytes, 0).data;
-    return Transaction.fromRawData(rawData);
+    return this.fromRawData(rawData);
 
   }
 
@@ -29,6 +29,25 @@ export class Transaction extends BaseTransaction {
     }
 
     return tx;
+
+  }
+
+  static toRawData(tx: BaseTransaction): ITransactionData {
+
+    let rawData: ITransactionData;
+
+    switch (tx.getType()) {
+
+      case TransactionType.Alias:
+        rawData = AliasTransaction.toRawData(tx);
+
+      case TransactionType.Transfer:
+      default:
+        rawData = TransferTransaction.toRawData(tx);
+
+    }
+
+    return rawData;
 
   }
 

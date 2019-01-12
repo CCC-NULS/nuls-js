@@ -5,8 +5,8 @@ import { CoinInput, CoinOutput } from './coin';
 
 export class CoinData {
 
-  public inputs: CoinInput[] = [];
-  public outputs: CoinOutput[] = [];
+  protected _inputs: CoinInput[] = [];
+  protected _outputs: CoinOutput[] = [];
 
   static fromRawData(rawData: ICoinDataData): CoinData {
 
@@ -15,14 +15,14 @@ export class CoinData {
     rawData.inputs.forEach((inputRawData: ICoinData) => {
 
       const input: CoinInput = CoinInput.fromRawData(inputRawData);
-      coinData.inputs.push(input);
+      coinData._inputs.push(input);
 
     });
 
     rawData.outputs.forEach((outputRawData: ICoinData) => {
 
       const output: CoinOutput = CoinOutput.fromRawData(outputRawData);
-      coinData.outputs.push(output);
+      coinData._outputs.push(output);
 
     });
 
@@ -37,14 +37,14 @@ export class CoinData {
       outputs: []
     };
 
-    coinData.inputs.forEach((input: CoinInput) => {
+    coinData._inputs.forEach((input: CoinInput) => {
 
       const inputRawData: ICoinData = CoinInput.toRawData(input);
       rawData.inputs.push(inputRawData);
 
     });
 
-    coinData.outputs.forEach((output: CoinOutput) => {
+    coinData._outputs.forEach((output: CoinOutput) => {
 
       const outputRawData: ICoinData = CoinOutput.toRawData(output);
       rawData.outputs.push(outputRawData);
@@ -57,27 +57,27 @@ export class CoinData {
 
   addOutput(address: Address, value: number, lockTime?: number): number {
 
-    this.outputs.push(new CoinOutput(address, value, lockTime));
-    return this.outputs.length - 1;
+    this._outputs.push(new CoinOutput(address, value, lockTime));
+    return this._outputs.length - 1;
 
   }
 
   addInput(fromHash: string, fromIndex: number, value: number, lockTime?: number): number {
 
-    this.inputs.push(new CoinInput(fromHash, fromIndex, value, lockTime));
-    return this.inputs.length - 1;
+    this._inputs.push(new CoinInput(fromHash, fromIndex, value, lockTime));
+    return this._inputs.length - 1;
 
   }
 
   getInputsTotalValue(): number {
 
-    return this.inputs.reduce((prev: number, curr: CoinInput) => prev + curr.na, 0);
+    return this._inputs.reduce((prev: number, curr: CoinInput) => prev + curr.na, 0);
 
   }
 
   getOutputsTotalValue(): number {
 
-    return this.outputs.reduce((prev: number, curr: CoinOutput) => prev + curr.na, 0);
+    return this._outputs.reduce((prev: number, curr: CoinOutput) => prev + curr.na, 0);
 
   }
 
@@ -91,8 +91,24 @@ export class CoinData {
 
   }
 
+  inputs(inputs: CoinInput[]) {
+    this._inputs = inputs;
+  }
+
+  outputs(outputs: CoinOutput[]) {
+    this._outputs = outputs;
+  }
+
   getUnspent(): number {
     return this.getFee();
+  }
+
+  getInputs(): CoinInput[] {
+    return this._inputs;
+  }
+
+  getOutputs(): CoinOutput[] {
+    return this._outputs;
   }
 
 }

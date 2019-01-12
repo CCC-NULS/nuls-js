@@ -49,7 +49,7 @@ export function isValidAddress(address: string): boolean {
 export function getPrivateKeyBuffer(privateKey: string): Buffer {
 
   if(!isValidPrivateKey(privateKey)) {
-    throw new Error('Invalid private key');
+    throw new Error('Invalid private key provided.');
   }
 
   if (privateKey.substr(0, 2) === '00') {

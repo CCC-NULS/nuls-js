@@ -4,17 +4,10 @@ import { BlockSerializer, IBlockData } from '../../utils/serialize/block/block';
 import { BaseTransaction } from '../transaction';
 import { ITransactionData } from '../../utils/serialize/transaction/transaction';
 
-export interface TransactionConfig {
-  safeCheck?: boolean;
-}
-
 export class Block {
 
   protected _header!: BlockHeader;
   protected _transactions!: BaseTransaction[];
-  protected _config: TransactionConfig = {
-    safeCheck: true
-  };
 
   static fromBytes(bytes: Buffer): Block {
 
@@ -76,20 +69,6 @@ export class Block {
       header: BlockHeader.toRawData(block._header),
       transactions: rawTransactions
     };
-
-  }
-
-  constructor(config?: TransactionConfig) {
-    this.config(config);
-  }
-
-  config(config?: TransactionConfig): this {
-
-    if (config) {
-      this._config = { ...this._config, ...config };
-    }
-
-    return this;
 
   }
 

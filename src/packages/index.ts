@@ -3,6 +3,10 @@ export * from './core/account';
 export * from './core/QRCode';
 export { IAPIConfig } from './core/api';
 export {
+  Block,
+  BlockHeader
+} from './core/protocol/block';
+export {
   Transaction,
   TransactionHash,
   TransactionHex,

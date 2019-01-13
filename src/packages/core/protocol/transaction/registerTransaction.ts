@@ -1,5 +1,5 @@
 import { Address, isValidAddress } from './../../utils/crypto';
-import { TransactionType } from '../../common';
+import { TransactionType, CONSENSUS_LOCK_TIME } from '../../common';
 import { ITransactionData } from '../../utils/serialize/transaction/transaction';
 import { BaseTransaction, TransactionConfig } from './baseTransaction';
 import { ITxDataRegisterData } from '../../utils/serialize/transaction/txData/txDataRegister';
@@ -10,7 +10,7 @@ import { MAX_FEE_PRICE_1024_BYTES, nulsToNa } from '../../utils';
 // https://github.com/nuls-official/nuls/blob/4c60055c9fae38c66c62b432e0b634117e2876fe/consensus-module/poc/consensus-poc-rpc/src/main/java/io/nuls/consensus/poc/rpc/resource/PocConsensusResource.java#L447
 export class RegisterTransaction extends BaseTransaction {
 
-  private static CONSENSUS_LOCK_TIME = -1;
+  private static CONSENSUS_LOCK_TIME = CONSENSUS_LOCK_TIME;
 
   protected _fee_price = MAX_FEE_PRICE_1024_BYTES;
   protected _type = TransactionType.Register;
@@ -46,13 +46,6 @@ export class RegisterTransaction extends BaseTransaction {
 
   };
 
-  packingAddress(address: Address): this {
-
-    this._txData.packingAddress = address;
-    return this;
-    
-  }
-
   agentAddress(address: Address): this {
 
     this._txData.agentAddress = address;
@@ -69,16 +62,25 @@ export class RegisterTransaction extends BaseTransaction {
     this.updateInputsAndOutputs();
 
     return this;
-    
+
   }
 
   rewardAddress(address: Address): this {
 
     this._txData.rewardAddress = address;
-    
+
     this.updateInputsAndOutputs();
     return this;
-    
+
+  }
+
+  packingAddress(address: Address): this {
+
+    this._txData.packingAddress = address;
+
+    this.updateInputsAndOutputs();
+    return this;
+
   }
 
   deposit(amount: number): this {
@@ -87,7 +89,7 @@ export class RegisterTransaction extends BaseTransaction {
 
     this.updateInputsAndOutputs();
     return this;
-    
+
   }
 
   commission(percentage: number): this {
@@ -96,7 +98,7 @@ export class RegisterTransaction extends BaseTransaction {
 
     this.updateInputsAndOutputs();
     return this;
-    
+
   }
 
   protected validateTxData(): boolean {

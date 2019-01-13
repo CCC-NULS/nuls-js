@@ -1,3 +1,4 @@
+import { HASH_LENGTH } from './../common';
 import * as bs58 from 'bs58';
 import * as RIPEMD160 from 'ripemd160';
 import * as secp256k1 from 'secp256k1';
@@ -44,6 +45,10 @@ export function isValidPrivateKey(privateKey: string): boolean {
 
 export function isValidAddress(address: string): boolean {
   return /^(Ns|TT)([a-zA-Z-0-9]{30})$/.test(address);
+}
+
+export function isValidHash(hash: string): boolean {
+  return Buffer.from(hash, 'hex').length === HASH_LENGTH;
 }
 
 export function getPrivateKeyBuffer(privateKey: string): Buffer {

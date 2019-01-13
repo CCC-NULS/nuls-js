@@ -14,7 +14,8 @@ export {
   TransactionConfig,
   TransferTransaction,
   AliasTransaction,
-  RegisterTransaction
+  RegisterTransaction,
+  DepositTransaction
 } from './core/protocol/transaction';
 export * from './core/protocol/coin';
 export * from './core/protocol/utxo';

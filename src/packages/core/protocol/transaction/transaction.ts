@@ -5,6 +5,7 @@ import { TransferTransaction } from './transferTransaction';
 import { AliasTransaction } from './aliasTransaction';
 import { BaseTransaction } from './baseTransaction';
 import { RewardTransaction } from './rewardTransaction';
+import { DepositTransaction } from './depositTransaction';
 
 export class Transaction extends BaseTransaction {
 
@@ -31,6 +32,9 @@ export class Transaction extends BaseTransaction {
       case TransactionType.Register:
         return RegisterTransaction.fromRawData(rawData);
 
+      case TransactionType.Deposit:
+        return DepositTransaction.fromRawData(rawData);
+
       default:
         throw new Error(`Transaction type ${TransactionType[rawData.type]} not supported`);
 
@@ -55,6 +59,9 @@ export class Transaction extends BaseTransaction {
 
       case TransactionType.Register:
         return RegisterTransaction.toRawData(tx);
+
+      case TransactionType.Deposit:      
+        return DepositTransaction.toRawData(tx);
 
       default:
         throw new Error(`Transaction type ${TransactionType[type]} not supported`);

@@ -9,7 +9,13 @@ export class Block {
   protected _header!: BlockHeader;
   protected _transactions!: BaseTransaction[];
 
-  static fromBytes(bytes: Buffer): Block {
+  static fromBytes(bytes: string): Block;
+  static fromBytes(bytes: Buffer): Block;
+  static fromBytes(bytes: Buffer | string): Block {
+
+    if (typeof bytes === 'string') {
+      bytes = Buffer.from(bytes, 'base64');
+    }
 
     const block = new Block();
     const rawData: IBlockData = BlockSerializer.read(bytes, 0).data;

@@ -39,7 +39,7 @@ export abstract class BaseTransaction {
   private _changeOutputIndex: number | undefined;
 
   static fromBytes(bytes: Buffer): BaseTransaction {
-    throw new Error('Not implemented');
+    throw new Error('Method fromBytes not implemented');
   }
 
   protected static _fromBytes<T extends BaseTransaction>(bytes: Buffer, tx: T): T {
@@ -61,7 +61,7 @@ export abstract class BaseTransaction {
   }
 
   static fromRawData(rawData: ITransactionData): BaseTransaction {
-    throw new Error('Not implemented');
+    throw new Error('Method fromRawData not implemented');
   }
 
   protected static _fromRawData<T extends BaseTransaction>(rawData: ITransactionData, tx: T): T {
@@ -95,7 +95,7 @@ export abstract class BaseTransaction {
   }
 
   static fromUtxos(utxos: UTXO[]): BaseTransaction {
-    throw new Error('Not implemented');
+    throw new Error('Method fromUtxos not implemented');
   };
 
   protected static _fromUtxos<T extends BaseTransaction>(utxos: UTXO[], tx: T): T {
@@ -114,7 +114,7 @@ export abstract class BaseTransaction {
   }
 
   static async fromAddress(address: string, config: TransactionConfig): Promise<BaseTransaction> {
-    throw new Error('Not implemented');
+    throw new Error('Method fromAddress not implemented');
   };
 
   protected static async _fromAddress<T extends BaseTransaction>(address: string, tx: T, config?: TransactionConfig): Promise<T> {

@@ -11,7 +11,7 @@ import { IReadData } from '../../common';
 
 /***
   * ### TxData
-  * http://dev.nuls.io/protocol/index.html#Transaction
+  * http://dev.nuls.io/protocol/index.html#Transaction88
   *
   * | Len  | Fields     | Data Type   | Remark             |
   * | ---- | ---------- | ----------- | ------------------ |
@@ -63,7 +63,7 @@ export class TxDataSerializer {
         return TxDataContractCallSerializer.size(data as ITxDataContractCallData);
 
       default:
-        throw new Error('Not implemented');
+        throw new Error(`TxDataSerializer not implemented for type ${TransactionType[txType]}`);
     }
 
   }
@@ -101,7 +101,7 @@ export class TxDataSerializer {
         return TxDataContractCallSerializer.read(buf, offset);
 
       default:
-        throw new Error('Not implemented');
+        throw new Error(`TxDataSerializer not implemented for type ${TransactionType[txType]}`);
     }
 
   }
@@ -141,7 +141,7 @@ export class TxDataSerializer {
         return TxDataContractCallSerializer.write(data, buf, offset);
 
       default:
-        throw new Error('Not implemented');
+        throw new Error(`TxDataSerializer not implemented for type ${TransactionType[txType]}`);
     }
 
   }

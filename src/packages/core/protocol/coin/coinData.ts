@@ -111,4 +111,10 @@ export class CoinData {
     return this._outputs;
   }
 
+  removeOutput(index: number | undefined) {
+    if (index !== undefined) {
+      this._outputs.splice(index, 1);
+    }
+  }
+
 }

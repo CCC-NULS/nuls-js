@@ -7,12 +7,15 @@ export {
   BlockHeader
 } from './core/protocol/block';
 export {
+  BaseTransaction,
   Transaction,
   TransactionHash,
   TransactionHex,
   TransactionConfig,
   TransferTransaction,
-  AliasTransaction
+  AliasTransaction,
+  RegisterTransaction,
+  DepositTransaction
 } from './core/protocol/transaction';
 export * from './core/protocol/coin';
 export * from './core/protocol/utxo';

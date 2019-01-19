@@ -9,7 +9,7 @@ export class TransactionApi extends APIServerClass {
 	}
 
 	async broadcast(txHex: string): Promise<TransactionHash> {
-
+		
 		const resource: string = this.getResource('broadcast');
 		return (await this.api.post(resource, { txHex })).data.value;
 

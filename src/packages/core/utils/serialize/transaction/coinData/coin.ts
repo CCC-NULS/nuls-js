@@ -59,7 +59,8 @@ export class CoinSerializer {
     const na = readUint64LE(buf, offset);
     offset += 8;
 
-    const lockTime = buf.readUIntLE(offset, 6); // 48 bits
+    // TODO: Sometimes lockTime is -1 so we are using int48 instead uint48 to serialize it
+    const lockTime = buf.readIntLE(offset, 6); // 48 bits
     offset += 6; // 48 bits
     
     return {
@@ -84,7 +85,8 @@ export class CoinSerializer {
 
     offset = VarByteSerializer.write(data.owner, buf, offset);
     offset = writeUint64LE(data.na, buf, offset);
-    offset = buf.writeUIntLE(data.lockTime, offset, 6); // 48 bits
+    // TODO: Sometimes lockTime is -1 so we are using int48 instead uint48 to serialize it
+    offset = buf.writeIntLE(data.lockTime, offset, 6); // 48 bits
 
     return offset;
 

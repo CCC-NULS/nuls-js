@@ -17,7 +17,7 @@ export class CoinInput extends Coin {
 
     const ownerData: ICoinOwnerData = CoinOwnerUtils.parse(rawData.owner);
 
-    if (ownerData.fromHash && ownerData.fromIndex) {
+    if (ownerData.fromHash && (ownerData.fromIndex !== undefined)) {
 
       return new CoinInput(ownerData.fromHash, ownerData.fromIndex, rawData.na, rawData.lockTime);
 

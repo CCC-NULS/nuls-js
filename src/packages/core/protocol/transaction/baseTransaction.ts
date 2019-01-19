@@ -20,6 +20,8 @@ export interface TransactionConfig {
 
 export abstract class BaseTransaction {
 
+  protected static _className = BaseTransaction;
+
   protected _type!: TransactionType;
   protected _time: number = new Date().getTime();
   protected _remark: Buffer = Buffer.from([]);
@@ -296,13 +298,6 @@ export abstract class BaseTransaction {
 
   }
 
-  protected removeChangeOutput() {
-    if (this._changeOutputIndex !== undefined) {
-      this._coinData.getOutputs().splice(this._changeOutputIndex, 1);
-      this._changeOutputIndex = undefined;
-    }
-  }
-
   protected clearSignatures() {
     this._signature = Buffer.from([]);
   }
@@ -408,6 +403,11 @@ export abstract class BaseTransaction {
 
     }
 
+  }
+
+  private removeChangeOutput() {
+    this._coinData.removeOutput(this._changeOutputIndex);
+    this._changeOutputIndex = undefined;
   }
 
 }

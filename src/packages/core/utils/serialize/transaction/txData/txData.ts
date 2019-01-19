@@ -9,6 +9,7 @@ import { TxDataDepositSerializer, ITxDataDepositData } from './txDataDeposit';
 import { TxDataRegisterSerializer, ITxDataRegisterData } from './txDataRegister';
 import { IReadData } from '../../common';
 import { ITxDataYellowCardData, TxDataYellowCardSerializer } from './txDataYellowCard';
+import { ITxDataRedCardData, TxDataRedCardSerializer } from './txDataRedCard';
 
 /***
   * ### TxData
@@ -20,7 +21,7 @@ import { ITxDataYellowCardData, TxDataYellowCardSerializer } from './txDataYello
  */
 
 export type ITxDataData = ITxDataRewardData | ITxDataTransferData | ITxDataAliasData | ITxDataRegisterData |
-  ITxDataDepositData | ITxDataWithdrawData | ITxDataUnregisterData | ITxDataContractCallData | ITxDataYellowCardData;
+  ITxDataDepositData | ITxDataWithdrawData | ITxDataUnregisterData | ITxDataContractCallData | ITxDataYellowCardData | ITxDataRedCardData;
 
 export interface ITxDataOutput extends IReadData {
   data: ITxDataData;
@@ -37,7 +38,7 @@ export class TxDataSerializer {
    * @returns the bytes size of a serialized txData
    */
   public static size(data: ITxDataData, txType: TransactionType): number {
-    
+
     switch (txType) {
       case TransactionType.Reward:
         return TxDataRewardSerializer.size();
@@ -60,6 +61,9 @@ export class TxDataSerializer {
       case TransactionType.YellowCard:
         return TxDataYellowCardSerializer.size(data as ITxDataYellowCardData);
 
+      case TransactionType.RedCard:
+        return TxDataRedCardSerializer.size(data as ITxDataRedCardData);
+
       case TransactionType.Unregister:
         return TxDataUnregisterSerializer.size();
 
@@ -71,7 +75,7 @@ export class TxDataSerializer {
     }
 
   }
-  
+
   /**
    * Reads a txdata integer from buf at the specified offset
    * @param buf Buffer object from where the number will be read
@@ -100,6 +104,9 @@ export class TxDataSerializer {
 
       case TransactionType.YellowCard:
         return TxDataYellowCardSerializer.read(buf, offset);
+
+      case TransactionType.RedCard:
+        return TxDataRedCardSerializer.read(buf, offset);
 
       case TransactionType.Unregister:
         return TxDataUnregisterSerializer.read(buf, offset);
@@ -143,6 +150,9 @@ export class TxDataSerializer {
 
       case TransactionType.YellowCard:
         return TxDataYellowCardSerializer.write(data as ITxDataYellowCardData, buf, offset);
+
+      case TransactionType.RedCard:
+        return TxDataRedCardSerializer.write(data as ITxDataRedCardData, buf, offset);
 
       case TransactionType.Unregister:
         return TxDataUnregisterSerializer.write(data as ITxDataWithdrawData, buf, offset);

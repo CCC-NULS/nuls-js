@@ -8,6 +8,7 @@ import { TxDataAliasSerializer, ITxDataAliasData } from './txDataAlias';
 import { TxDataDepositSerializer, ITxDataDepositData } from './txDataDeposit';
 import { TxDataRegisterSerializer, ITxDataRegisterData } from './txDataRegister';
 import { IReadData } from '../../common';
+import { ITxDataYellowCardData, TxDataYellowCardSerializer } from './txDataYellowCard';
 
 /***
   * ### TxData
@@ -19,7 +20,7 @@ import { IReadData } from '../../common';
  */
 
 export type ITxDataData = ITxDataRewardData | ITxDataTransferData | ITxDataAliasData | ITxDataRegisterData |
-  ITxDataDepositData | ITxDataWithdrawData | ITxDataUnregisterData | ITxDataContractCallData;
+  ITxDataDepositData | ITxDataWithdrawData | ITxDataUnregisterData | ITxDataContractCallData | ITxDataYellowCardData;
 
 export interface ITxDataOutput extends IReadData {
   data: ITxDataData;
@@ -55,6 +56,9 @@ export class TxDataSerializer {
 
       case TransactionType.Withdraw:
         return TxDataWithdrawSerializer.size();
+
+      case TransactionType.YellowCard:
+        return TxDataYellowCardSerializer.size(data as ITxDataYellowCardData);
 
       case TransactionType.Unregister:
         return TxDataUnregisterSerializer.size();
@@ -94,6 +98,9 @@ export class TxDataSerializer {
       case TransactionType.Withdraw:
         return TxDataWithdrawSerializer.read(buf, offset);
 
+      case TransactionType.YellowCard:
+        return TxDataYellowCardSerializer.read(buf, offset);
+
       case TransactionType.Unregister:
         return TxDataUnregisterSerializer.read(buf, offset);
 
@@ -113,7 +120,7 @@ export class TxDataSerializer {
    * @param offset Number of bytes to skip before starting to write. Must satisfy
    * @returns Offset plus the number of bytes that has been written
    */
-  public static write(data: any, buf: Buffer, offset: number, txType: TransactionType): number {
+  public static write(data: ITxDataData, buf: Buffer, offset: number, txType: TransactionType): number {
 
     switch (txType) {
       case TransactionType.Reward:
@@ -123,22 +130,25 @@ export class TxDataSerializer {
         return TxDataTransferSerializer.write(buf, offset);
 
       case TransactionType.Alias:
-        return TxDataAliasSerializer.write(data, buf, offset);
+        return TxDataAliasSerializer.write(data as ITxDataAliasData, buf, offset);
 
       case TransactionType.Register:
-        return TxDataRegisterSerializer.write(data, buf, offset);
+        return TxDataRegisterSerializer.write(data as ITxDataRegisterData, buf, offset);
 
       case TransactionType.Deposit:
-        return TxDataDepositSerializer.write(data, buf, offset);
+        return TxDataDepositSerializer.write(data as ITxDataDepositData, buf, offset);
 
       case TransactionType.Withdraw:
-        return TxDataWithdrawSerializer.write(data, buf, offset);
+        return TxDataWithdrawSerializer.write(data as ITxDataWithdrawData, buf, offset);
+
+      case TransactionType.YellowCard:
+        return TxDataYellowCardSerializer.write(data as ITxDataYellowCardData, buf, offset);
 
       case TransactionType.Unregister:
-        return TxDataUnregisterSerializer.write(data, buf, offset);
+        return TxDataUnregisterSerializer.write(data as ITxDataWithdrawData, buf, offset);
 
       case TransactionType.ContractCall:
-        return TxDataContractCallSerializer.write(data, buf, offset);
+        return TxDataContractCallSerializer.write(data as ITxDataContractCallData, buf, offset);
 
       default:
         throw new Error(`TxDataSerializer not implemented for type ${TransactionType[txType]}`);

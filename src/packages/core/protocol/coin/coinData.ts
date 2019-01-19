@@ -1,12 +1,26 @@
 import { Address } from './../../utils/crypto';
 import { ICoinDataData } from '../../utils/serialize/transaction/coinData/coinData';
 import { ICoinData } from '../../utils/serialize/transaction/coinData/coin';
-import { CoinInput, CoinOutput } from './coin';
+import { CoinInput, CoinOutput, CoinInputObject, CoinOutputObject } from './coin';
+
+export interface CoinDataObject {
+  inputs: CoinInputObject[];
+  outputs: CoinOutputObject[];
+}
 
 export class CoinData {
 
   protected _inputs: CoinInput[] = [];
   protected _outputs: CoinOutput[] = [];
+
+  static toObject(coinData: CoinData): CoinDataObject {
+
+    return {
+      inputs: coinData._inputs.map((input: CoinInput) => input.toObject()),
+      outputs: coinData._outputs.map((output: CoinOutput) => output.toObject()),
+    };
+
+  }
 
   static fromRawData(rawData: ICoinDataData): CoinData {
 
@@ -115,6 +129,10 @@ export class CoinData {
     if (index !== undefined) {
       this._outputs.splice(index, 1);
     }
+  }
+
+  toObject(): CoinDataObject {
+    return CoinData.toObject(this);
   }
 
 }

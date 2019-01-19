@@ -18,6 +18,16 @@ export interface TransactionConfig {
   safeCheck?: boolean;
 }
 
+export interface TransactionObject {
+  hash: string;
+  type: TransactionType;
+  time: number;
+  remark: string;
+  txData: any;
+  coinData: any;
+  signature: string;
+}
+
 export abstract class BaseTransaction {
 
   protected static _className = BaseTransaction;
@@ -57,6 +67,20 @@ export abstract class BaseTransaction {
     TransactionSerializer.write(rawData, bytes, 0);
 
     return bytes;
+
+  }
+
+  static toObject(transaction: BaseTransaction): TransactionObject {
+
+    return {
+      hash: transaction.getHash(),
+      type: transaction._type,
+      time: transaction._time,
+      remark: transaction._remark.toString('utf-8'),
+      txData: transaction._txData, // TODO: Implement in each transaction kind
+      coinData: transaction._coinData.toObject(),
+      signature: transaction._signature.toString('hex'),
+    };
 
   }
 
@@ -240,6 +264,10 @@ export abstract class BaseTransaction {
 
     return NulsDigestData.digest(transactionHash);
 
+  }
+
+  getObject(): TransactionObject {
+    return BaseTransaction.toObject(this);
   }
 
   protected getHash(): TransactionHash {

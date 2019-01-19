@@ -2,6 +2,21 @@ import { CoinSerializer, ICoinData } from './../../utils/serialize/transaction/c
 import { Address } from '../../utils/crypto';
 import { CoinOwnerUtils, ICoinOwnerData } from '../../utils/coinOwner';
 
+export type CoinObject = CoinInputObject | CoinOutputObject;
+
+export interface CoinInputObject {
+  fromHash: string;
+  fromIndex: number;
+  na: number;
+  lockTime: number;
+}
+
+export interface CoinOutputObject {
+  address: string;
+  na: number;
+  lockTime: number;
+}
+
 export class Coin {
 
   constructor(
@@ -12,6 +27,17 @@ export class Coin {
 }
 
 export class CoinInput extends Coin {
+
+  static toObject(coin: CoinInput): CoinInputObject {
+
+    return {
+      fromHash: coin.fromHash,
+      fromIndex: coin.fromIndex,
+      na: coin.na,
+      lockTime: coin.lockTime,
+    };
+
+  }
 
   static fromRawData(rawData: ICoinData): CoinInput {
 
@@ -50,6 +76,10 @@ export class CoinInput extends Coin {
     super(na, lockTime);
   }
 
+  toObject(): CoinInputObject {
+    return CoinInput.toObject(this);
+  }
+
   size(): number {
 
     const data = CoinInput.toRawData(this);
@@ -60,6 +90,16 @@ export class CoinInput extends Coin {
 }
 
 export class CoinOutput extends Coin {
+
+  static toObject(coin: CoinOutput): CoinOutputObject {
+
+    return {
+      address: coin.address,
+      na: coin.na,
+      lockTime: coin.lockTime,
+    };
+
+  }
 
   static fromRawData(rawData: ICoinData): CoinOutput {
 
@@ -95,6 +135,10 @@ export class CoinOutput extends Coin {
     lockTime: number = 0
   ) {
     super(na, lockTime);
+  }
+
+  toObject(): CoinOutputObject {
+    return CoinOutput.toObject(this);
   }
 
   size(): number {

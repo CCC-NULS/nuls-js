@@ -1,8 +1,13 @@
-import { BlockHeader, BlockHex } from './blockHeader';
+import { BlockHeader, BlockHex, BlockHeaderObject } from './blockHeader';
 import { BlockSerializer, IBlockData } from '../../utils/serialize/block/block';
-import { BaseTransaction } from '../transaction';
+import { BaseTransaction, TransactionObject } from '../transaction';
 import { Transaction } from '../transaction/transaction';
 import { ITransactionData } from '../../utils/serialize/transaction/transaction';
+
+export interface BlockObject {
+  blockHeader: BlockHeaderObject;
+  transactions: TransactionObject[];
+}
 
 export class Block {
 
@@ -20,6 +25,15 @@ export class Block {
     const block = new Block();
     const rawData: IBlockData = BlockSerializer.read(bytes, 0).data;
     return this._fromRawData(rawData, block);
+
+  }
+
+  static toObject(block: Block): BlockObject {
+
+    return {
+      blockHeader: block._header.toObject(),
+      transactions: block._transactions.map((tx: BaseTransaction) => tx.getObject()),
+    };
 
   }
 

@@ -7,6 +7,17 @@ import { NulsDigestDataSerializer } from '../../utils/serialize/nulsDigestData';
 export type BlockHash = string;
 export type BlockHex = string;
 
+export interface BlockHeaderObject {
+  hash: string;
+  preHash: string;
+  merkleHash: string;
+  time: number;
+  height: number;
+  txCount: number;
+  extend: string; // TODO: parse extend info 
+  signature: string;
+}
+
 export class BlockHeader {
 
   protected _preHash!: Hash;
@@ -33,6 +44,21 @@ export class BlockHeader {
     BlockHeaderSerializer.write(rawData, bytes, 0);
 
     return bytes;
+
+  }
+
+  static toObject(blockHeader: BlockHeader): BlockHeaderObject {
+
+    return {
+      hash: blockHeader.getHash(),
+      preHash: blockHeader._preHash,
+      merkleHash: blockHeader._merkleHash,
+      time: blockHeader._time,
+      height: blockHeader._height,
+      txCount: blockHeader._txCount,
+      extend: blockHeader._extend.toString('hex'), // TODO: parse extend info 
+      signature: blockHeader._signature.toString('hex')
+    };
 
   }
 
@@ -78,6 +104,18 @@ export class BlockHeader {
 
   }
 
+  protected getHash(): BlockHash {
+
+    const digestData: IDigestData = this.getDigest();
+    
+    const digestSize: number = NulsDigestDataSerializer.size(digestData);
+    const hash: Buffer = Buffer.allocUnsafe(digestSize);
+    NulsDigestDataSerializer.write(digestData, hash, 0);
+
+    return hash.toString('hex');
+
+  }
+
   // https://github.com/nuls-io/nuls/blob/df9a9db1855be2fe57db81947a50f4eab57471d2/core-module/kernel/src/main/java/io/nuls/kernel/model/BlockHeader.java#L113
   getDigest(): IDigestData {
 
@@ -95,18 +133,6 @@ export class BlockHeader {
 
   }
 
-  protected getHash(): BlockHash {
-
-    const digestData: IDigestData = this.getDigest();
-    
-    const digestSize: number = NulsDigestDataSerializer.size(digestData);
-    const hash: Buffer = Buffer.allocUnsafe(digestSize);
-    NulsDigestDataSerializer.write(digestData, hash, 0);
-
-    return hash.toString('hex');
-
-  }
-
   getTxCount(): number {
     return this._txCount;
   }
@@ -117,6 +143,10 @@ export class BlockHeader {
     this._signature = createBlockSignature(this, privateKeyBuffer);
     return this;
 
+  }
+
+  toObject(): BlockHeaderObject {
+    return BlockHeader.toObject(this);
   }
 
 }

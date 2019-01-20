@@ -1,3 +1,4 @@
+import { CoinDataObject } from './../coin/coinData';
 import { UTXO, Utxo } from './../utxo';
 import { TransactionType } from '../../common';
 import { TransactionSerializer, ITransactionData } from '../../utils/serialize/transaction/transaction';
@@ -24,7 +25,7 @@ export interface TransactionObject {
   time: number;
   remark: string;
   txData: any;
-  coinData: any;
+  coinData: CoinDataObject;
   signature: string;
 }
 
@@ -46,7 +47,7 @@ export abstract class BaseTransaction {
   };
 
   private _utxos: CoinInput[] = [];
-  private _changeOutputIndex: number | undefined;
+  private _changeOutput: CoinOutput | undefined;
 
   static fromBytes(bytes: Buffer): BaseTransaction {
     throw new Error('Method fromBytes not implemented');
@@ -129,7 +130,7 @@ export abstract class BaseTransaction {
       const input: CoinInput = new CoinInput(utxo.hash, utxo.idx, utxo.value, utxo.lockTime);
 
       tx._utxos.push(input);
-      tx._coinData.getInputs().push(input);
+      tx._coinData.addInput(input);
 
     });
 
@@ -219,7 +220,7 @@ export abstract class BaseTransaction {
   // TODO: Implement all kinds of signatures (P2PKH, P2PS, etc...)
   sign(privateKey: string): this {
 
-    this.validateTxData();
+    this.validate();
 
     const privateKeyBuffer: Buffer = getPrivateKeyBuffer(privateKey);
     this._signature = createTransactionSignature(this, privateKeyBuffer);
@@ -229,7 +230,7 @@ export abstract class BaseTransaction {
 
   serialize(): TransactionHex {
 
-    this.validateTxData();
+    this.validate();
 
     if (this._config.safeCheck) {
 
@@ -266,7 +267,7 @@ export abstract class BaseTransaction {
 
   }
 
-  getObject(): TransactionObject {
+  toObject(): TransactionObject {
     return BaseTransaction.toObject(this);
   }
 
@@ -282,7 +283,7 @@ export abstract class BaseTransaction {
 
   }
 
-  protected validateTxData(): boolean {
+  protected validate(): boolean {
 
     if (this._config.safeCheck) {
 
@@ -342,7 +343,7 @@ export abstract class BaseTransaction {
     // Dont waste time calculating inputs and outputs when there are errors validating txData
     try {
 
-      this.validateTxData();
+      this.validate();
 
     } catch (e) {
 
@@ -363,7 +364,7 @@ export abstract class BaseTransaction {
 
     for (let input of utxos) {
 
-      this._coinData.getInputs().push(input);
+      this._coinData.addInput(input);
       totalAvailable += input.na;
 
       // TODO: Not the more efficient way to calculate fees, but the easiest one. Optimize it getting the size from the Coin!
@@ -376,10 +377,9 @@ export abstract class BaseTransaction {
         const changeNa = totalAvailable - totalToSpent;
 
         // if the change coin was already added in the previous iteration, we just update the na
-        if (this._changeOutputIndex !== undefined) {
+        if (this._changeOutput !== undefined) {
 
-          const changeOutput: CoinOutput = this._coinData.getOutputs()[this._changeOutputIndex];
-          changeOutput.na = changeNa;
+          this._changeOutput.na = changeNa;
 
         } else {
 
@@ -390,10 +390,9 @@ export abstract class BaseTransaction {
             // throw new Error('Change address must be specified');
           }
 
-          const changeCoin = new CoinOutput(this._changeAddress, changeNa);
-          this._coinData.getOutputs().unshift(changeCoin);
-          this._changeOutputIndex = 0;
-          const changeOutput: CoinOutput = this._coinData.getOutputs()[this._changeOutputIndex];
+          // Change output should be always at last position
+          this._changeOutput = new CoinOutput(this._changeAddress, changeNa);
+          this._coinData.addOutput(this._changeOutput);
 
           // Recalculating fees with the new size after adding the change output
           const oldTotalToSpent = totalToSpent;
@@ -406,11 +405,11 @@ export abstract class BaseTransaction {
             continue;
           }
 
-          changeOutput.na = totalAvailable - totalToSpent;
+          this._changeOutput.na = totalAvailable - totalToSpent;
 
           // if after adding the change output, the change amount is equal to the new fees, better to do not add the output
-          if (changeOutput.na === 0) {
-            this._coinData.getOutputs().shift();
+          if (this._changeOutput.na === 0) {
+            this.removeChangeOutput();
             totalToSpent = oldTotalToSpent;
           }
 
@@ -434,8 +433,8 @@ export abstract class BaseTransaction {
   }
 
   private removeChangeOutput() {
-    this._coinData.removeOutput(this._changeOutputIndex);
-    this._changeOutputIndex = undefined;
+    this._coinData.removeOutput(this._changeOutput);
+    this._changeOutput = undefined;
   }
 
 }

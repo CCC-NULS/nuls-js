@@ -1,7 +1,7 @@
 import { Address } from './../../utils/crypto';
 import { ICoinDataData } from '../../utils/serialize/transaction/coinData/coinData';
 import { ICoinData } from '../../utils/serialize/transaction/coinData/coin';
-import { CoinInput, CoinOutput, CoinInputObject, CoinOutputObject } from './coin';
+import { CoinInput, CoinOutput, CoinInputObject, CoinOutputObject, Coin } from './coin';
 
 export interface CoinDataObject {
   inputs: CoinInputObject[];
@@ -69,18 +69,37 @@ export class CoinData {
 
   }
 
-  addOutput(address: Address, value: number, lockTime?: number): number {
+  addOutput(output: CoinOutput): number;
+  addOutput(address: Address, value: number, lockTime?: number): number;
+  addOutput(address: Address | CoinOutput, value?: number, lockTime?: number): number {
 
-    this._outputs.push(new CoinOutput(address, value, lockTime));
-    return this._outputs.length - 1;
+    let output: CoinOutput = address instanceof CoinOutput
+      ? address
+      : new CoinOutput(address, value as number, lockTime as number)
+
+    this._outputs.push(output);
+    this.orderCoins(this._outputs);
+    return this._outputs.indexOf(output);
+
+  }
+  
+  addInput(input: CoinInput): number;
+  addInput(fromHash: string, fromIndex: number, value: number, lockTime?: number): number;
+  addInput(fromHash: string | CoinInput, fromIndex?: number, value?: number, lockTime?: number): number {
+
+    let input: CoinInput = fromHash instanceof CoinInput
+      ? fromHash
+      : new CoinInput(fromHash, fromIndex as number, value as number, lockTime as number)
+
+    this._inputs.push(input);
+    this.orderCoins(this._inputs);
+    return this._inputs.indexOf(input);
 
   }
 
-  addInput(fromHash: string, fromIndex: number, value: number, lockTime?: number): number {
-
-    this._inputs.push(new CoinInput(fromHash, fromIndex, value, lockTime));
-    return this._inputs.length - 1;
-
+  // Outputs should be ordered by lockTime
+  orderCoins(coins: Coin[]) {
+    coins.sort((a: Coin, b: Coin) => a.lockTime - b.lockTime);
   }
 
   getInputsTotalValue(): number {
@@ -125,10 +144,20 @@ export class CoinData {
     return this._outputs;
   }
 
-  removeOutput(index: number | undefined) {
-    if (index !== undefined) {
+  removeOutput(index?: number): void;
+  removeOutput(item?: CoinOutput): void;
+  removeOutput(arg: number | CoinOutput | undefined): void {
+
+    if (arg !== undefined) {
+
+      let index: number = typeof arg !== 'number'
+        ? this._outputs.indexOf(arg)
+        : arg;
+
       this._outputs.splice(index, 1);
+
     }
+
   }
 
   toObject(): CoinDataObject {

@@ -23,16 +23,19 @@ export class Transaction extends BaseTransaction {
       case TransactionType.Reward:
         return RewardTransaction.fromRawData(rawData);
 
-      case TransactionType.Alias:
-        return AliasTransaction.fromRawData(rawData);
-
       case TransactionType.Transfer:
         return TransferTransaction.fromRawData(rawData);
+
+      case TransactionType.Alias:
+        return AliasTransaction.fromRawData(rawData);
 
       case TransactionType.Register:
         return RegisterTransaction.fromRawData(rawData);
 
       case TransactionType.Deposit:
+        return DepositTransaction.fromRawData(rawData);
+
+      case TransactionType.Withdraw:
         return DepositTransaction.fromRawData(rawData);
 
       default:
@@ -60,7 +63,7 @@ export class Transaction extends BaseTransaction {
       case TransactionType.Register:
         return RegisterTransaction.toRawData(tx);
 
-      case TransactionType.Deposit:      
+      case TransactionType.Deposit:
         return DepositTransaction.toRawData(tx);
 
       default:

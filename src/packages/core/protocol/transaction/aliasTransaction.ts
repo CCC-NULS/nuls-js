@@ -65,7 +65,7 @@ export class AliasTransaction extends BaseTransaction {
 
   }
 
-  protected validateTxData(): boolean {
+  protected validate(): boolean {
 
     if (this._config.safeCheck) {
 
@@ -75,7 +75,7 @@ export class AliasTransaction extends BaseTransaction {
 
     }
 
-    return super.validateTxData();
+    return super.validate();
 
   }
 

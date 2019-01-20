@@ -101,7 +101,7 @@ export class RegisterTransaction extends BaseTransaction {
 
   }
 
-  protected validateTxData(): boolean {
+  protected validate(): boolean {
 
     if (this._config.safeCheck) {
 
@@ -127,7 +127,7 @@ export class RegisterTransaction extends BaseTransaction {
 
     }
 
-    return super.validateTxData();
+    return super.validate();
 
   }
 

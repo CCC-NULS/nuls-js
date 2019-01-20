@@ -133,7 +133,7 @@ export class ContractCallTransaction extends BaseTransaction {
   }
 
   // TODO: Improve params validation
-  protected validateTxData(): boolean {
+  protected validate(): boolean {
 
     if (this._config.safeCheck) {
 
@@ -163,7 +163,7 @@ export class ContractCallTransaction extends BaseTransaction {
 
     }
 
-    return super.validateTxData();
+    return super.validate();
 
   }
 

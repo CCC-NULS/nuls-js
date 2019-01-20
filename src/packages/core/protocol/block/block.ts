@@ -32,7 +32,7 @@ export class Block {
 
     return {
       blockHeader: block._header.toObject(),
-      transactions: block._transactions.map((tx: BaseTransaction) => tx.getObject()),
+      transactions: block._transactions.map((tx: BaseTransaction) => tx.toObject()),
     };
 
   }

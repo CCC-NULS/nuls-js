@@ -74,12 +74,13 @@ export class DepositTransaction extends BaseTransaction {
 
     this._txData.deposit = amount;
 
+    this.updateConsensusOutput();
     this.updateInputsAndOutputs();
     return this;
     
   }
 
-  protected validateTxData(): boolean {
+  protected validate(): boolean {
 
     if (this._config.safeCheck) {
 
@@ -97,7 +98,7 @@ export class DepositTransaction extends BaseTransaction {
 
     }
 
-    return super.validateTxData();
+    return super.validate();
 
   }
 

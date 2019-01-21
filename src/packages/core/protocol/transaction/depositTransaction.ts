@@ -104,6 +104,10 @@ export class DepositTransaction extends BaseTransaction {
 
   private updateConsensusOutput() {
 
+    if (this._txData.address === undefined || this._txData.deposit === undefined) {
+      return;
+    }
+
     this._coinData.removeOutput(this._consensusOutputIndex);
     this._consensusOutputIndex = this._coinData.addOutput(this._txData.address, this._txData.deposit, DepositTransaction.CONSENSUS_LOCK_TIME);
 

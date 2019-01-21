@@ -3,7 +3,6 @@ export * from './varByte';
 export * from './varString';
 export * from './common';
 export * from './address';
-export * from './agentHash';
 export * from './hash';
 export * from './nulsDigestData';
 export * from './block';

@@ -87,6 +87,7 @@ export class RegisterTransaction extends BaseTransaction {
 
     this._txData.deposit = amount;
 
+    this.updateConsensusOutput();
     this.updateInputsAndOutputs();
     return this;
 
@@ -132,6 +133,10 @@ export class RegisterTransaction extends BaseTransaction {
   }
 
   private updateConsensusOutput() {
+
+    if (this._txData.agentAddress === undefined || this._txData.deposit === undefined) {
+      return;
+    }
 
     this._coinData.removeOutput(this._consensusOutputIndex);
     this._consensusOutputIndex = this._coinData.addOutput(this._txData.agentAddress, this._txData.deposit, RegisterTransaction.CONSENSUS_LOCK_TIME);

@@ -144,6 +144,22 @@ export class CoinData {
     return this._outputs;
   }
 
+  removeInput(index?: number): void;
+  removeInput(item?: CoinInput): void;
+  removeInput(arg: number | CoinInput | undefined): void {
+
+    if (arg !== undefined) {
+
+      let index: number = typeof arg !== 'number'
+        ? this._inputs.indexOf(arg)
+        : arg;
+
+      this._inputs.splice(index, 1);
+
+    }
+
+  }
+
   removeOutput(index?: number): void;
   removeOutput(item?: CoinOutput): void;
   removeOutput(arg: number | CoinOutput | undefined): void {

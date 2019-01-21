@@ -10,5 +10,6 @@ nuls:
       resources:
         utxos: /addresses/outputs/__ADDRESS__.json
         broadcast: /broadcast
+        transaction: /transactions/__HASH__.json
         contractMethods: /addresses/contracts/__ADDRESS__/methods.json
         contractView: /addresses/contracts/call

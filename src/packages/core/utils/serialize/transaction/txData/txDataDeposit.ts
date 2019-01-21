@@ -1,10 +1,9 @@
-import { AgentHashSerializer } from './../../agentHash';
 import { HASH_LENGTH } from './../../../../common';
 import { ADDRESS_LENGTH } from '../../../../common';
 import { AddressSerializer } from '../../address';
 import { Address, AgentHash } from '../../../crypto';
 import { ITxDataOutput } from './txData';
-import { readUint64LE, writeUint64LE } from '../..';
+import { readUint64LE, writeUint64LE, HashSerializer } from '../..';
 
 /***
   * ### TxDataDeposit
@@ -61,7 +60,7 @@ export class TxDataDepositSerializer {
     const address: Address = AddressSerializer.read(buf, offset).data;
     offset += ADDRESS_LENGTH;
 
-    const agentHash: AgentHash = AgentHashSerializer.read(buf, offset).data;
+    const agentHash: AgentHash = HashSerializer.read(buf, offset).data;
 
     return {
       readBytes: TxDataDepositSerializer.BYTES_LENGTH,
@@ -85,7 +84,7 @@ export class TxDataDepositSerializer {
 
     offset = writeUint64LE(data.deposit, buf, offset);
     offset = AddressSerializer.write(data.address, buf, offset);
-    offset = AgentHashSerializer.write(data.agentHash, buf, offset);
+    offset = HashSerializer.write(data.agentHash, buf, offset);
 
     return offset;
 

@@ -1,5 +1,5 @@
-import { AgentHashSerializer } from '../../agentHash';
-import { AgentHash } from '../../../crypto';
+import { Hash } from '../../../crypto';
+import { HashSerializer } from '../../hash';
 import { ITxDataOutput } from './txData';
 import { HASH_LENGTH } from '../../../../common';
 
@@ -9,13 +9,13 @@ import { HASH_LENGTH } from '../../../../common';
   *
   * ### TX_TYPE_CANCEL_DEPOSIT
   *
-  * | 尺寸  | 字段       | 数据类型           | 说明           |
-  * | ---- | ---------- | ---------------- | -------------- |
-  * | ??   | agentHash  | NulsDigestData   | 委托节点地址     |   (joinTxHash??)
+  * | Len  | Fields         | Data Type        | Remark         |
+  * | ---- | -------------- | ---------------- | -------------- |
+  * | ??   | depositHash  | NulsDigestData   | 委托节点地址     |
  */
 
 export interface ITxDataWithdrawData {
-  agentHash: AgentHash;
+  depositHash: Hash;
 }
 
 export interface ITxDataWithdrawOutput extends ITxDataOutput {
@@ -36,7 +36,7 @@ export class TxDataWithdrawSerializer {
    * @returns the bytes size of a serialized txDataWithdraw
    */
   public static size(): number {
-    
+
     return TxDataWithdrawSerializer.BYTES_LENGTH;
 
   }
@@ -48,11 +48,11 @@ export class TxDataWithdrawSerializer {
    */
   public static read(buf: Buffer, offset: number): ITxDataWithdrawOutput {
 
-    const { data: agentHash, readBytes } = AgentHashSerializer.read(buf, offset);
+    const { data: depositHash, readBytes } = HashSerializer.read(buf, offset);
 
     return {
       readBytes,
-      data: { agentHash }
+      data: { depositHash }
     };
 
   }
@@ -66,7 +66,7 @@ export class TxDataWithdrawSerializer {
    */
   public static write(data: ITxDataWithdrawData, buf: Buffer, offset: number): number {
 
-    return AgentHashSerializer.write(data.agentHash, buf, offset);
+    return HashSerializer.write(data.depositHash, buf, offset);
 
   }
 

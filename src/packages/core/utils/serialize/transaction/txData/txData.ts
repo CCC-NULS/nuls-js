@@ -155,7 +155,7 @@ export class TxDataSerializer {
         return TxDataRedCardSerializer.write(data as ITxDataRedCardData, buf, offset);
 
       case TransactionType.Unregister:
-        return TxDataUnregisterSerializer.write(data as ITxDataWithdrawData, buf, offset);
+        return TxDataUnregisterSerializer.write(data as ITxDataUnregisterData, buf, offset);
 
       case TransactionType.ContractCall:
         return TxDataContractCallSerializer.write(data as ITxDataContractCallData, buf, offset);

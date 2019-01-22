@@ -5,9 +5,8 @@ import { Hash, isValidHash } from '../../utils/crypto';
 import { Address, isValidAddress } from '../../utils/crypto';
 import { TransactionType } from '../../common';
 import { ITransactionData } from '../../utils/serialize/transaction/transaction';
-import { BaseTransaction, TransactionConfig } from './baseTransaction';
+import { BaseTransaction } from './baseTransaction';
 import { ITxDataWithdrawData } from '../../utils/serialize/transaction/txData/txDataWithdraw';
-import { UTXO } from '../utxo';
 import { MAX_FEE_PRICE_1024_BYTES, nulsToNa } from '../../utils';
 
 // https://github.com/nuls-io/nuls/blob/df9a9db1855be2fe57db81947a50f4eab57471d2/consensus-module/poc/consensus-poc-protocol/src/main/java/io/nuls/consensus/poc/protocol/tx/CancelDepositTransaction.java#L41
@@ -38,20 +37,6 @@ export class WithdrawTransaction extends BaseTransaction {
     return this._fromRawData(rawData, tx);
 
   }
-
-  static async fromAddress(address: string, config?: TransactionConfig): Promise<WithdrawTransaction> {
-
-    let tx = new WithdrawTransaction();
-    return this._fromAddress<WithdrawTransaction>(address, tx, config);
-
-  };
-
-  static fromUtxos(utxos: UTXO[]): WithdrawTransaction {
-
-    let tx = new WithdrawTransaction();
-    return this._fromUtxos<WithdrawTransaction>(utxos, tx);
-
-  };
 
   address(address: Address): this {
 

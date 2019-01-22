@@ -119,7 +119,7 @@ export abstract class BaseTransaction {
 
   }
 
-  static fromUtxos(utxos: UTXO[]): BaseTransaction {
+  protected static fromUtxos(utxos: UTXO[]): BaseTransaction {
     throw new Error('Method fromUtxos not implemented');
   };
 
@@ -138,7 +138,7 @@ export abstract class BaseTransaction {
 
   }
 
-  static async fromAddress(address: string, config: TransactionConfig): Promise<BaseTransaction> {
+  protected static async fromAddress(address: string, config: TransactionConfig): Promise<BaseTransaction> {
     throw new Error('Method fromAddress not implemented');
   };
 

@@ -5,3 +5,4 @@ export * from './aliasTransaction';
 export * from './registerTransaction';
 export * from './depositTransaction';
 export * from './withdrawTransaction';
+export * from './unregisterTransaction';

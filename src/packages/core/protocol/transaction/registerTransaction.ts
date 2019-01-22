@@ -118,6 +118,10 @@ export class RegisterTransaction extends BaseTransaction {
         throw new Error('Invalid rewardAddress');
       }
 
+      if (this._txData.agentAddress === this._txData.packingAddress) {
+        throw new Error('agentAddress can not be the same as packingAddress');
+      }
+
       if (!this._txData.commissionRate || (this._txData.commissionRate < 10 || this._txData.commissionRate > 100)) {
         throw new Error('Invalid commission rate, should be between [10, 100]');
       }

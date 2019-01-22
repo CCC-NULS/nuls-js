@@ -55,11 +55,6 @@ export class TransactionSerializer {
 
   }
 
-  // AQDgzzp/ZwEA/////wAEFwQjAVnZBZV+EHRNejdxUzprwEueqX+wMRfNAwAAAADpUhMAAAAXBCMBd97NtGpPJOgOZS2Fgyaab9QUz+BsIwgAAAAAAOlSEwAAABcEIwGMqoHy58Py9NOzohXiFWjzKQ4ihCva4wIAAAAA6VITAAAAFwQjAY6z3aDewbM43/jAQIh+ayckeJBbKSFNAAAAAADpUhMAAAAA
-
-  // AQDgzzp/ZwEA/////wAEFwQjAVnZBZV+EHRNejdxUzprwEueqX+wMRfNAwAAAADpUhMAAAAXBCMBd97NtGpPJOgOZS2Fgyaab9QUz+BsIwgAAAAAAOlSEwAAABcEIwGMqoHy58Py9NOzohXiFWjzKQ4ihCva4wIAAAAA6VITAAAAFwQjAY6z3aDewbM43/jAQIh+ayckeJBbKSFNAAAAAADpUhMAAAA
-
-
   /**
    * Reads a tx buf at the specified offset
    * @param buf Buffer object from where the transaction will be read

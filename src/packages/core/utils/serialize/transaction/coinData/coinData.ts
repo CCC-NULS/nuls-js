@@ -1,5 +1,6 @@
 import { IReadData, VarIntSerializer } from '../..';
 import { ICoinData, CoinSerializer } from './coin';
+import { NulsDataSerializer } from '../../nulsData';
 
 /***
   * ### CoinData
@@ -34,6 +35,13 @@ export class CoinDataSerializer {
    */
   public static size(data: ICoinDataData): number {
 
+    let n = data && (data.inputs.length === 0 && data.outputs.length === 0) ? null : data;
+    const nulsData = NulsDataSerializer.size(n);
+
+    if (nulsData > 0) {
+      return nulsData;
+    }
+
     let size: number = 0;
 
     size += VarIntSerializer.size(data.inputs.length);
@@ -56,6 +64,18 @@ export class CoinDataSerializer {
    * @param offset Number of bytes to skip before starting to read
    */
   public static read(buf: Buffer, offset: number): ICoinDataOutput {
+
+    const nulsData = NulsDataSerializer.read(buf, offset);
+
+    if (nulsData.readBytes > 0) {
+      return {
+        readBytes: nulsData.readBytes,
+        data: {
+          inputs: [],
+          outputs: []
+        }
+      };
+    }
 
     const initialOffset = offset;
 
@@ -97,6 +117,13 @@ export class CoinDataSerializer {
    * @returns Offset plus the number of bytes that has been written
    */
   public static write(data: ICoinDataData, buf: Buffer, offset: number): number {
+
+    let n = data && (data.inputs.length === 0 && data.outputs.length === 0) ? null : data;
+    const newOffset = NulsDataSerializer.write(n, buf, offset);
+
+    if (newOffset > offset) {
+      return newOffset;
+    }
 
     offset = VarIntSerializer.write(data.inputs.length, buf, offset);
     for (const input of data.inputs) {

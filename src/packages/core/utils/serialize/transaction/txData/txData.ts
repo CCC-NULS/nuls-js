@@ -10,6 +10,7 @@ import { TxDataRegisterSerializer, ITxDataRegisterData } from './txDataRegister'
 import { IReadData } from '../../common';
 import { ITxDataYellowCardData, TxDataYellowCardSerializer } from './txDataYellowCard';
 import { ITxDataRedCardData, TxDataRedCardSerializer } from './txDataRedCard';
+import { NulsDataSerializer, INulsDataData } from '../../nulsData';
 
 /***
   * ### TxData
@@ -20,11 +21,11 @@ import { ITxDataRedCardData, TxDataRedCardSerializer } from './txDataRedCard';
   * | ??   | txData     | ??          | Transaction data   |
  */
 
-export type ITxDataData = ITxDataRewardData | ITxDataTransferData | ITxDataAliasData | ITxDataRegisterData |
+export type ITxDataData = INulsDataData | ITxDataRewardData | ITxDataTransferData | ITxDataAliasData | ITxDataRegisterData |
   ITxDataDepositData | ITxDataWithdrawData | ITxDataUnregisterData | ITxDataContractCallData | ITxDataYellowCardData | ITxDataRedCardData;
 
 export interface ITxDataOutput extends IReadData {
-  data: ITxDataData;
+  data: ITxDataData | null;
 }
 
 /**
@@ -38,6 +39,12 @@ export class TxDataSerializer {
    * @returns the bytes size of a serialized txData
    */
   public static size(data: ITxDataData, txType: TransactionType): number {
+
+    const nulsData = NulsDataSerializer.size(data);
+
+    if (nulsData > 0) {
+      return nulsData;
+    }
 
     switch (txType) {
       case TransactionType.Reward:
@@ -82,6 +89,12 @@ export class TxDataSerializer {
    * @param offset Number of bytes to skip before starting to read
    */
   public static read(buf: Buffer, offset: number, txType: TransactionType): ITxDataOutput {
+
+    const nulsData = NulsDataSerializer.read(buf, offset);
+
+    if (nulsData.readBytes > 0) {
+      return nulsData;
+    }
 
     switch (txType) {
       case TransactionType.Reward:
@@ -128,6 +141,12 @@ export class TxDataSerializer {
    * @returns Offset plus the number of bytes that has been written
    */
   public static write(data: ITxDataData, buf: Buffer, offset: number, txType: TransactionType): number {
+
+    const newOffset = NulsDataSerializer.write(data, buf, offset);
+
+    if (newOffset > offset) {
+      return newOffset;
+    }
 
     switch (txType) {
       case TransactionType.Reward:

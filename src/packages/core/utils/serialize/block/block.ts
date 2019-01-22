@@ -60,8 +60,8 @@ export class BlockSerializer {
     offset += bytes1;
 
     const transactions: ITransactionData[] = [];
-    
-    for (let i= 0; i < header.txCount; i++) {
+
+    for (let i = 0; i < header.txCount; i++) {
 
       const { data: transaction, readBytes: bytes2 } = TransactionSerializer.read(buf, offset);
       offset += bytes2;

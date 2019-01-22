@@ -6,3 +6,5 @@ export * from './registerTransaction';
 export * from './depositTransaction';
 export * from './withdrawTransaction';
 export * from './unregisterTransaction';
+export * from './yellowCardTransaction';
+export * from './redCardTransaction';

@@ -1,3 +1,4 @@
+import { YellowCardTransaction } from './yellowCardTransaction';
 import { RegisterTransaction } from './registerTransaction';
 import { TransactionType } from '../../common';
 import { TransactionSerializer, ITransactionData } from '../../utils/serialize/transaction/transaction';
@@ -6,6 +7,9 @@ import { AliasTransaction } from './aliasTransaction';
 import { BaseTransaction } from './baseTransaction';
 import { RewardTransaction } from './rewardTransaction';
 import { DepositTransaction } from './depositTransaction';
+import { WithdrawTransaction } from './withdrawTransaction';
+import { RedCardTransaction } from './redCardTransaction';
+import { UnregisterTransaction } from './unregisterTransaction';
 
 export class Transaction extends BaseTransaction {
 
@@ -36,7 +40,16 @@ export class Transaction extends BaseTransaction {
         return DepositTransaction.fromRawData(rawData);
 
       case TransactionType.Withdraw:
-        return DepositTransaction.fromRawData(rawData);
+        return WithdrawTransaction.fromRawData(rawData);
+
+      case TransactionType.YellowCard:
+        return YellowCardTransaction.fromRawData(rawData);
+
+      case TransactionType.RedCard:
+        return RedCardTransaction.fromRawData(rawData);
+
+      case TransactionType.Unregister:
+        return UnregisterTransaction.fromRawData(rawData);
 
       default:
         throw new Error(`Transaction type ${TransactionType[rawData.type]} not supported`);
@@ -65,6 +78,18 @@ export class Transaction extends BaseTransaction {
 
       case TransactionType.Deposit:
         return DepositTransaction.toRawData(tx);
+
+      case TransactionType.Withdraw:
+        return WithdrawTransaction.toRawData(tx);
+
+      case TransactionType.YellowCard:
+        return YellowCardTransaction.toRawData(tx);
+
+      case TransactionType.RedCard:
+        return RedCardTransaction.toRawData(tx);
+
+      case TransactionType.Unregister:
+        return UnregisterTransaction.toRawData(tx);
 
       default:
         throw new Error(`Transaction type ${TransactionType[type]} not supported`);

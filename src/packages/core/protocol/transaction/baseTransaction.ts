@@ -41,6 +41,7 @@ export abstract class BaseTransaction {
   protected _signature: Buffer = Buffer.from([]);
 
   protected _fee_price = MIN_FEE_PRICE_1024_BYTES;
+  protected _system_tx: boolean = false;
   protected _changeAddress!: string;
   protected _config: TransactionConfig = {
     safeCheck: true
@@ -213,7 +214,9 @@ export abstract class BaseTransaction {
 
   getFee(): number {
 
-    return this._coinData.getFee();
+    return !this._system_tx
+      ? this._coinData.getFee()
+      : 0;
 
   }
 

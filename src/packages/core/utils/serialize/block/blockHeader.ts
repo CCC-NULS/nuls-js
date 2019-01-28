@@ -1,9 +1,10 @@
-import { VarByteSerializer } from '..';
+import { IBlockExtendData, BlockExtendSerializer } from './blockExtend';
 import { IReadData } from '../common';
 import { HashSerializer } from '../hash';
 import { Hash } from '../../crypto';
 import { HASH_LENGTH } from '../../../../core/common';
 import { P2PKHScriptSigSerializer, IP2PKHScriptSigData } from '../signature/P2PKHScriptSig';
+import { VarByteSerializer } from '../varByte';
 
 /***
   * ### Block header
@@ -17,7 +18,7 @@ import { P2PKHScriptSigSerializer, IP2PKHScriptSigData } from '../signature/P2PK
   * | 6    | time       | uint48          | second            |
   * | 4    | height     | uint32          |                   |
   * | 4    | txCount    | uint32          |                   |
-  * | ??   | extend     | VarByte         | restrictions      |
+  * | ??   | extend     | BlockExtendData |                   |
   * | ??   | signature  | P2PKHScriptSig  |                   |
  */
 
@@ -27,7 +28,7 @@ export interface IBlockHeaderData {
   time: number;
   height: number;
   txCount: number;
-  extend: Buffer;
+  extend: IBlockExtendData;
   signature: IP2PKHScriptSigData | null;
 }
 
@@ -48,7 +49,7 @@ export class BlockHeaderSerializer {
   public static size(data: IBlockHeaderData): number {
 
     let size: number = 6 + 4 + 4 + HASH_LENGTH + HASH_LENGTH;
-    size += VarByteSerializer.size(data.extend);
+    size += BlockExtendSerializer.size(data.extend);
     size += P2PKHScriptSigSerializer.size(data.signature);
 
     return size;
@@ -79,7 +80,9 @@ export class BlockHeaderSerializer {
     const txCount = buf.readUInt32LE(offset);
     offset += 4;
 
-    const { data: extend, readBytes: bytes4 } = VarByteSerializer.read(buf, offset);
+
+
+    const { data: extend, readBytes: bytes4 } = BlockExtendSerializer.read(buf, offset);
     offset += bytes4;
 
     const { data: signature, readBytes: bytes5 } = P2PKHScriptSigSerializer.read(buf, offset);
@@ -116,7 +119,7 @@ export class BlockHeaderSerializer {
     offset = buf.writeUIntLE(data.time, offset, 6);
     offset = buf.writeUInt32LE(data.height, offset);
     offset = buf.writeUInt32LE(data.txCount, offset);
-    offset = VarByteSerializer.write(data.extend, buf, offset);
+    offset = BlockExtendSerializer.write(data.extend, buf, offset);
     offset = P2PKHScriptSigSerializer.write(data.signature, buf, offset);
 
     return offset;

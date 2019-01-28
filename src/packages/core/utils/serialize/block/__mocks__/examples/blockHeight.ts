@@ -1,4 +1,5 @@
 import { IBlockHeaderData } from '../../blockHeader';
+import { blockExtendReadExample } from './blockExtend';
 
 export const blockSerializedExample: string = 'ACBHC5h2v9PVo7kiWNDhQzN2RYrGaV0W0oboNMCOhaQCcAAgWWdL7AVFXXdF9Kj3sNgvtKsbsQpJMmixDFYZP9CV6OSgEBY+aAH7dAgAAQAAAD2uGw0ADABwmxU+aAEDAAIAAAACAAAAWgAQJwAAIGUuh+nNJcVxQRpvlN7+XhvxVvP+26Sk98og0oLKOxm8IQMBAeZ4pDsLRKRWYb2dzca36Qe8dVW0UR6ARc412wrDQgBHMEUCIQDu3/fusbh+vgFRKe3zMVnUbd2CaYV7XydDvZkBQEx6WQIgb3LpWq39u3dSBS8NlVbqCQAEwyDHOJF5Tke17bcY8uwBAKAQFj5oAQD/////AAMXBQEBsLVB1qV9CmIXC4tWNQ/x4lJ4symbGugBAAAAAON4CAAAABcFAQEBAtUMa4hxGqgMZzVEwx1/xxxPcQdihQUAAAAA43gIAAAAFwUBAYNkpQfb2ZAfRKPWP0AaCgFPt3+DbSseBgAAAADjeAgAAAAA';
 export const blockHeaderSerializedExample: string = 'ACBHC5h2v9PVo7kiWNDhQzN2RYrGaV0W0oboNMCOhaQCcAAgWWdL7AVFXXdF9Kj3sNgvtKsbsQpJMmixDFYZP9CV6OSgEBY+aAH7dAgAAQAAAD2uGw0ADABwmxU+aAEDAAIAAAACAAAAWgAQJwAAIGUuh+nNJcVxQRpvlN7+XhvxVvP+26Sk98og0oLKOxm8IQMBAeZ4pDsLRKRWYb2dzca36Qe8dVW0UR6ARc412wrDQgBHMEUCIQDu3/fusbh+vgFRKe3zMVnUbd2CaYV7XydDvZkBQEx6WQIgb3LpWq39u3dSBS8NlVbqCQAEwyDHOJF5Tke17bcY8uw=';
@@ -9,7 +10,7 @@ export const blockHeaderReadExample: IBlockHeaderData = {
   time: 1547229860000,
   height: 554235,
   txCount: 1,
-  extend: Buffer.from('ae1b0d000c00709b153e6801030002000000020000005a001027000020652e87e9cd25c571411a6f94defe5e1bf156f3fedba4a4f7ca20d282ca3b19bc', 'hex'),
+  extend: blockExtendReadExample,
   signature: {
     publicKey: Buffer.from('030101e678a43b0b44a45661bd9dcdc6b7e907bc7555b4511e8045ce35db0ac342', 'hex'),
     signData: {

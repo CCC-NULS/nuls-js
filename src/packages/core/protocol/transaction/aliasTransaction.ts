@@ -1,4 +1,4 @@
-import { BLACK_HOLE_ADDRESS, TransactionType } from '../../common';
+import { BLACK_HOLE_ADDRESS, TransactionType, BlockVersion } from '../../common';
 import { ITransactionData } from '../../utils/serialize/transaction/transaction';
 import { MAX_FEE_PRICE_1024_BYTES } from '../../utils/fee';
 import { BaseTransaction, TransactionConfig } from './baseTransaction';
@@ -16,36 +16,36 @@ export class AliasTransaction extends BaseTransaction {
   protected _type = TransactionType.Alias;
   protected _txData!: ITxDataAliasData;
 
-  static fromBytes(bytes: Buffer) {
+  static fromBytes(bytes: Buffer, blockHeight?: number, blockVersion?: BlockVersion): AliasTransaction {
 
-    let tx = new AliasTransaction();
+    let tx = new AliasTransaction(undefined, blockHeight, blockVersion);
     return this._fromBytes(bytes, tx);
 
   }
 
-  static fromRawData(rawData: ITransactionData): AliasTransaction {
+  static fromRawData(rawData: ITransactionData, blockHeight?: number, blockVersion?: BlockVersion): AliasTransaction {
 
-    let tx = new AliasTransaction();
+    let tx = new AliasTransaction(undefined, blockHeight, blockVersion);
     return this._fromRawData(rawData, tx);
 
   }
 
-  static async fromAddress(address: string, config?: TransactionConfig): Promise<AliasTransaction> {
+  static async fromAddress(address: string, config?: TransactionConfig, blockHeight?: number, blockVersion?: BlockVersion): Promise<AliasTransaction> {
 
-    let tx = new AliasTransaction();
+    let tx = new AliasTransaction(undefined, blockHeight, blockVersion);
     return this._fromAddress<AliasTransaction>(address, tx, config);
 
   };
 
-  static fromUtxos(utxos: UTXO[]): AliasTransaction {
+  static fromUtxos(utxos: UTXO[], blockHeight?: number, blockVersion?: BlockVersion): AliasTransaction {
 
-    let tx = new AliasTransaction();
+    let tx = new AliasTransaction(undefined, blockHeight, blockVersion);
     return this._fromUtxos<AliasTransaction>(utxos, tx);
 
   };
 
-  constructor() {
-    super();
+  constructor(config?: TransactionConfig, blockHeight?: number, blockVersion?: BlockVersion) {
+    super(config, blockHeight, blockVersion);
     this.addOutput(BLACK_HOLE_ADDRESS, AliasTransaction.ALIAS_NA);
   }
 

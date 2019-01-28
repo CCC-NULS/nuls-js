@@ -20,6 +20,12 @@ export enum TransactionType {
   ContractCall = 101, // contract invocation
 }
 
+export enum BlockVersion {
+  NotDefined = -1,
+  FirstVersion = 1,
+  SmartContracts = 2
+}
+
 export enum TransactionStatus {
   UnspentFree = 0,
   UnspentLocked = 1,

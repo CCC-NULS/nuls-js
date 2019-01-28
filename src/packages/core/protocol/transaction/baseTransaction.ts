@@ -1,6 +1,6 @@
 import { CoinDataObject } from './../coin/coinData';
 import { UTXO, Utxo } from './../utxo';
-import { TransactionType } from '../../common';
+import { TransactionType, BlockVersion } from '../../common';
 import { TransactionSerializer, ITransactionData } from '../../utils/serialize/transaction/transaction';
 import { CoinData } from '../coin/coinData';
 import { NulsDigestData, IDigestData } from '../nulsDigestData';
@@ -39,6 +39,8 @@ export abstract class BaseTransaction {
   protected _txData!: any;
   protected _coinData: CoinData = new CoinData();
   protected _signature: Buffer = Buffer.from([]);
+  protected _blockHeight: number = -1;
+  protected _blockVersion: number = BlockVersion.NotDefined;
 
   protected _fee_price = MIN_FEE_PRICE_1024_BYTES;
   protected _system_tx: boolean = false;
@@ -50,7 +52,7 @@ export abstract class BaseTransaction {
   private _utxos: CoinInput[] = [];
   private _changeOutput: CoinOutput | undefined;
 
-  static fromBytes(bytes: Buffer): BaseTransaction {
+  static fromBytes(bytes: Buffer, blockHeight?: number, blockVersion?: BlockVersion): BaseTransaction {
     throw new Error('Method fromBytes not implemented');
   }
 
@@ -86,7 +88,7 @@ export abstract class BaseTransaction {
 
   }
 
-  static fromRawData(rawData: ITransactionData): BaseTransaction {
+  static fromRawData(rawData: ITransactionData, blockHeight?: number, blockVersion?: BlockVersion): BaseTransaction {
     throw new Error('Method fromRawData not implemented');
   }
 
@@ -167,7 +169,9 @@ export abstract class BaseTransaction {
 
   }
 
-  constructor(config?: TransactionConfig) {
+  constructor(config?: TransactionConfig, blockHeight: number = -1, blockVersion: BlockVersion = BlockVersion.NotDefined) {
+    this._blockHeight = blockHeight;
+    this._blockVersion = blockVersion;
     this.config(config);
   }
 

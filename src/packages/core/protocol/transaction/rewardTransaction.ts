@@ -1,5 +1,5 @@
 import { TransferTransaction } from './transferTransaction';
-import { TransactionType } from '../../common';
+import { TransactionType, BlockVersion } from '../../common';
 import { ITransactionData } from '../../utils/serialize/transaction/transaction';
 import { TransactionHash } from './baseTransaction';
 
@@ -12,12 +12,12 @@ export class RewardTransaction extends TransferTransaction {
   protected _fee_price = 0;
   protected _type = TransactionType.Reward;
 
-  static fromBytes(bytes: Buffer): RewardTransaction {
-    return super.fromBytes(bytes) as RewardTransaction;
+  static fromBytes(bytes: Buffer, blockHeight?: number, blockVersion?: BlockVersion): RewardTransaction {
+    return super.fromBytes(bytes, blockHeight, blockVersion) as RewardTransaction;
   }
 
-  static fromRawData(rawData: ITransactionData): RewardTransaction {
-    return super.fromRawData(rawData) as RewardTransaction;
+  static fromRawData(rawData: ITransactionData, blockHeight?: number, blockVersion?: BlockVersion): RewardTransaction {
+    return super.fromRawData(rawData, blockHeight, blockVersion) as RewardTransaction;
   }
 
   protected updateInputsAndOutputs(extraFee: number = 0): void {

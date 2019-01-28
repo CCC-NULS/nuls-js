@@ -1,6 +1,6 @@
 import { Hash, isValidHash } from './../../utils/crypto';
 import { Address, isValidAddress } from '../../utils/crypto';
-import { TransactionType, CONSENSUS_LOCK_TIME } from '../../common';
+import { TransactionType, CONSENSUS_LOCK_TIME, BlockVersion } from '../../common';
 import { ITransactionData } from '../../utils/serialize/transaction/transaction';
 import { BaseTransaction, TransactionConfig } from './baseTransaction';
 import { ITxDataDepositData } from '../../utils/serialize/transaction/txData/txDataDeposit';
@@ -19,30 +19,30 @@ export class DepositTransaction extends BaseTransaction {
 
   private _consensusOutputIndex: number | undefined;
 
-  static fromBytes(bytes: Buffer) {
+  static fromBytes(bytes: Buffer, blockHeight?: number, blockVersion?: BlockVersion): DepositTransaction {
 
-    let tx = new DepositTransaction();
+    let tx = new DepositTransaction(undefined, blockHeight, blockVersion);
     return this._fromBytes(bytes, tx);
 
   }
 
-  static fromRawData(rawData: ITransactionData): DepositTransaction {
+  static fromRawData(rawData: ITransactionData, blockHeight?: number, blockVersion?: BlockVersion): DepositTransaction {
 
-    let tx = new DepositTransaction();
+    let tx = new DepositTransaction(undefined, blockHeight, blockVersion);
     return this._fromRawData(rawData, tx);
 
   }
 
-  static async fromAddress(address: string, config?: TransactionConfig): Promise<DepositTransaction> {
+  static async fromAddress(address: string, config?: TransactionConfig, blockHeight?: number, blockVersion?: BlockVersion): Promise<DepositTransaction> {
 
-    let tx = new DepositTransaction();
+    let tx = new DepositTransaction(undefined, blockHeight, blockVersion);
     return this._fromAddress<DepositTransaction>(address, tx, config);
 
   };
 
-  static fromUtxos(utxos: UTXO[]): DepositTransaction {
+  static fromUtxos(utxos: UTXO[], blockHeight?: number, blockVersion?: BlockVersion): DepositTransaction {
 
-    let tx = new DepositTransaction();
+    let tx = new DepositTransaction(undefined, blockHeight, blockVersion);
     return this._fromUtxos<DepositTransaction>(utxos, tx);
 
   };

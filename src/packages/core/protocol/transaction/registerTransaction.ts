@@ -1,5 +1,5 @@
 import { Address, isValidAddress } from './../../utils/crypto';
-import { TransactionType, CONSENSUS_LOCK_TIME } from '../../common';
+import { TransactionType, CONSENSUS_LOCK_TIME, BlockVersion } from '../../common';
 import { ITransactionData } from '../../utils/serialize/transaction/transaction';
 import { BaseTransaction, TransactionConfig } from './baseTransaction';
 import { ITxDataRegisterData } from '../../utils/serialize/transaction/txData/txDataRegister';
@@ -18,30 +18,30 @@ export class RegisterTransaction extends BaseTransaction {
 
   private _consensusOutputIndex: number | undefined;
 
-  static fromBytes(bytes: Buffer) {
+  static fromBytes(bytes: Buffer, blockHeight?: number, blockVersion?: BlockVersion): RegisterTransaction {
 
-    let tx = new RegisterTransaction();
+    let tx = new RegisterTransaction(undefined, blockHeight, blockVersion);
     return this._fromBytes(bytes, tx);
 
   }
 
-  static fromRawData(rawData: ITransactionData): RegisterTransaction {
+  static fromRawData(rawData: ITransactionData, blockHeight?: number, blockVersion?: BlockVersion): RegisterTransaction {
 
-    let tx = new RegisterTransaction();
+    let tx = new RegisterTransaction(undefined, blockHeight, blockVersion);
     return this._fromRawData(rawData, tx);
 
   }
 
-  static async fromAddress(address: string, config?: TransactionConfig): Promise<RegisterTransaction> {
+  static async fromAddress(address: string, config?: TransactionConfig, blockHeight?: number, blockVersion?: BlockVersion): Promise<RegisterTransaction> {
 
-    let tx = new RegisterTransaction();
+    let tx = new RegisterTransaction(undefined, blockHeight, blockVersion);
     return this._fromAddress<RegisterTransaction>(address, tx, config);
 
   };
 
-  static fromUtxos(utxos: UTXO[]): RegisterTransaction {
+  static fromUtxos(utxos: UTXO[], blockHeight?: number, blockVersion?: BlockVersion): RegisterTransaction {
 
-    let tx = new RegisterTransaction();
+    let tx = new RegisterTransaction(undefined, blockHeight, blockVersion);
     return this._fromUtxos<RegisterTransaction>(utxos, tx);
 
   };

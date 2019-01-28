@@ -1,4 +1,4 @@
-import { TransactionType } from '../../common';
+import { TransactionType, BlockVersion } from '../../common';
 import { ITransactionData } from '../../utils/serialize/transaction/transaction';
 import { BaseTransaction, TransactionHash } from './baseTransaction';
 import { ITxDataUnregisterData } from '../../utils/serialize/transaction/txData/txDataUnregister';
@@ -10,16 +10,16 @@ export class UnregisterTransaction extends BaseTransaction {
   protected _type = TransactionType.Unregister;
   protected _txData: ITxDataUnregisterData = {} as any;
 
-  static fromBytes(bytes: Buffer) {
+  static fromBytes(bytes: Buffer, blockHeight?: number, blockVersion?: BlockVersion): UnregisterTransaction {
 
-    let tx = new UnregisterTransaction();
+    let tx = new UnregisterTransaction(undefined, blockHeight, blockVersion);
     return this._fromBytes(bytes, tx);
 
   }
 
-  static fromRawData(rawData: ITransactionData): UnregisterTransaction {
+  static fromRawData(rawData: ITransactionData, blockHeight?: number, blockVersion?: BlockVersion): UnregisterTransaction {
 
-    let tx = new UnregisterTransaction();
+    let tx = new UnregisterTransaction(undefined, blockHeight, blockVersion);
     return this._fromRawData(rawData, tx);
 
   }

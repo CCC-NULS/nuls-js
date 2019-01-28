@@ -2,8 +2,7 @@ import { HASH_LENGTH } from './../../../../common';
 import { ADDRESS_LENGTH } from '../../../../common';
 import { AddressSerializer } from '../../address';
 import { Address, AgentHash } from '../../../crypto';
-import { ITxDataOutput } from './txData';
-import { readUint64LE, writeUint64LE, HashSerializer } from '../..';
+import { readUint64LE, writeUint64LE, HashSerializer, IReadData } from '../..';
 
 /***
   * ### TxDataDeposit
@@ -24,7 +23,7 @@ export interface ITxDataDepositData {
   agentHash: AgentHash;
 }
 
-export interface ITxDataDepositOutput extends ITxDataOutput {
+export interface ITxDataDepositOutput extends IReadData {
   readBytes: number;
   data: ITxDataDepositData;
 }

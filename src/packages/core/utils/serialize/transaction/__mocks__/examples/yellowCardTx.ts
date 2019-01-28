@@ -9,9 +9,6 @@ export const yellowCardTxReadExample: ITransactionData = {
   txData: {
     addresses: ['TTaj3ig7xbXBK5F4xMfScrXhnFpuujMJ']
   },
-  coinData: {
-    inputs: [],
-    outputs: []
-  },
+  coinData: null,
   scriptSign: Buffer.from([])
 };

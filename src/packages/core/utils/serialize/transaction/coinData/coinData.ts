@@ -14,13 +14,15 @@ import { NulsDataSerializer } from '../../nulsData';
   * | ??   | outputs     | Coin[]      | list of coins      |
   * 
  */
+export type CoinDataData = ICoinDataData | null;
+
 export interface ICoinDataData {
   inputs: ICoinData[];
   outputs: ICoinData[];
 }
 
 export interface ICoinDataOutput extends IReadData {
-  data: ICoinDataData;
+  data: CoinDataData;
 };
 
 /**
@@ -33,28 +35,29 @@ export class CoinDataSerializer {
    * Size of the serialized data
    * @returns the bytes size of a serialized coinData
    */
-  public static size(data: ICoinDataData): number {
+  public static size(data: CoinDataData): number {
 
-    let n = data && (data.inputs.length === 0 && data.outputs.length === 0) ? null : data;
-    const nulsData = NulsDataSerializer.size(n);
+    if (data === null || data === undefined) {
 
-    if (nulsData > 0) {
-      return nulsData;
+      return NulsDataSerializer.size(data);
+
+    } else {
+
+      let size: number = 0;
+
+      size += VarIntSerializer.size(data.inputs.length);
+      for (const input of data.inputs) {
+        size += CoinSerializer.size(input);
+      }
+
+      size += VarIntSerializer.size(data.outputs.length);
+      for (const output of data.outputs) {
+        size += CoinSerializer.size(output);
+      }
+
+      return size;
+
     }
-
-    let size: number = 0;
-
-    size += VarIntSerializer.size(data.inputs.length);
-    for (const input of data.inputs) {
-      size += CoinSerializer.size(input);
-    }
-
-    size += VarIntSerializer.size(data.outputs.length);
-    for (const output of data.outputs) {
-      size += CoinSerializer.size(output);
-    }
-
-    return size;
 
   }
 
@@ -68,44 +71,45 @@ export class CoinDataSerializer {
     const nulsData = NulsDataSerializer.read(buf, offset);
 
     if (nulsData.readBytes > 0) {
+
       return {
         readBytes: nulsData.readBytes,
+        data: null
+      };
+
+    } else {
+
+      const initialOffset = offset;
+
+      const { data: inputLength, readBytes } = VarIntSerializer.read(buf, offset);
+      offset += readBytes;
+
+      const inputs: ICoinData[] = [];
+      for (let i = 0; i < inputLength; i++) {
+        const { data: input, readBytes: inputReadBytes } = CoinSerializer.read(buf, offset);
+        offset += inputReadBytes;
+        inputs.push(input);
+      }
+
+      const { data: outputLength, readBytes: readBytes2 } = VarIntSerializer.read(buf, offset);
+      offset += readBytes2;
+
+      const outputs: ICoinData[] = [];
+      for (let i = 0; i < outputLength; i++) {
+        const { data: output, readBytes: outputReadBytes } = CoinSerializer.read(buf, offset);
+        offset += outputReadBytes;
+        outputs.push(output);
+      }
+
+      return {
+        readBytes: offset - initialOffset,
         data: {
-          inputs: [],
-          outputs: []
+          inputs,
+          outputs
         }
       };
+
     }
-
-    const initialOffset = offset;
-
-    const { data: inputLength, readBytes } = VarIntSerializer.read(buf, offset);
-    offset += readBytes;
-
-    const inputs: ICoinData[] = [];
-    for (let i = 0; i < inputLength; i++) {
-      const { data: input, readBytes: inputReadBytes } = CoinSerializer.read(buf, offset);
-      offset += inputReadBytes;
-      inputs.push(input);
-    }
-
-    const { data: outputLength, readBytes: readBytes2 } = VarIntSerializer.read(buf, offset);
-    offset += readBytes2;
-
-    const outputs: ICoinData[] = [];
-    for (let i = 0; i < outputLength; i++) {
-      const { data: output, readBytes: outputReadBytes } = CoinSerializer.read(buf, offset);
-      offset += outputReadBytes;
-      outputs.push(output);
-    }
-
-    return {
-      readBytes: offset - initialOffset,
-      data: {
-        inputs,
-        outputs
-      }
-    };
 
   }
 
@@ -116,23 +120,24 @@ export class CoinDataSerializer {
    * @param offset Number of bytes to skip before starting to write.
    * @returns Offset plus the number of bytes that has been written
    */
-  public static write(data: ICoinDataData, buf: Buffer, offset: number): number {
+  public static write(data: CoinDataData, buf: Buffer, offset: number): number {
 
-    let n = data && (data.inputs.length === 0 && data.outputs.length === 0) ? null : data;
-    const newOffset = NulsDataSerializer.write(n, buf, offset);
+    if (data === null || data === undefined) {
 
-    if (newOffset > offset) {
-      return newOffset;
-    }
+      return NulsDataSerializer.write(data, buf, offset);
 
-    offset = VarIntSerializer.write(data.inputs.length, buf, offset);
-    for (const input of data.inputs) {
-      offset = CoinSerializer.write(input, buf, offset);
-    }
+    } else {
 
-    offset = VarIntSerializer.write(data.outputs.length, buf, offset);
-    for (const output of data.outputs) {
-      offset = CoinSerializer.write(output, buf, offset);
+      offset = VarIntSerializer.write(data.inputs.length, buf, offset);
+      for (const input of data.inputs) {
+        offset = CoinSerializer.write(input, buf, offset);
+      }
+
+      offset = VarIntSerializer.write(data.outputs.length, buf, offset);
+      for (const output of data.outputs) {
+        offset = CoinSerializer.write(output, buf, offset);
+      }
+
     }
 
     return offset;

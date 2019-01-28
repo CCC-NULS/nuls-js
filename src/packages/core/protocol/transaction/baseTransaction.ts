@@ -263,7 +263,7 @@ export abstract class BaseTransaction {
     const transactionData: ITransactionData = BaseTransaction.toRawData(this);
 
     const transactionHashSize: number = TransactionSerializer.sizeHash(transactionData);
-    const transactionHash: Buffer = Buffer.allocUnsafe(transactionHashSize);
+    let transactionHash: Buffer = Buffer.allocUnsafe(transactionHashSize);
     TransactionSerializer.writeHash(transactionData, transactionHash);
 
     return NulsDigestData.digest(transactionHash);

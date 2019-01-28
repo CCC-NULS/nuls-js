@@ -1,4 +1,4 @@
-import { rewardTxSerializedExample, rewardTxReadExample } from '../../__mocks__';
+import { rewardTxSerializedExample, rewardTxReadExample } from '../../__mocks__/examples/rewardTx';
 import { ITransactionData, TransactionSerializer } from '../../transaction';
 import { TransactionType } from '../../../../../common';
 import { ITxDataRewardData, TxDataRewardSerializer } from '../../txData/txDataReward';
@@ -23,7 +23,7 @@ describe('TransactionSerializer integration tests', () => {
 
       expect(tx.scriptSign).toEqual(rewardTxReadExample.scriptSign);
 
-      expect((tx.txData as ITxDataRewardData).placeholder).toEqual(TxDataRewardSerializer.PLACE_HOLDER);
+      expect(tx.txData as ITxDataRewardData).toEqual(TxDataRewardSerializer.PLACE_HOLDER);
 
       expect(tx.coinData.inputs.length).toBe(rewardTxReadExample.coinData.inputs.length);
       expect(tx.coinData.outputs.length).toBe(rewardTxReadExample.coinData.outputs.length);

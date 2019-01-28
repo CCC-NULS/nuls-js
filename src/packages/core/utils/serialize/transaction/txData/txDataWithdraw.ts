@@ -1,7 +1,7 @@
 import { Hash } from '../../../crypto';
 import { HashSerializer } from '../../hash';
-import { ITxDataOutput } from './txData';
 import { HASH_LENGTH } from '../../../../common';
+import { IReadData } from '../../common';
 
 /***
   * ### TxDataWithdraw
@@ -18,7 +18,7 @@ export interface ITxDataWithdrawData {
   depositHash: Hash;
 }
 
-export interface ITxDataWithdrawOutput extends ITxDataOutput {
+export interface ITxDataWithdrawOutput extends IReadData {
   readBytes: number;
   data: ITxDataWithdrawData;
 }

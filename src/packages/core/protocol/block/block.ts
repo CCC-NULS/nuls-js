@@ -105,6 +105,12 @@ export class Block {
 
   }
 
+  toObject(): BlockObject {
+
+    return Block.toObject(this);
+
+  }
+
   protected size(): number {
 
     const transactionData: IBlockData = Block.toRawData(this);

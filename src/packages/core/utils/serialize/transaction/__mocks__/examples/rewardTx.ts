@@ -7,7 +7,7 @@ export const rewardTxReadExample: ITransactionData = {
   type: 1,
   time: 1544027820000,
   remark: Buffer.from([]),
-  txData: { placeholder: TxDataRewardSerializer.PLACE_HOLDER },
+  txData: TxDataRewardSerializer.PLACE_HOLDER,
   coinData:
   {
     inputs: [],

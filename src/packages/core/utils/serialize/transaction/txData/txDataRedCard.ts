@@ -1,8 +1,8 @@
 import { AddressSerializer } from '../../address';
 import { Address } from '../../../crypto';
-import { ITxDataOutput } from '.';
 import { ADDRESS_LENGTH } from '../../../../common';
 import { VarByteSerializer } from '../../varByte';
+import { IReadData } from '../../common';
 
 /***
   * ### TxDataRedCard
@@ -23,7 +23,7 @@ export interface ITxDataRedCardData {
   evidence: Buffer
 }
 
-export interface ITxDataRedCardOutput extends ITxDataOutput {
+export interface ITxDataRedCardOutput extends IReadData {
   readBytes: number;
   data: ITxDataRedCardData;
 }

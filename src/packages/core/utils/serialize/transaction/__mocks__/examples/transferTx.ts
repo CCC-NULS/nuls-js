@@ -7,7 +7,7 @@ export const transferTxReadExample: ITransactionData = {
   type: 2,
   time: 1548000118288,
   remark: Buffer.from('test transfer :)', 'utf-8'),
-  txData: { placeholder: TxDataTransferSerializer.PLACE_HOLDER },
+  txData: TxDataTransferSerializer.PLACE_HOLDER,
   coinData: {
     inputs: [
       {

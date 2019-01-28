@@ -1,4 +1,4 @@
-import { IReadData } from '.';
+import { IReadData, writeUint64LE, readUint64LE } from '.';
 
 /***
   * ### VarInt
@@ -81,7 +81,10 @@ export class VarIntSerializer {
 
     } else if (first === 0xFF) {
 
-      data = buf.readUIntLE(offset + 1, 8);
+      // data = buf.readUIntLE(offset + 1, 8);
+      // readBytes = 9;
+    
+      data = readUint64LE(buf, offset + 1);
       readBytes = 9;
 
     } else {
@@ -123,8 +126,12 @@ export class VarIntSerializer {
 
     } else if (data > 0xFFFFFFFF) {
 
+      // buf[offset] = 0xFF;
+      // buf.writeUIntLE(data, offset + 1, 8);
+      // len = 9;
+
       buf[offset] = 0xFF;
-      buf.writeUIntLE(data, offset + 1, 8);
+      writeUint64LE(data, buf, offset + 1);
       len = 9;
 
     } else {

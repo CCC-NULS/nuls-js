@@ -2,7 +2,7 @@ import { Address, AddressHash, hashFromAddress } from '../../../crypto';
 import { VarStringSerializer } from '../../varString';
 import { addressFromHash } from '../../../crypto';
 import { VarByteSerializer } from '../../varByte';
-import { ITxDataOutput } from './txData';
+import { IReadData } from '../../common';
 
 /***
   * ### TxDataAlias
@@ -21,7 +21,7 @@ export interface ITxDataAliasData {
   alias: string;
 }
 
-export interface ITxDataAliasOutput extends ITxDataOutput {
+export interface ITxDataAliasOutput extends IReadData {
   readBytes: number;
   data: ITxDataAliasData;
 }

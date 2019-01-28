@@ -1,4 +1,4 @@
-import { contractCallTxSerializedExample, contractCallTxReadExample } from '../../__mocks__';
+import { contractCallTxSerializedExample, contractCallTxReadExample } from '../../__mocks__/examples/contractCallTx';
 import { ITransactionData, TransactionSerializer } from '../../transaction';
 import { TransactionType } from '../../../../../common';
 import { checkAssertsCoins } from '../../__mocks__/common';

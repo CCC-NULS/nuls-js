@@ -26,7 +26,7 @@ export class BlockHeader {
   protected _height!: number;
   protected _txCount!: number;
   protected _extend!: Buffer;
-  protected _signature: Buffer = Buffer.from([]);
+  protected _signature!: Buffer;
 
   static fromBytes(bytes: Buffer): BlockHeader {
 
@@ -63,7 +63,7 @@ export class BlockHeader {
   }
 
   static fromRawData(rawData: IBlockHeaderData): BlockHeader {
-    
+
     const blockHeader = new BlockHeader();
     return this._fromRawData(rawData, blockHeader);
 
@@ -107,7 +107,7 @@ export class BlockHeader {
   protected getHash(): BlockHash {
 
     const digestData: IDigestData = this.getDigest();
-    
+
     const digestSize: number = NulsDigestDataSerializer.size(digestData);
     const hash: Buffer = Buffer.allocUnsafe(digestSize);
     NulsDigestDataSerializer.write(digestData, hash, 0);
@@ -121,7 +121,7 @@ export class BlockHeader {
 
     // serialize without signature
     const signature: Buffer = this._signature;
-    this._signature = Buffer.from([]);
+    (this._signature as any) = null;
 
     const blockBytes: Buffer = BlockHeader.toBytes(this);
     const digest: IDigestData = NulsDigestData.digest(blockBytes);

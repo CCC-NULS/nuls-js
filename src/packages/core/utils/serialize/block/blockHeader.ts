@@ -28,7 +28,7 @@ export interface IBlockHeaderData {
   height: number;
   txCount: number;
   extend: Buffer;
-  signature: IP2PKHScriptSigData;
+  signature: IP2PKHScriptSigData | null;
 }
 
 export interface IBlockHeaderOutput extends IReadData {

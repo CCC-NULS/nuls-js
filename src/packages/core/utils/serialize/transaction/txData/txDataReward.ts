@@ -1,5 +1,4 @@
-import { ITxDataOutput } from './txData';
-import { PLACE_HOLDER } from '../..';
+import { PLACE_HOLDER, IReadData } from '../../common';
 
 /***
   * ### TxDataReward (Coinbase)
@@ -12,11 +11,9 @@ import { PLACE_HOLDER } from '../..';
   * | ??   | txData     | byte[]  | 0xFFFFFFFF     |
  */
 
-export interface ITxDataRewardData {
-  placeholder: Buffer;
-}
+export type ITxDataRewardData = Buffer;
 
-export interface ITxDataRewardOutput extends ITxDataOutput {
+export interface ITxDataRewardOutput extends IReadData {
   readBytes: number;
   data: ITxDataRewardData;
 }
@@ -48,9 +45,7 @@ export class TxDataRewardSerializer {
 
     return {
       readBytes: TxDataRewardSerializer.PLACE_HOLDER.length,
-      data: {
-        placeholder: buf.slice(offset, offset + TxDataRewardSerializer.PLACE_HOLDER.length)
-      }
+      data: buf.slice(offset, offset + TxDataRewardSerializer.PLACE_HOLDER.length)
     };
 
   }

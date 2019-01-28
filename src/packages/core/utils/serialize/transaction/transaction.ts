@@ -2,7 +2,7 @@ import { VarIntSerializer } from './../varInt';
 import { ITransactionOutput } from './transaction';
 import { VarByteSerializer } from '..';
 import { TxDataSerializer, ITxDataData } from './txData/txData';
-import { CoinDataSerializer, ICoinDataData } from './coinData/coinData';
+import { CoinDataSerializer, CoinDataData } from './coinData/coinData';
 import { IReadData, PLACE_HOLDER } from '../common';
 
 /***
@@ -24,7 +24,7 @@ export interface ITransactionData {
   time: number;
   remark: Buffer;
   txData: ITxDataData;
-  coinData: ICoinDataData;
+  coinData: CoinDataData;
   scriptSign: Buffer;
 }
 
@@ -121,10 +121,21 @@ export class TransactionSerializer {
 
   }
 
-  public static sizeHash(data: ITransactionData): number {
+  public static sizeHash(data: ITransactionData, PROTOCOL_VERSION: number = 2): number {
+
+    let transactionSize = TransactionSerializer.size(data);
+
+    if (PROTOCOL_VERSION < 9) {
+
+      transactionSize -= (2 + 6);
+      transactionSize += VarIntSerializer.size(data.type);
+      transactionSize += VarIntSerializer.size(data.time);
+
+    }
 
     const scriptSignSize = VarByteSerializer.size(data.scriptSign);
-    return TransactionSerializer.size(data) - scriptSignSize;
+
+    return transactionSize - scriptSignSize;
 
   }
 
@@ -138,16 +149,15 @@ export class TransactionSerializer {
       PLACE_HOLDER.copy(buf, offset);
       offset += PLACE_HOLDER.length;
 
-    } else if (PROTOCOL_VERSION == 2) {
-
-      offset = buf.writeUIntLE(data.type, offset, 2); // 16 bits
-      offset = buf.writeUIntLE(data.time, offset, 6); // 48 bits
-
-    } else {
+    } else if (PROTOCOL_VERSION < 9) {
 
       offset = VarIntSerializer.write(data.type, buf, offset);
       offset = VarIntSerializer.write(data.time, buf, offset);
 
+    } else {
+
+      offset = buf.writeUIntLE(data.type, offset, 2); // 16 bits
+      offset = buf.writeUIntLE(data.time, offset, 6); // 48 bits
     }
 
     if (size > 0) {

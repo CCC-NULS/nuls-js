@@ -1,8 +1,7 @@
 import { ADDRESS_LENGTH } from './../../../../common';
 import { AddressSerializer } from './../../address';
 import { Address } from '../../../crypto';
-import { ITxDataOutput } from './txData';
-import { readUint64LE, writeUint64LE } from '../..';
+import { readUint64LE, writeUint64LE, IReadData } from '../../common';
 
 /***
   * ### TxDataRegister
@@ -27,7 +26,7 @@ export interface ITxDataRegisterData {
   commissionRate: number;
 }
 
-export interface ITxDataRegisterOutput extends ITxDataOutput {
+export interface ITxDataRegisterOutput extends IReadData {
   readBytes: number;
   data: ITxDataRegisterData;
 }

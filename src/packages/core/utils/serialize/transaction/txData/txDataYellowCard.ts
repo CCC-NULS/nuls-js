@@ -1,8 +1,8 @@
 import { AddressSerializer } from './../../address';
 import { Address } from '../../../crypto';
-import { ITxDataOutput } from '.';
 import { ADDRESS_LENGTH } from '../../../../common';
 import { VarIntSerializer } from '../../varInt';
+import { IReadData } from '../../common';
 
 /***
   * ### TxDataYellowCard
@@ -20,7 +20,7 @@ export interface ITxDataYellowCardData {
   addresses: Address[];
 }
 
-export interface ITxDataYellowCardOutput extends ITxDataOutput {
+export interface ITxDataYellowCardOutput extends IReadData {
   readBytes: number;
   data: ITxDataYellowCardData;
 }

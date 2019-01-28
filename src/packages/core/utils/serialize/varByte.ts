@@ -44,8 +44,8 @@ export class VarByteSerializer {
   public static read(buf: Buffer, offset: number): IVarByteOutput {
 
     const { data: bytesToRead, readBytes } = VarIntSerializer.read(buf, offset);
-    const data: Buffer = buf.slice(offset + readBytes, offset + readBytes + bytesToRead);
 
+    const data: Buffer = buf.slice(offset + readBytes, offset + readBytes + bytesToRead);
     return { data, readBytes: readBytes + bytesToRead };
 
   }

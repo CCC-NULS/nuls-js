@@ -1,6 +1,6 @@
 import { TxDataWithdrawSerializer } from './txDataWithdraw';
 import { AgentHash } from '../../../crypto';
-import { ITxDataOutput } from './txData';
+import { IReadData } from '../../common';
 
 /***
   * ### TxDataUnregister
@@ -17,7 +17,7 @@ export interface ITxDataUnregisterData {
   agentHash: AgentHash;
 }
 
-export interface ITxDataUnregisterOutput extends ITxDataOutput {
+export interface ITxDataUnregisterOutput extends IReadData {
   readBytes: number;
   data: ITxDataUnregisterData;
 }

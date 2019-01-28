@@ -37,7 +37,7 @@ export class NulsDataSerializer {
    */
   public static read(buf: Buffer, offset: number): INulsDataOutput {
 
-    const isPlaceholder: boolean = JSON.stringify(buf.slice(offset, offset + 4)) === JSON.stringify(PLACE_HOLDER);
+    const isPlaceholder: boolean = (buf === null || buf === undefined) || buf.length === offset || JSON.stringify(buf.slice(offset, offset + 4)) === JSON.stringify(PLACE_HOLDER);
 
     return {
       readBytes: isPlaceholder ? 4 : 0,

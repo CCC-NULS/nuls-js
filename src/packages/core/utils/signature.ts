@@ -63,7 +63,7 @@ function signDigest(digestible: IDigestible, privateKey: Buffer): INulsSignData 
 
 }
 
-export function getSignatureHash(signatureData: IP2PHKSignature): SignatureHash {
+export function getSignatureHash(signatureData: IP2PHKSignature | null): SignatureHash {
 
   const signatureSize: number = P2PKHScriptSigSerializer.size(signatureData);
   const signatureHash: SignatureHash = Buffer.allocUnsafe(signatureSize);
@@ -74,7 +74,7 @@ export function getSignatureHash(signatureData: IP2PHKSignature): SignatureHash 
 
 }
 
-export function getSignatureFromHash(signatureHash: SignatureHash): IP2PHKSignature {
+export function getSignatureFromHash(signatureHash: SignatureHash): IP2PHKSignature | null {
 
   const { data } = P2PKHScriptSigSerializer.read(signatureHash, 0);
 

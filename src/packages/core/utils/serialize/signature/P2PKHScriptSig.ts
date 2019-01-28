@@ -1,6 +1,7 @@
 import { IReadData } from '../common';
 import { VarByteSerializer } from '../..';
 import { NulsSignDataSerializer, INulsSignDataData } from './nulsSignData';
+import { NulsDataSerializer, INulsDataData } from '../nulsData';
 
 /***
   * ### P2PKHScriptSig
@@ -21,7 +22,7 @@ export interface IP2PKHScriptSigData {
 
 export interface IP2PKHScriptSigOutput extends IReadData {
   readBytes: number;
-  data: IP2PKHScriptSigData;
+  data: IP2PKHScriptSigData | null;
 }
 
 /**
@@ -38,10 +39,16 @@ export class P2PKHScriptSigSerializer {
    * @param buf Buffer object from where the bytes will be read
    * @param data IP2PKHScriptSigData to calculate size
    */
-  public static size(data: IP2PKHScriptSigData): number {
+  public static size(data: IP2PKHScriptSigData | INulsDataData): number {
 
-    let size: number = VarByteSerializer.size(data.publicKey);
-    size += NulsSignDataSerializer.size(data.signData);
+    const nulsData = NulsDataSerializer.size(data);
+
+    if (nulsData > 0) {
+      return nulsData;
+    }
+
+    let size: number = VarByteSerializer.size((data as IP2PKHScriptSigData).publicKey);
+    size += NulsSignDataSerializer.size((data as IP2PKHScriptSigData).signData);
 
     return size;
 
@@ -53,6 +60,15 @@ export class P2PKHScriptSigSerializer {
    * @param offset Number of bytes to skip before starting to read
    */
   public static read(buf: Buffer, offset: number): IP2PKHScriptSigOutput {
+
+    const nulsData = NulsDataSerializer.read(buf, offset);
+
+    if (nulsData.readBytes > 0) {
+      return {
+        readBytes: nulsData.readBytes,
+        data: null
+      };
+    }
 
     const { data: publicKey, readBytes } = VarByteSerializer.read(buf, offset);
     offset += readBytes;
@@ -76,10 +92,16 @@ export class P2PKHScriptSigSerializer {
    * @param offset Number of bytes to skip before starting to write.
    * @returns Offset plus the number of bytes that has been written
    */
-  public static write(data: IP2PKHScriptSigData, buf: Buffer, offset: number): number {
+  public static write(data: IP2PKHScriptSigData | null, buf: Buffer, offset: number): number {
 
-    offset = VarByteSerializer.write(data.publicKey, buf, offset);
-    offset = NulsSignDataSerializer.write(data.signData, buf, offset);
+    const newOffset = NulsDataSerializer.write(data, buf, offset);
+
+    if (newOffset > offset) {
+      return newOffset;
+    }
+    
+    offset = VarByteSerializer.write((data as IP2PKHScriptSigData).publicKey, buf, offset);
+    offset = NulsSignDataSerializer.write((data as IP2PKHScriptSigData).signData, buf, offset);
 
     return offset;
 

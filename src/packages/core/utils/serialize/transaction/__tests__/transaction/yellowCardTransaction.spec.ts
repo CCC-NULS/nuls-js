@@ -21,11 +21,7 @@ describe('TransactionSerializer integration tests', () => {
       expect(tx.scriptSign).toEqual(yellowCardTxReadExample.scriptSign);
       expect((tx.txData as ITxDataYellowCardData)).toEqual(yellowCardTxReadExample.txData);
 
-      expect(tx.coinData.inputs.length).toBe(yellowCardTxReadExample.coinData.inputs.length);
-      expect(tx.coinData.outputs.length).toBe(yellowCardTxReadExample.coinData.outputs.length);
-
-      checkAssertsCoins(tx.coinData.inputs, yellowCardTxReadExample.coinData.inputs);
-      checkAssertsCoins(tx.coinData.outputs, yellowCardTxReadExample.coinData.outputs);
+      expect(tx.coinData).toBe(yellowCardTxReadExample.coinData);
 
     });
 

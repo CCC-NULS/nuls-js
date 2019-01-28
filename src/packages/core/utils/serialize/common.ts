@@ -13,8 +13,8 @@ export function isHex(input: string) {
   return hexRegEx.test(input);
 }
 
-export function readUint64LE(buffer: Buffer, cursor) {
-  return (new Uint64LE(buffer, cursor)).toNumber();
+export function readUint64LE(buffer: Buffer, offset: number): number {
+  return (new Uint64LE(buffer, offset)).toNumber();
 }
 
 export function writeUint64LE(data: number, buf: Buffer, offset: number): number {

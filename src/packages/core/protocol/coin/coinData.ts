@@ -1,5 +1,5 @@
 import { Address } from './../../utils/crypto';
-import { ICoinDataData } from '../../utils/serialize/transaction/coinData/coinData';
+import { ICoinDataData, CoinDataData } from '../../utils/serialize/transaction/coinData/coinData';
 import { ICoinData } from '../../utils/serialize/transaction/coinData/coin';
 import { CoinInput, CoinOutput, CoinInputObject, CoinOutputObject, Coin } from './coin';
 
@@ -22,23 +22,27 @@ export class CoinData {
 
   }
 
-  static fromRawData(rawData: ICoinDataData): CoinData {
+  static fromRawData(rawData: CoinDataData): CoinData {
 
     let coinData = new CoinData();
 
-    rawData.inputs.forEach((inputRawData: ICoinData) => {
+    if (rawData != null) {
 
-      const input: CoinInput = CoinInput.fromRawData(inputRawData);
-      coinData._inputs.push(input);
+      rawData.inputs.forEach((inputRawData: ICoinData) => {
 
-    });
+        const input: CoinInput = CoinInput.fromRawData(inputRawData);
+        coinData._inputs.push(input);
 
-    rawData.outputs.forEach((outputRawData: ICoinData) => {
+      });
 
-      const output: CoinOutput = CoinOutput.fromRawData(outputRawData);
-      coinData._outputs.push(output);
+      rawData.outputs.forEach((outputRawData: ICoinData) => {
 
-    });
+        const output: CoinOutput = CoinOutput.fromRawData(outputRawData);
+        coinData._outputs.push(output);
+
+      });
+
+    }
 
     return coinData;
 
@@ -82,7 +86,7 @@ export class CoinData {
     return this._outputs.indexOf(output);
 
   }
-  
+
   addInput(input: CoinInput): number;
   addInput(fromHash: string, fromIndex: number, value: number, lockTime?: number): number;
   addInput(fromHash: string | CoinInput, fromIndex?: number, value?: number, lockTime?: number): number {

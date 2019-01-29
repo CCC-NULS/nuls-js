@@ -4,7 +4,6 @@ import { HashSerializer } from '../hash';
 import { Hash } from '../../crypto';
 import { HASH_LENGTH } from '../../../../core/common';
 import { P2PKHScriptSigSerializer, IP2PKHScriptSigData } from '../signature/P2PKHScriptSig';
-import { VarByteSerializer } from '../varByte';
 
 /***
   * ### Block header
@@ -79,8 +78,6 @@ export class BlockHeaderSerializer {
 
     const txCount = buf.readUInt32LE(offset);
     offset += 4;
-
-
 
     const { data: extend, readBytes: bytes4 } = BlockExtendSerializer.read(buf, offset);
     offset += bytes4;

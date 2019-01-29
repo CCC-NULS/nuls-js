@@ -63,7 +63,7 @@ export class Block {
 
     for (let i = 0; i < rawData.header.txCount; i++) {
 
-      const tx: BaseTransaction = Transaction.fromRawData(rawData.transactions[i]);
+      const tx: BaseTransaction = Transaction.fromRawData(rawData.transactions[i], block._header.getHeight(), block._header.getMainVersion());
       transactions.push(tx);
 
     }

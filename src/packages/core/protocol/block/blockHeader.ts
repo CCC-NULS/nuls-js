@@ -1,3 +1,4 @@
+import { BlockVersion } from './../../common';
 import { BlockHeaderSerializer, IBlockHeaderData } from '../../utils/serialize/block/blockHeader';
 import { Hash, getPrivateKeyBuffer } from '../../utils/crypto';
 import { getSignatureHash, getSignatureFromHash, createBlockSignature } from '../../utils';
@@ -177,6 +178,14 @@ export class BlockHeader {
 
   getTxCount(): number {
     return this._txCount;
+  }
+
+  getHeight(): number {
+    return this._height;
+  }
+
+  getMainVersion(): number {
+    return this._mainVersion || BlockVersion.NotDefined;
   }
 
   sign(privateKey: string): this {

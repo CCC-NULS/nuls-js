@@ -14,7 +14,15 @@ export interface BlockHeaderObject {
   time: number;
   height: number;
   txCount: number;
-  extend: string; // TODO: parse extend info 
+  consensusMemberCount: number;
+  currentVersion?: number;
+  delay?: number;
+  mainVersion?: number;
+  packingIndexOfRound: number;
+  percent?: number;
+  roundIndex: number;
+  roundStartTime: number;
+  stateRoot?: string;
   signature: string;
 }
 
@@ -25,7 +33,15 @@ export class BlockHeader {
   protected _time: number = new Date().getTime();;
   protected _height!: number;
   protected _txCount!: number;
-  protected _extend!: Buffer;
+  protected _consensusMemberCount!: number;
+  protected _currentVersion?: number;
+  protected _delay?: number;
+  protected _mainVersion?: number;
+  protected _packingIndexOfRound!: number;
+  protected _percent?: number;
+  protected _roundIndex!: number;
+  protected _roundStartTime!: number;
+  protected _stateRoot?: Buffer;
   protected _signature!: Buffer;
 
   static fromBytes(bytes: Buffer): BlockHeader {
@@ -56,7 +72,15 @@ export class BlockHeader {
       time: blockHeader._time,
       height: blockHeader._height,
       txCount: blockHeader._txCount,
-      extend: blockHeader._extend.toString('hex'), // TODO: parse extend info 
+      consensusMemberCount: blockHeader._consensusMemberCount,
+      currentVersion: blockHeader._currentVersion,
+      delay: blockHeader._delay,
+      mainVersion: blockHeader._mainVersion,
+      packingIndexOfRound: blockHeader._packingIndexOfRound,
+      percent: blockHeader._percent,
+      roundIndex: blockHeader._roundIndex,
+      roundStartTime: blockHeader._roundStartTime,
+      stateRoot: blockHeader._stateRoot && blockHeader._stateRoot.toString('hex'),
       signature: blockHeader._signature.toString('hex')
     };
 
@@ -76,7 +100,15 @@ export class BlockHeader {
     blockHeader._time = rawData.time;
     blockHeader._height = rawData.height;
     blockHeader._txCount = rawData.txCount;
-    blockHeader._extend = rawData.extend;
+    blockHeader._consensusMemberCount = rawData.extend.consensusMemberCount;
+    blockHeader._currentVersion = rawData.extend.currentVersion;
+    blockHeader._delay = rawData.extend.delay;
+    blockHeader._mainVersion = rawData.extend.mainVersion;
+    blockHeader._packingIndexOfRound = rawData.extend.packingIndexOfRound;
+    blockHeader._percent = rawData.extend.percent;
+    blockHeader._roundIndex = rawData.extend.roundIndex;
+    blockHeader._roundStartTime = rawData.extend.roundStartTime;
+    blockHeader._stateRoot = rawData.extend.stateRoot;
     blockHeader._signature = getSignatureHash(rawData.signature);
 
     return blockHeader;
@@ -91,7 +123,17 @@ export class BlockHeader {
       time: blockHeader._time,
       height: blockHeader._height,
       txCount: blockHeader._txCount,
-      extend: blockHeader._extend,
+      extend: {
+        consensusMemberCount: blockHeader._consensusMemberCount,
+        currentVersion: blockHeader._currentVersion,
+        delay: blockHeader._delay,
+        mainVersion: blockHeader._mainVersion,
+        packingIndexOfRound: blockHeader._packingIndexOfRound,
+        percent: blockHeader._percent,
+        roundIndex: blockHeader._roundIndex,
+        roundStartTime: blockHeader._roundStartTime,
+        stateRoot: blockHeader._stateRoot,
+      },
       signature: getSignatureFromHash(blockHeader._signature)
     };
 

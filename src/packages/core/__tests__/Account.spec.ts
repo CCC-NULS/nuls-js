@@ -9,7 +9,7 @@ const verifyMock = verify as jest.Mock;
 jest.mock('crypto');
 jest.mock('secp256k1');
 
-describe('create new accounts', () => {
+xdescribe('create new accounts', () => {
 
 	let account: Account;
 			

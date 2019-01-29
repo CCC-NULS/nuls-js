@@ -5,7 +5,7 @@ const jimp = require('jimp');
 
 jest.mock('jimp');
 
-describe('creating QR codes', () => {
+xdescribe('creating QR codes', () => {
 	beforeEach(() => {
 		jest.resetModules();
 		jest.clearAllMocks();

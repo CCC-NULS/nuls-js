@@ -10,9 +10,7 @@ export const blockReadExample: IBlockData = {
     remark: Buffer.from([]),
     scriptSign: Buffer.from([]),
     time: 1547229860000,
-    txData: {
-      placeholder: Buffer.from([255, 255, 255, 255])
-    },
+    txData: Buffer.from([255, 255, 255, 255]),
     coinData: {
       inputs: [],
       outputs: [

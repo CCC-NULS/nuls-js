@@ -9,7 +9,7 @@ describe('APIServer', () => {
 	test('the api server is optional and has our default value', () => {
 
 		const APIServer: IAPIConfig = {
-			host: 'https://apiserver.apiserver.nuls.io',
+			host: 'https://apiserver.nuls.io',
 			base: '/nuls'
 		};
 
@@ -22,7 +22,7 @@ describe('APIServer', () => {
 		const APILive = new APIServerClass(APIServer);
 		const APITest = new APIServerClass(APIServerTestNet);
 
-		expect(APIDefault.url).toEqual('https://apiserver.nuls.io/nuls');
+		expect(APIDefault.url).toEqual('http://testnet.apiserver.nuls.io/nuls');
 		expect(APILive.url).toEqual('https://apiserver.nuls.io/nuls');
 		expect(APITest.url).toEqual('http://testnet.apiserver.nuls.io/nuls');
 	});

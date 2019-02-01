@@ -1,7 +1,7 @@
 import { Address } from '../../../core/utils/crypto';
 import { CONTRACT_MIN_GAS_PRICE, CONTRACT_MAX_GAS_LIMIT } from '../../common';
 import { BaseTransaction, TransactionConfig } from '../../../core/protocol/transaction/baseTransaction';
-import { TransactionType } from '../../../core/common';
+import { TransactionType, BlockVersion } from '../../../core/common';
 import { ITransactionData } from '../../../core/utils/serialize/transaction/transaction';
 import { UTXO, CoinOutput } from '../../..';
 import { ITxDataContractCallData } from '../../../core/utils/serialize/transaction/txData/txDataContractCall';
@@ -23,30 +23,30 @@ export class ContractCallTransaction extends BaseTransaction {
 
   private _contractValueOutputIndex: number | undefined;
 
-  static fromBytes(bytes: Buffer) {
+  static fromBytes(bytes: Buffer, blockHeight?: number, blockVersion?: BlockVersion): ContractCallTransaction {
 
-    let tx = new ContractCallTransaction();
+    let tx = new ContractCallTransaction(undefined, blockHeight, blockVersion);
     return this._fromBytes(bytes, tx);
 
   }
 
-  static fromRawData(rawData: ITransactionData): ContractCallTransaction {
+  static fromRawData(rawData: ITransactionData, blockHeight?: number, blockVersion?: BlockVersion): ContractCallTransaction {
 
-    let tx = new ContractCallTransaction();
+    let tx = new ContractCallTransaction(undefined, blockHeight, blockVersion);
     return this._fromRawData(rawData, tx);
 
   }
 
-  static async fromAddress(address: string, config?: TransactionConfig): Promise<ContractCallTransaction> {
+  static async fromAddress(address: string, config?: TransactionConfig, blockHeight?: number, blockVersion?: BlockVersion): Promise<ContractCallTransaction> {
 
-    let tx = new ContractCallTransaction();
+    let tx = new ContractCallTransaction(undefined, blockHeight, blockVersion);
     return this._fromAddress<ContractCallTransaction>(address, tx, config);
 
   };
 
-  static fromUtxos(utxos: UTXO[]): ContractCallTransaction {
+  static fromUtxos(utxos: UTXO[], blockHeight?: number, blockVersion?: BlockVersion): ContractCallTransaction {
 
-    let tx = new ContractCallTransaction();
+    let tx = new ContractCallTransaction(undefined, blockHeight, blockVersion);
     return this._fromUtxos<ContractCallTransaction>(utxos, tx);
 
   };

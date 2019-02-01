@@ -10,6 +10,7 @@ import { DepositTransaction } from './depositTransaction';
 import { WithdrawTransaction } from './withdrawTransaction';
 import { RedCardTransaction } from './redCardTransaction';
 import { UnregisterTransaction } from './unregisterTransaction';
+import { ContractCreateTransaction, ContractCallTransaction, ContractDeleteTransaction, ContractTransferTransaction } from '../../../contract/protocol/transaction';
 
 export class Transaction extends BaseTransaction {
 
@@ -51,6 +52,18 @@ export class Transaction extends BaseTransaction {
       case TransactionType.Unregister:
         return UnregisterTransaction.fromRawData(rawData, blockHeight, blockVersion);
 
+      case TransactionType.ContractCreate:
+        return ContractCreateTransaction.fromRawData(rawData, blockHeight, blockVersion);
+
+      case TransactionType.ContractCall:
+        return ContractCallTransaction.fromRawData(rawData, blockHeight, blockVersion);
+
+      case TransactionType.ContractDelete:
+        return ContractDeleteTransaction.fromRawData(rawData, blockHeight, blockVersion);
+
+      case TransactionType.ContractTransfer:
+        return ContractTransferTransaction.fromRawData(rawData, blockHeight, blockVersion);
+
       default:
         throw new Error(`Transaction type ${TransactionType[rawData.type]} not supported`);
 
@@ -90,6 +103,18 @@ export class Transaction extends BaseTransaction {
 
       case TransactionType.Unregister:
         return UnregisterTransaction.toRawData(tx);
+
+      case TransactionType.ContractCreate:
+        return ContractCreateTransaction.toRawData(tx);
+
+      case TransactionType.ContractCall:
+        return ContractCallTransaction.toRawData(tx);
+
+      case TransactionType.ContractDelete:
+        return ContractDeleteTransaction.toRawData(tx);
+
+      case TransactionType.ContractTransfer:
+        return ContractTransferTransaction.toRawData(tx);
 
       default:
         throw new Error(`Transaction type ${TransactionType[type]} not supported`);

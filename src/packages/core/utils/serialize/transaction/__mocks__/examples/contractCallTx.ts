@@ -42,35 +42,3 @@ export const contractCallTxReadExample: ITransactionData = {
   },
   scriptSign: Buffer.from('210324942550523bd9cb585fcc23cb020c917ba13d80623085fa0e3e6514ae6f227200473045022100d7f22a236b03dba63adf7bc76f02097738ad75036a9a43dd4128df88a4f5972502204ea2918888fd7e62b36e47a40bed153a0a9b331e4b31f5ba0671bd2db628af16', 'hex')
 };
-
-export const contractCallTxExample = {
-  "hash": "002019ca5b240c0b1178ddbf352e0941bd670e7b22e43b44bcc46ee4f85ea15d3aac",
-  "type": 101,
-  "time": 1542462204918,
-  "blockHeight": 153898,
-  "fee": 1400350,
-  "value": 0,
-  "remark": null,
-  "scriptSig": "210324942550523bd9cb585fcc23cb020c917ba13d80623085fa0e3e6514ae6f227200473045022100d7f22a236b03dba63adf7bc76f02097738ad75036a9a43dd4128df88a4f5972502204ea2918888fd7e62b36e47a40bed153a0a9b331e4b31f5ba0671bd2db628af16",
-  "status": 1,
-  "confirmCount": 30211,
-  "size": 523,
-  "inputs": [
-    {
-      "fromHash": "00208daa166570ee74da1c181b073e14f151b0ba9117b029356d8317afca401432e2",
-      "fromIndex": 0,
-      "address": "TTarN3iszzfkh2j4doWHsMw3LxJJrq25",
-      "value": 19999995393025
-    }
-  ],
-  "outputs": [
-    {
-      "txHash": "002019ca5b240c0b1178ddbf352e0941bd670e7b22e43b44bcc46ee4f85ea15d3aac",
-      "index": 0,
-      "address": "TTarN3iszzfkh2j4doWHsMw3LxJJrq25",
-      "value": 19999993992675,
-      "lockTime": 0,
-      "status": 3
-    }
-  ]
-};

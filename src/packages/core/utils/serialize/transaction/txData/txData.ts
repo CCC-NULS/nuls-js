@@ -11,6 +11,7 @@ import { IReadData } from '../../common';
 import { ITxDataYellowCardData, TxDataYellowCardSerializer } from './txDataYellowCard';
 import { ITxDataRedCardData, TxDataRedCardSerializer } from './txDataRedCard';
 import { NulsDataSerializer, INulsDataData } from '../../nulsData';
+import { ITxDataContractCreateData, TxDataContractCreateSerializer } from './txDataContractCreate';
 
 /***
   * ### TxData
@@ -22,7 +23,8 @@ import { NulsDataSerializer, INulsDataData } from '../../nulsData';
  */
 
 export type ITxDataData = INulsDataData | ITxDataRewardData | ITxDataTransferData | ITxDataAliasData | ITxDataRegisterData |
-  ITxDataDepositData | ITxDataWithdrawData | ITxDataUnregisterData | ITxDataContractCallData | ITxDataYellowCardData | ITxDataRedCardData;
+  ITxDataDepositData | ITxDataWithdrawData | ITxDataUnregisterData | ITxDataYellowCardData | ITxDataRedCardData |
+  ITxDataContractCreateData | ITxDataContractCallData;
 
 export interface ITxDataOutput extends IReadData {
   data: ITxDataData | null;
@@ -74,11 +76,14 @@ export class TxDataSerializer {
       case TransactionType.Unregister:
         return TxDataUnregisterSerializer.size();
 
+      case TransactionType.ContractCreate:
+        return TxDataContractCreateSerializer.size(data as ITxDataContractCreateData);
+
       case TransactionType.ContractCall:
         return TxDataContractCallSerializer.size(data as ITxDataContractCallData);
 
       default:
-        throw new Error(`TxDataSerializer not implemented for type ${TransactionType[txType]}`);
+        throw new Error(`TxDataSerializer not implemented for type [${txType}]`);
     }
 
   }
@@ -124,11 +129,14 @@ export class TxDataSerializer {
       case TransactionType.Unregister:
         return TxDataUnregisterSerializer.read(buf, offset);
 
+      case TransactionType.ContractCreate:
+        return TxDataContractCreateSerializer.read(buf, offset);
+
       case TransactionType.ContractCall:
         return TxDataContractCallSerializer.read(buf, offset);
 
       default:
-        throw new Error(`TxDataSerializer not implemented for type ${TransactionType[txType]}`);
+        throw new Error(`TxDataSerializer not implemented for type [${txType}]`);
     }
 
   }
@@ -176,11 +184,14 @@ export class TxDataSerializer {
       case TransactionType.Unregister:
         return TxDataUnregisterSerializer.write(data as ITxDataUnregisterData, buf, offset);
 
+      case TransactionType.ContractCreate:
+        return TxDataContractCreateSerializer.write(data as ITxDataContractCreateData, buf, offset);
+
       case TransactionType.ContractCall:
         return TxDataContractCallSerializer.write(data as ITxDataContractCallData, buf, offset);
 
       default:
-        throw new Error(`TxDataSerializer not implemented for type ${TransactionType[txType]}`);
+        throw new Error(`TxDataSerializer not implemented for type [${txType}]`);
     }
 
   }

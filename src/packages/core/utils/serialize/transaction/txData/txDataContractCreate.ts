@@ -38,7 +38,6 @@ export interface ITxDataContractCreateOutput extends IReadData {
 
 /**
  * Class to handle the protocol TxDataContractCreate type
- * https://github.com/nuls-io/nuls/blob/16e685f2355cc28d0f59f9282122c6c0c63bbe22/contract-module/contract/src/main/java/io/nuls/contract/entity/txdata/CallContractData.java#L41
  */
 export class TxDataContractCreateSerializer {
 

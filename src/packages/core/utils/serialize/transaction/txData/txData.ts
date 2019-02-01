@@ -12,6 +12,7 @@ import { ITxDataYellowCardData, TxDataYellowCardSerializer } from './txDataYello
 import { ITxDataRedCardData, TxDataRedCardSerializer } from './txDataRedCard';
 import { NulsDataSerializer, INulsDataData } from '../../nulsData';
 import { ITxDataContractCreateData, TxDataContractCreateSerializer } from './txDataContractCreate';
+import { ITxDataContractDeleteData, TxDataContractDeleteSerializer } from './txDataContractDelete';
 
 /***
   * ### TxData
@@ -24,7 +25,7 @@ import { ITxDataContractCreateData, TxDataContractCreateSerializer } from './txD
 
 export type ITxDataData = INulsDataData | ITxDataRewardData | ITxDataTransferData | ITxDataAliasData | ITxDataRegisterData |
   ITxDataDepositData | ITxDataWithdrawData | ITxDataUnregisterData | ITxDataYellowCardData | ITxDataRedCardData |
-  ITxDataContractCreateData | ITxDataContractCallData;
+  ITxDataContractCreateData | ITxDataContractCallData | ITxDataContractDeleteData;
 
 export interface ITxDataOutput extends IReadData {
   data: ITxDataData | null;
@@ -82,6 +83,9 @@ export class TxDataSerializer {
       case TransactionType.ContractCall:
         return TxDataContractCallSerializer.size(data as ITxDataContractCallData);
 
+      case TransactionType.ContractDelete:
+        return TxDataContractDeleteSerializer.size();
+
       default:
         throw new Error(`TxDataSerializer not implemented for type [${txType}]`);
     }
@@ -134,6 +138,9 @@ export class TxDataSerializer {
 
       case TransactionType.ContractCall:
         return TxDataContractCallSerializer.read(buf, offset);
+
+        case TransactionType.ContractDelete:
+        return TxDataContractDeleteSerializer.read(buf, offset);
 
       default:
         throw new Error(`TxDataSerializer not implemented for type [${txType}]`);
@@ -189,6 +196,9 @@ export class TxDataSerializer {
 
       case TransactionType.ContractCall:
         return TxDataContractCallSerializer.write(data as ITxDataContractCallData, buf, offset);
+
+        case TransactionType.ContractDelete:
+        return TxDataContractDeleteSerializer.write(data as ITxDataContractDeleteData, buf, offset);
 
       default:
         throw new Error(`TxDataSerializer not implemented for type [${txType}]`);

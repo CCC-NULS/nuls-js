@@ -1,3 +1,4 @@
+import { BlockVersion } from './../../../common';
 import { VarIntSerializer } from './../varInt';
 import { ITransactionOutput } from './transaction';
 import { VarByteSerializer } from '..';
@@ -121,11 +122,11 @@ export class TransactionSerializer {
 
   }
 
-  public static sizeHash(data: ITransactionData, PROTOCOL_VERSION: number = 2): number {
+  public static sizeHash(data: ITransactionData, blockVersion: BlockVersion = BlockVersion.SmartContracts): number {
 
     let transactionSize = TransactionSerializer.size(data);
 
-    if (PROTOCOL_VERSION < 9) {
+    if (blockVersion < BlockVersion.SmartContracts) {
 
       transactionSize -= (2 + 6);
       transactionSize += VarIntSerializer.size(data.type);
@@ -140,7 +141,7 @@ export class TransactionSerializer {
   }
 
   // https://github.com/nuls-io/nuls/blob/274204b748ed72fdac150637ee758037d64c7ce5/core-module/kernel/src/main/java/io/nuls/kernel/model/Transaction.java#L91  
-  public static writeHash(data: ITransactionData, buf: Buffer, offset: number = 0, PROTOCOL_VERSION: number = 2): number {
+  public static writeHash(data: ITransactionData, buf: Buffer, offset: number = 0, blockVersion: BlockVersion = BlockVersion.SmartContracts): number {
 
     const size: number = TransactionSerializer.sizeHash(data);
 
@@ -149,7 +150,7 @@ export class TransactionSerializer {
       PLACE_HOLDER.copy(buf, offset);
       offset += PLACE_HOLDER.length;
 
-    } else if (PROTOCOL_VERSION < 9) {
+    } else if (blockVersion < BlockVersion.SmartContracts) {
 
       offset = VarIntSerializer.write(data.type, buf, offset);
       offset = VarIntSerializer.write(data.time, buf, offset);

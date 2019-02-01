@@ -22,6 +22,7 @@ export interface TransactionConfig {
 export interface TransactionObject {
   hash: string;
   type: TransactionType;
+  blockHeight: number;
   time: number;
   remark: string;
   txData: any;
@@ -79,6 +80,7 @@ export abstract class BaseTransaction {
     return {
       hash: transaction.getHash(),
       type: transaction._type,
+      blockHeight: transaction._blockHeight,
       time: transaction._time,
       remark: transaction._remark.toString('utf-8'),
       txData: transaction._txData, // TODO: Implement in each transaction kind
@@ -266,9 +268,9 @@ export abstract class BaseTransaction {
 
     const transactionData: ITransactionData = BaseTransaction.toRawData(this);
 
-    const transactionHashSize: number = TransactionSerializer.sizeHash(transactionData);
+    const transactionHashSize: number = TransactionSerializer.sizeHash(transactionData, this._blockVersion);
     let transactionHash: Buffer = Buffer.allocUnsafe(transactionHashSize);
-    TransactionSerializer.writeHash(transactionData, transactionHash);
+    TransactionSerializer.writeHash(transactionData, transactionHash, 0, this._blockVersion);
 
     return NulsDigestData.digest(transactionHash);
 
@@ -278,7 +280,7 @@ export abstract class BaseTransaction {
     return BaseTransaction.toObject(this);
   }
 
-  protected getHash(): TransactionHash {
+  getHash(): TransactionHash {
 
     const digestData: IDigestData = this.getDigest();
     const digestSize: number = NulsDigestDataSerializer.size(digestData);

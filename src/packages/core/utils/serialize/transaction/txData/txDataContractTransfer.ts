@@ -1,8 +1,7 @@
 import { HashSerializer } from './../../hash';
-import { HASH_LENGTH } from './../../../../common';
+import { HASH_LENGTH, ADDRESS_LENGTH } from './../../../../common';
 import { Hash, Address } from './../../../crypto';
 import { IReadData } from '../../common';
-import { ADDRESS_LENGTH } from '@/packages/core/common';
 import { AddressSerializer } from '../../address';
 
 /***

@@ -45,9 +45,11 @@ export class BlockHeader {
   protected _stateRoot?: Buffer;
   protected _signature!: Buffer;
 
-  static fromBytes(bytes: Buffer): BlockHeader {
+  protected _internalTxCount!: number;
 
-    const blockHeader = new BlockHeader();
+  static fromBytes(bytes: Buffer, internalTxCount?: number): BlockHeader {
+
+    const blockHeader = new BlockHeader(internalTxCount);
     const rawData: IBlockHeaderData = BlockHeaderSerializer.read(bytes, 0).data;
     return this._fromRawData(rawData, blockHeader);
 
@@ -87,11 +89,15 @@ export class BlockHeader {
 
   }
 
-  static fromRawData(rawData: IBlockHeaderData): BlockHeader {
+  static fromRawData(rawData: IBlockHeaderData, internalTxCount?: number): BlockHeader {
 
-    const blockHeader = new BlockHeader();
+    const blockHeader = new BlockHeader(internalTxCount);
     return this._fromRawData(rawData, blockHeader);
 
+  }
+
+  constructor(internalTxCount: number = 0) {
+    this._internalTxCount = internalTxCount;
   }
 
   protected static _fromRawData<B extends BlockHeader>(rawData: IBlockHeaderData, blockHeader: B): B {
@@ -147,7 +153,11 @@ export class BlockHeader {
 
   }
 
-  protected getHash(): BlockHash {
+  setInternalTxCount(count: number) {
+    this._internalTxCount = count;
+  }
+  
+  getHash(): BlockHash {
 
     const digestData: IDigestData = this.getDigest();
 
@@ -166,11 +176,16 @@ export class BlockHeader {
     const signature: Buffer = this._signature;
     (this._signature as any) = null;
 
+    // Substract contract transfer transactions form txCount before digesting
+    const txCount: number = this._txCount;
+    this._txCount = this._txCount - this._internalTxCount;
+
     const blockBytes: Buffer = BlockHeader.toBytes(this);
     const digest: IDigestData = NulsDigestData.digest(blockBytes);
 
     // restore signature after serialization
     this._signature = signature;
+    this._txCount = txCount;
 
     return digest;
 

@@ -1,11 +1,27 @@
-import { BlockHeader, BlockHex, BlockHeaderObject } from './blockHeader';
+import { BlockHeader, BlockHex, BlockHash, BlockHeaderObject } from './blockHeader';
 import { BlockSerializer, IBlockData } from '../../utils/serialize/block/block';
 import { BaseTransaction, TransactionObject } from '../transaction';
 import { Transaction } from '../transaction/transaction';
 import { ITransactionData } from '../../utils/serialize/transaction/transaction';
+import { TransactionType } from '../../common';
 
 export interface BlockObject {
-  blockHeader: BlockHeaderObject;
+  hash: string;
+  preHash: string;
+  merkleHash: string;
+  time: number;
+  height: number;
+  txCount: number;
+  consensusMemberCount: number;
+  currentVersion?: number;
+  delay?: number;
+  mainVersion?: number;
+  packingIndexOfRound: number;
+  percent?: number;
+  roundIndex: number;
+  roundStartTime: number;
+  stateRoot?: string;
+  signature: string;
   transactions: TransactionObject[];
 }
 
@@ -30,8 +46,10 @@ export class Block {
 
   static toObject(block: Block): BlockObject {
 
+    const blockHeader: BlockHeaderObject = block._header.toObject();
+
     return {
-      blockHeader: block._header.toObject(),
+      ...blockHeader,
       transactions: block._transactions.map((tx: BaseTransaction) => tx.toObject()),
     };
 
@@ -70,6 +88,11 @@ export class Block {
 
     block._transactions = transactions;
 
+    const internalTxCount: number = transactions.reduce(
+      (prev: number, curr: BaseTransaction) => prev + (curr.getType() === TransactionType.ContractTransfer ? 1 : 0), 0);
+
+    block._header.setInternalTxCount(internalTxCount);
+
     return block;
 
   }
@@ -90,6 +113,10 @@ export class Block {
       transactions: rawTransactions
     };
 
+  }
+
+  getHash(): BlockHash {
+    return this._header.getHash();
   }
 
   sign(privateKey: string): this {

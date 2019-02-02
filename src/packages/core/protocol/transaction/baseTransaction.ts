@@ -171,7 +171,7 @@ export abstract class BaseTransaction {
 
   }
 
-  constructor(config?: TransactionConfig, blockHeight: number = -1, blockVersion: BlockVersion = BlockVersion.NotDefined) {
+  constructor(config?: TransactionConfig, blockHeight: number = -1, blockVersion: BlockVersion = BlockVersion.SmartContracts) {
     this._blockHeight = blockHeight;
     this._blockVersion = blockVersion;
     this.config(config);

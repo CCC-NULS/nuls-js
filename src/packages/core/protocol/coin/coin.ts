@@ -107,7 +107,7 @@ export class CoinOutput extends Coin {
 
     if (ownerData.address) {
 
-      return new CoinOutput(ownerData.address, rawData.na, rawData.lockTime);
+      return new CoinOutput(ownerData.address, rawData.na, rawData.lockTime, ownerData.script);
 
     } else {
 
@@ -132,7 +132,8 @@ export class CoinOutput extends Coin {
   constructor(
     public address: Address,
     na: number,
-    lockTime: number = 0
+    lockTime: number = 0,
+    public script?: string
   ) {
     super(na, lockTime);
   }

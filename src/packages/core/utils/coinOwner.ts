@@ -1,6 +1,6 @@
 import { ADDRESS_LENGTH, P2SH_ADDRESS_TYPE, HASH_LENGTH } from '../common';
 import { AddressSerializer } from './serialize/address';
-import { Address, Hash, AddressHash } from './crypto';
+import { Address, Hash, isValidAddress, addressFromHash, hashFromAddress } from './crypto';
 import { VarIntSerializer } from './serialize';
 
 /***
@@ -10,6 +10,7 @@ export interface ICoinOwnerData {
   address?: Address;
   fromHash?: Hash;
   fromIndex?: number;
+  script?: string;
 }
 
 /**
@@ -24,8 +25,9 @@ export class CoinOwnerUtils {
    * @param coinOwner CoinOwner hash to be parsed
    * @param offset CoinOwner data parsed from CoinOwner hash
    */
-  public static parse(coinOwner: AddressHash): ICoinOwnerData {
+  public static parse(coinOwner: Buffer): ICoinOwnerData {
 
+    // Output
     if (coinOwner.length === ADDRESS_LENGTH) {
 
       const { data: address } = AddressSerializer.read(coinOwner, 0);
@@ -36,6 +38,7 @@ export class CoinOwnerUtils {
 
     } else {
 
+      // Input
       if (coinOwner.length >= HASH_LENGTH) {
 
         const fromHash: Hash = coinOwner.slice(0, HASH_LENGTH).toString('hex');
@@ -48,7 +51,34 @@ export class CoinOwnerUtils {
 
       } else {
 
-        throw new Error('P2SH_ADDRESS not implemented');
+        // Output
+        // TODO: This is a temporal patch, parse script program instead;
+
+        const script: string = addressFromHash(coinOwner);
+        let addressBuffer!: Buffer;
+        let address!: string;
+
+        // P2SH
+        addressBuffer = coinOwner.slice(2, ADDRESS_LENGTH + 2);
+        address = addressFromHash(addressBuffer);
+        if (isValidAddress(address)) {
+          return {
+            address,
+            script
+          }
+        }
+
+        // P2PKH
+        addressBuffer = coinOwner.slice(3, ADDRESS_LENGTH + 3);
+        address = addressFromHash(addressBuffer);
+        if (isValidAddress(address)) {
+          return {
+            address,
+            script
+          }
+        }
+
+        throw new Error('CoinOwner parse not implemented');
 
       }
 
@@ -61,11 +91,16 @@ export class CoinOwnerUtils {
    * @param data CoinOwner data to create the owner hash
    * @returns CoinOwnerHash
    */
-  public static create(data: ICoinOwnerData): AddressHash {
+  public static create(data: ICoinOwnerData): Buffer {
 
     let owner: Buffer;
 
-    if (data.fromHash != undefined && data.fromIndex != undefined) {
+    if (data.script != undefined) {
+
+      // TODO: This is a temporal patch, parse script program instead;
+      owner = hashFromAddress(data.script);
+
+    } else if (data.fromHash != undefined && data.fromIndex != undefined) {
 
       const fromIndex: Buffer = Buffer.alloc(VarIntSerializer.size(data.fromIndex));
       VarIntSerializer.write(data.fromIndex, fromIndex, 0);
@@ -83,7 +118,7 @@ export class CoinOwnerUtils {
       // https://github.com/nuls-io/nuls/blob/274204b748ed72fdac150637ee758037d64c7ce5/core-module/kernel/src/main/java/io/nuls/kernel/model/CoinData.java#L155
       if (owner[2] === P2SH_ADDRESS_TYPE) {
 
-        throw new Error('P2SH_ADDRESS not implemented');
+        throw new Error('CoinOwner parse not implemented');
 
       }
 

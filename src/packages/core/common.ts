@@ -17,6 +17,7 @@ export enum TransactionType {
   YellowCard = 7,         // yellow card
   RedCard = 8,            // red card
   Unregister = 9,         // unregister consensus node,
+  Data = 10,              // Business data
   ContractCreate = 100,   // contract deploy
   ContractCall = 101,     // contract invocation
   ContractDelete = 102,   // contract delete

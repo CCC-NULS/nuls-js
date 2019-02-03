@@ -12,9 +12,11 @@ import { IReadData, VarIntSerializer } from '.';
   * | length | data   | byte[length] | 字符串本身               |
  */
 
+ export type IVarByteData = Buffer;
+
 export interface IVarByteOutput extends IReadData {
   readBytes: number;
-  data: Buffer;
+  data: IVarByteData;
 }
 
 /**

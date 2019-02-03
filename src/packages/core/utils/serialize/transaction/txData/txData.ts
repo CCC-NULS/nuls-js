@@ -14,6 +14,7 @@ import { NulsDataSerializer, INulsDataData } from '../../nulsData';
 import { ITxDataContractCreateData, TxDataContractCreateSerializer } from './txDataContractCreate';
 import { ITxDataContractDeleteData, TxDataContractDeleteSerializer } from './txDataContractDelete';
 import { ITxDataContractTransferData, TxDataContractTransferSerializer } from './txDataContractTransfer';
+import { TxDataDataSerializer, ITxDataDataData } from './txDataData';
 
 /***
   * ### TxData
@@ -25,7 +26,7 @@ import { ITxDataContractTransferData, TxDataContractTransferSerializer } from '.
  */
 
 export type ITxDataData = INulsDataData | ITxDataRewardData | ITxDataTransferData | ITxDataAliasData | ITxDataRegisterData |
-  ITxDataDepositData | ITxDataWithdrawData | ITxDataUnregisterData | ITxDataYellowCardData | ITxDataRedCardData |
+  ITxDataDepositData | ITxDataWithdrawData | ITxDataUnregisterData | ITxDataYellowCardData | ITxDataRedCardData | ITxDataDataData |
   ITxDataContractCreateData | ITxDataContractCallData | ITxDataContractDeleteData | ITxDataContractTransferData;
 
 export interface ITxDataOutput extends IReadData {
@@ -77,6 +78,9 @@ export class TxDataSerializer {
 
       case TransactionType.Unregister:
         return TxDataUnregisterSerializer.size();
+
+      case TransactionType.Data:
+        return TxDataDataSerializer.size(data as ITxDataDataData);
 
       case TransactionType.ContractCreate:
         return TxDataContractCreateSerializer.size(data as ITxDataContractCreateData);
@@ -136,6 +140,9 @@ export class TxDataSerializer {
 
       case TransactionType.Unregister:
         return TxDataUnregisterSerializer.read(buf, offset);
+
+      case TransactionType.Data:
+        return TxDataDataSerializer.read(buf, offset);
 
       case TransactionType.ContractCreate:
         return TxDataContractCreateSerializer.read(buf, offset);
@@ -197,6 +204,9 @@ export class TxDataSerializer {
 
       case TransactionType.Unregister:
         return TxDataUnregisterSerializer.write(data as ITxDataUnregisterData, buf, offset);
+
+      case TransactionType.Data:
+        return TxDataDataSerializer.write(data as ITxDataDataData, buf, offset);
 
       case TransactionType.ContractCreate:
         return TxDataContractCreateSerializer.write(data as ITxDataContractCreateData, buf, offset);

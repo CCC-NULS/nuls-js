@@ -48,10 +48,20 @@ export class BlockExtendSerializer {
    */
   public static size(data: IBlockExtendData): number {
 
-    let size: number = BlockExtendSerializer.bufferSize(data);
-    size = VarByteSerializer.size({ length: size } as Buffer);
+    let extend: Buffer;
 
-    return size;
+    if (data.extend) {
+
+      extend = data.extend;
+
+    } else {
+
+      let size: number = BlockExtendSerializer.bufferSize(data);
+      extend = { length: size } as Buffer;
+
+    }
+
+    return VarByteSerializer.size(extend);
 
   }
 

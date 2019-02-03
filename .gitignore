@@ -67,3 +67,4 @@ typedocs/
 .idea
 .playground
 docs/.vuepress/dist
+config/local.yaml

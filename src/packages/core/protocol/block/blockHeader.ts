@@ -144,6 +144,7 @@ export class BlockHeader {
         roundIndex: blockHeader._roundIndex,
         roundStartTime: blockHeader._roundStartTime,
         stateRoot: blockHeader._stateRoot,
+        extend: blockHeader._extend,
       },
       signature: getSignatureFromHash(blockHeader._signature)
     };

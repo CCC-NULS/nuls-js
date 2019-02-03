@@ -56,6 +56,15 @@ describe('BlockSerializer integration tests', () => {
 
     });
 
+    it('should return the size of a serialized block 2', () => {
+
+      const blockBytes = Buffer.from(blockSerializedExample2, 'base64');
+      const size = BlockSerializer.size(blockReadExample2);
+
+      expect(size).toEqual(blockBytes.length);
+
+    });
+
   });
 
 });

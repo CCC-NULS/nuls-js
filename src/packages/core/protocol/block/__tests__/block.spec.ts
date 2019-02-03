@@ -24,6 +24,16 @@ describe('Block integration tests', () => {
 
     });
 
+    it('should produce a valid block hash when the extend is bigger than expected', () => {
+
+      const internalTxBlockBytes: Buffer = Buffer.from('ACBdoM68DCanqiekv/usWBR/qK0VRle7l/PD/ZSkLmkoBAAgeZqsTOnCTGNihfTgX5LL4dJP+Tc4V6+8EBZNRQpB9uKAuC1jZwEU1QMAAQAAAEKDkwwADQBgai1jZwECAAIAAAACAAAAWgAQJwAAIKxV+gB6BFztw/n2GPV21jgd3b81bEfmcKsaknepbznkAAEAAQEhAhFwmqeMZ6UuNUDHcGQdBL7CjjP3+lNuvACIdTAkpkMcAEcwRQIhALfd148fMr+Eogd1m/4ZUhN9LLW5Mb38WWQBNXOe+CW3AiAfsAoj9i3vUA+gXyitPgJ5h0z79TX5xabB6fpyr7G9ogEAgLgtY2cBAP////8AARcFAQHAr1pAN1JIIEpRoqhJz9+ujpevNdJIhA0AAAAA/NgDAAAAAA==', 'base64');
+      const internalTxBlockHash: string = '00208c2506c7824e2244519438917b8df322c445e54c00039fa8ce0e4b101016d732';
+
+      const block: Block = Block.fromBytes(internalTxBlockBytes);
+      expect(block.getHash()).toEqual(internalTxBlockHash);
+
+    });
+
   });
 
 });

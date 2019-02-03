@@ -95,7 +95,7 @@ export class TxDataSerializer {
         return TxDataContractTransferSerializer.size();
 
       default:
-        throw new Error(`TxDataSerializer not implemented for type [${txType}]`);
+        throw new Error(`TxDataSerializer not implemented for type [${TransactionType[txType] ? TransactionType[txType] : txType}]`);
     }
 
   }
@@ -157,7 +157,7 @@ export class TxDataSerializer {
         return TxDataContractTransferSerializer.read(buf, offset);
 
       default:
-        throw new Error(`TxDataSerializer not implemented for type [${txType}]`);
+        throw new Error(`TxDataSerializer not implemented for type [${TransactionType[txType] ? TransactionType[txType] : txType}]`);
     }
 
   }
@@ -221,7 +221,7 @@ export class TxDataSerializer {
         return TxDataContractTransferSerializer.write(data as ITxDataContractTransferData, buf, offset);
 
       default:
-        throw new Error(`TxDataSerializer not implemented for type [${txType}]`);
+        throw new Error(`TxDataSerializer not implemented for type [${TransactionType[txType] ? TransactionType[txType] : txType}]`);
     }
 
   }

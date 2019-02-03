@@ -11,6 +11,7 @@ import { WithdrawTransaction } from './withdrawTransaction';
 import { RedCardTransaction } from './redCardTransaction';
 import { UnregisterTransaction } from './unregisterTransaction';
 import { ContractCreateTransaction, ContractCallTransaction, ContractDeleteTransaction, ContractTransferTransaction } from '../../../contract/protocol/transaction';
+import { DataTransaction } from './dataTransaction';
 
 export class Transaction extends BaseTransaction {
 
@@ -52,6 +53,9 @@ export class Transaction extends BaseTransaction {
       case TransactionType.Unregister:
         return UnregisterTransaction.fromRawData(rawData, blockHeight, blockVersion);
 
+      case TransactionType.Data:
+        return DataTransaction.fromRawData(rawData, blockHeight, blockVersion);
+
       case TransactionType.ContractCreate:
         return ContractCreateTransaction.fromRawData(rawData, blockHeight, blockVersion);
 
@@ -65,7 +69,7 @@ export class Transaction extends BaseTransaction {
         return ContractTransferTransaction.fromRawData(rawData, blockHeight, blockVersion);
 
       default:
-        throw new Error(`Transaction type ${TransactionType[rawData.type]} not supported`);
+        throw new Error(`Transaction type ${TransactionType[rawData.type] ? TransactionType[rawData.type] : rawData.type} not supported`);
 
     }
 
@@ -104,6 +108,9 @@ export class Transaction extends BaseTransaction {
       case TransactionType.Unregister:
         return UnregisterTransaction.toRawData(tx);
 
+      case TransactionType.Data:
+        return DataTransaction.toRawData(tx);
+
       case TransactionType.ContractCreate:
         return ContractCreateTransaction.toRawData(tx);
 
@@ -117,7 +124,7 @@ export class Transaction extends BaseTransaction {
         return ContractTransferTransaction.toRawData(tx);
 
       default:
-        throw new Error(`Transaction type ${TransactionType[type]} not supported`);
+        throw new Error(`Transaction type ${TransactionType[type] ? TransactionType[type] : type} not supported`);
 
     }
 

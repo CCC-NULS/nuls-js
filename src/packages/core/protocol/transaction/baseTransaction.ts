@@ -247,6 +247,10 @@ export abstract class BaseTransaction {
         throw new Error('Not enough input balance to do the transaction');
       }
 
+      if (this._coinData.getOutputs().length === 0) {
+        throw new Error('There must be at least one output, something is missed');
+      }
+
     }
 
     return BaseTransaction.toBytes(this).toString('hex');
@@ -298,6 +302,17 @@ export abstract class BaseTransaction {
 
       if (!this._txData) {
         throw new Error('Transaction data is not filled');
+      }
+
+      if (!this._changeAddress && (
+        this._type === TransactionType.Transfer || this._type === TransactionType.Alias ||
+        this._type === TransactionType.Register || this._type === TransactionType.Deposit || this._type === TransactionType.Data ||
+        this._type === TransactionType.ContractCreate || this._type === TransactionType.ContractCall ||
+        this._type === TransactionType.ContractDelete || this._type === TransactionType.ContractTransfer)
+      ) {
+
+        throw new Error('Change address must be specified');
+
       }
 
     }
@@ -392,11 +407,9 @@ export abstract class BaseTransaction {
 
         } else {
 
-          // Prevent from burning nuls
+          // Some kind of transactions dont need change address, (prevent from burning nuls before send)
           if (!this._changeAddress) {
-            this.resetInputs();
             return;
-            // throw new Error('Change address must be specified');
           }
 
           // Change output should be always at last position

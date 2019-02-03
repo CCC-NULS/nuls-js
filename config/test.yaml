@@ -1,0 +1,15 @@
+nuls:
+  api:
+    timeout: 10000
+    apiserver:
+      host: http://mock.com
+      base: /mock
+    explorer:
+      host: https://mock.com
+      base: /mock
+      resources:
+        utxos: /mock/__ADDRESS__.json
+        broadcast: /mock/broadcast
+        transaction: /mock/__HASH__.json
+        contractMethods: /mock/__ADDRESS__/methods.json
+        contractView: /mock/call

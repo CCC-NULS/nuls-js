@@ -24,6 +24,7 @@ export interface BlockHeaderObject {
   roundIndex: number;
   roundStartTime: number;
   stateRoot?: string;
+  extend?: string;
   signature: string;
 }
 
@@ -43,6 +44,7 @@ export class BlockHeader {
   protected _roundIndex!: number;
   protected _roundStartTime!: number;
   protected _stateRoot?: Buffer;
+  protected _extend?: Buffer;
   protected _signature!: Buffer;
 
   protected _internalTxCount!: number;
@@ -84,6 +86,7 @@ export class BlockHeader {
       roundIndex: blockHeader._roundIndex,
       roundStartTime: blockHeader._roundStartTime,
       stateRoot: blockHeader._stateRoot && blockHeader._stateRoot.toString('hex'),
+      extend: blockHeader._extend && blockHeader._extend.toString('hex'),
       signature: blockHeader._signature.toString('hex')
     };
 
@@ -101,7 +104,7 @@ export class BlockHeader {
   }
 
   protected static _fromRawData<B extends BlockHeader>(rawData: IBlockHeaderData, blockHeader: B): B {
-
+    
     blockHeader._preHash = rawData.preHash;
     blockHeader._merkleHash = rawData.merkleHash;
     blockHeader._time = rawData.time;
@@ -116,6 +119,7 @@ export class BlockHeader {
     blockHeader._roundIndex = rawData.extend.roundIndex;
     blockHeader._roundStartTime = rawData.extend.roundStartTime;
     blockHeader._stateRoot = rawData.extend.stateRoot;
+    blockHeader._extend = rawData.extend.extend;
     blockHeader._signature = getSignatureHash(rawData.signature);
 
     return blockHeader;

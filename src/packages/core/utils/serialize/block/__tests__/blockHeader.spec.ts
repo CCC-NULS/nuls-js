@@ -1,4 +1,4 @@
-import { blockHeaderSerializedExample, blockHeaderReadExample } from '../__mocks__/examples/blockHeight';
+import { blockHeaderSerializedExample, blockHeaderReadExample } from '../__mocks__/examples/blockHeader';
 import { BlockHeaderSerializer, IBlockHeaderData } from '../blockHeader';
 
 describe('BlockSerializer integration tests', () => {
@@ -9,15 +9,15 @@ describe('BlockSerializer integration tests', () => {
 
     it('should read a serialized block header and return an IBlockHeaderData object', () => {
 
-      const tx: IBlockHeaderData = BlockHeaderSerializer.read(blockBytes, 0).data;
+      const blockHeader: IBlockHeaderData = BlockHeaderSerializer.read(blockBytes, 0).data;
 
-      expect(tx.preHash).toEqual(blockHeaderReadExample.preHash);
-      expect(tx.merkleHash).toEqual(blockHeaderReadExample.merkleHash);
-      expect(tx.time).toEqual(blockHeaderReadExample.time);
-      expect(tx.height).toEqual(blockHeaderReadExample.height);
-      expect(tx.txCount).toEqual(blockHeaderReadExample.txCount);
-      expect(tx.extend).toEqual(blockHeaderReadExample.extend);
-      expect(tx.signature).toEqual(blockHeaderReadExample.signature);
+      expect(blockHeader.preHash).toEqual(blockHeaderReadExample.preHash);
+      expect(blockHeader.merkleHash).toEqual(blockHeaderReadExample.merkleHash);
+      expect(blockHeader.time).toEqual(blockHeaderReadExample.time);
+      expect(blockHeader.height).toEqual(blockHeaderReadExample.height);
+      expect(blockHeader.txCount).toEqual(blockHeaderReadExample.txCount);
+      expect(blockHeader.extend).toEqual(blockHeaderReadExample.extend);
+      expect(blockHeader.signature).toEqual(blockHeaderReadExample.signature);
 
     });
 
@@ -25,9 +25,9 @@ describe('BlockSerializer integration tests', () => {
 
       let buf = Buffer.alloc(100000);
       const offset = BlockHeaderSerializer.write(blockHeaderReadExample, buf, 0);
-      const tx: string = buf.slice(0, offset).toString('base64');
+      const blockHeader: string = buf.slice(0, offset).toString('base64');
 
-      expect(tx).toEqual(blockHeaderSerializedExample);
+      expect(blockHeader).toEqual(blockHeaderSerializedExample);
 
     });
 

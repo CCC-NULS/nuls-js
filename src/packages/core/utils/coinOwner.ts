@@ -39,7 +39,7 @@ export class CoinOwnerUtils {
     } else {
 
       // Input
-      if (coinOwner.length >= HASH_LENGTH) {
+      if (coinOwner.length > HASH_LENGTH) {
 
         const fromHash: Hash = coinOwner.slice(0, HASH_LENGTH).toString('hex');
         const { data: fromIndex } = VarIntSerializer.read(coinOwner.slice(HASH_LENGTH, coinOwner.length), 0);

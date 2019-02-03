@@ -9,9 +9,9 @@ describe('BlockSerializer integration tests', () => {
 
     it('should read a serialized block header and return an IBlockExtendData object', () => {
       
-      const tx: IBlockExtendData = BlockExtendSerializer.read(blockBytes, 0).data;
+      const blockExt: IBlockExtendData = BlockExtendSerializer.read(blockBytes, 0).data;
       
-      expect(tx).toEqual(blockExtendReadExample);
+      expect(blockExt).toEqual(blockExtendReadExample);
 
     });
 
@@ -19,9 +19,9 @@ describe('BlockSerializer integration tests', () => {
 
       let buf = Buffer.alloc(100000);
       const offset = BlockExtendSerializer.write(blockExtendReadExample, buf, 0);
-      const tx: string = buf.slice(0, offset).toString('base64');
+      const blockExt: string = buf.slice(0, offset).toString('base64');
 
-      expect(tx).toEqual(blockExtendSerializedExample);
+      expect(blockExt).toEqual(blockExtendSerializedExample);
 
     });
 

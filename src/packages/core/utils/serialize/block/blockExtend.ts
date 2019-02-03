@@ -20,6 +20,7 @@ import { IReadData } from '../common';
  */
 
 export interface IBlockExtendData {
+  extend?: Buffer;
   roundIndex: number;
   consensusMemberCount: number;
   roundStartTime: number;
@@ -61,19 +62,19 @@ export class BlockExtendSerializer {
    */
   public static read(buf: Buffer, offset: number): IBlockExtendOutput {
 
-    const { data: extBuf, readBytes } = VarByteSerializer.read(buf, offset);
+    const { data: extend, readBytes } = VarByteSerializer.read(buf, offset);
     offset = 0;
 
-    const roundIndex = extBuf.readUInt32LE(offset);
+    const roundIndex = extend.readUInt32LE(offset);
     offset += 4;
 
-    const consensusMemberCount = extBuf.readUInt16LE(offset);
+    const consensusMemberCount = extend.readUInt16LE(offset);
     offset += 2;
 
-    const roundStartTime = extBuf.readUIntLE(offset, 6); // 48 bits
+    const roundStartTime = extend.readUIntLE(offset, 6); // 48 bits
     offset += 6;
 
-    const packingIndexOfRound = extBuf.readUInt16LE(offset);
+    const packingIndexOfRound = extend.readUInt16LE(offset);
     offset += 2;
 
     let mainVersion!: number;
@@ -82,21 +83,21 @@ export class BlockExtendSerializer {
     let delay!: number;
     let stateRoot!: Buffer;
 
-    if (extBuf.length > offset) {
+    if (extend.length > offset) {
 
-      mainVersion = extBuf.readInt32LE(offset);
+      mainVersion = extend.readInt32LE(offset);
       offset += 4;
 
-      currentVersion = extBuf.readInt32LE(offset);
+      currentVersion = extend.readInt32LE(offset);
       offset += 4;
 
-      percent = extBuf.readUInt16LE(offset);
+      percent = extend.readUInt16LE(offset);
       offset += 2;
 
-      delay = extBuf.readUInt32LE(offset);
+      delay = extend.readUInt32LE(offset);
       offset += 4;
 
-      const output = VarByteSerializer.read(extBuf, offset);
+      const output = VarByteSerializer.read(extend, offset);
       stateRoot = output.data;
       offset += output.readBytes;
 
@@ -105,6 +106,7 @@ export class BlockExtendSerializer {
     const output: IBlockExtendOutput = {
       readBytes,
       data: {
+        extend,
         roundIndex,
         consensusMemberCount,
         roundStartTime,
@@ -130,27 +132,38 @@ export class BlockExtendSerializer {
    */
   public static write(data: IBlockExtendData, buf: Buffer, offset: number = 0): number {
 
-    const extSize = BlockExtendSerializer.bufferSize(data);
-    const extBuf = Buffer.allocUnsafe(extSize);
-    let extOffset = 0;
+    let extend: Buffer;
 
-    extOffset = extBuf.writeUInt32LE(data.roundIndex, extOffset);
-    extOffset = extBuf.writeUInt16LE(data.consensusMemberCount, extOffset);
-    extOffset = extBuf.writeUIntLE(data.roundStartTime, extOffset, 6); // 48 bits
-    extOffset = extBuf.writeUInt16LE(data.packingIndexOfRound, extOffset);
+    // Extend could contain more data than the officialy supported
+    if (data.extend) {
 
-    if (data.currentVersion) {
+      extend = data.extend;
 
-      extOffset = extBuf.writeInt32LE(data.mainVersion as number, extOffset);
-      extOffset = extBuf.writeInt32LE(data.currentVersion as number, extOffset);
-      extOffset = extBuf.writeUInt16LE(data.percent as number, extOffset);
-      extOffset = extBuf.writeUInt32LE(data.delay as number, extOffset);
+    } else {
 
-      extOffset = VarByteSerializer.write(data.stateRoot as Buffer, extBuf, extOffset);
+      const extSize = BlockExtendSerializer.bufferSize(data);
+      let extOffset = 0;
+      extend = Buffer.allocUnsafe(extSize);
+
+      extOffset = extend.writeUInt32LE(data.roundIndex, extOffset);
+      extOffset = extend.writeUInt16LE(data.consensusMemberCount, extOffset);
+      extOffset = extend.writeUIntLE(data.roundStartTime, extOffset, 6); // 48 bits
+      extOffset = extend.writeUInt16LE(data.packingIndexOfRound, extOffset);
+
+      if (data.currentVersion) {
+
+        extOffset = extend.writeInt32LE(data.mainVersion as number, extOffset);
+        extOffset = extend.writeInt32LE(data.currentVersion as number, extOffset);
+        extOffset = extend.writeUInt16LE(data.percent as number, extOffset);
+        extOffset = extend.writeUInt32LE(data.delay as number, extOffset);
+
+        extOffset = VarByteSerializer.write(data.stateRoot as Buffer, extend, extOffset);
+
+      }
 
     }
 
-    offset = VarByteSerializer.write(extBuf, buf, offset);
+    offset = VarByteSerializer.write(extend, buf, offset);
 
     return offset;
 

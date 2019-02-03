@@ -116,7 +116,7 @@ export class BlockHeaderSerializer {
     offset = buf.writeUIntLE(data.time, offset, 6);
     offset = buf.writeUInt32LE(data.height, offset);
     offset = buf.writeUInt32LE(data.txCount, offset);
-    offset = BlockExtendSerializer.write(data.extend, buf, offset);
+    offset = BlockExtendSerializer.write(data.extend, buf, offset);    
     offset = P2PKHScriptSigSerializer.write(data.signature, buf, offset);
 
     return offset;

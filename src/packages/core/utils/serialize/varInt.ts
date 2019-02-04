@@ -1,4 +1,4 @@
-import { IReadData, writeUint64LE, readUint64LE } from '.';
+import { IReadData, writeUint64LE, readUint64LE } from './common';
 
 /***
   * ### VarInt

@@ -1,7 +1,7 @@
 import { BlockVersion } from './../../../common';
 import { VarIntSerializer } from './../varInt';
 import { ITransactionOutput } from './transaction';
-import { VarByteSerializer } from '..';
+import { VarByteSerializer } from '../varByte';
 import { TxDataSerializer, ITxDataData } from './txData/txData';
 import { CoinDataSerializer, CoinDataData } from './coinData/coinData';
 import { IReadData, PLACE_HOLDER } from '../common';

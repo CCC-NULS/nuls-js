@@ -57,41 +57,6 @@ export class BlockHeader {
 
   }
 
-  static toBytes(blockHeader: BlockHeader): Buffer {
-
-    const rawData: IBlockHeaderData = this.toRawData(blockHeader);
-    const bytesLength: number = BlockHeaderSerializer.size(rawData);
-    const bytes = Buffer.allocUnsafe(bytesLength);
-    BlockHeaderSerializer.write(rawData, bytes, 0);
-
-    return bytes;
-
-  }
-
-  static toObject(blockHeader: BlockHeader): BlockHeaderObject {
-
-    return {
-      hash: blockHeader.getHash(),
-      preHash: blockHeader._preHash,
-      merkleHash: blockHeader._merkleHash,
-      time: blockHeader._time,
-      height: blockHeader._height,
-      txCount: blockHeader._txCount,
-      consensusMemberCount: blockHeader._consensusMemberCount,
-      currentVersion: blockHeader._currentVersion,
-      delay: blockHeader._delay,
-      mainVersion: blockHeader._mainVersion,
-      packingIndexOfRound: blockHeader._packingIndexOfRound,
-      percent: blockHeader._percent,
-      roundIndex: blockHeader._roundIndex,
-      roundStartTime: blockHeader._roundStartTime,
-      stateRoot: blockHeader._stateRoot && blockHeader._stateRoot.toString('hex'),
-      extend: blockHeader._extend && blockHeader._extend.toString('hex'),
-      signature: blockHeader._signature.toString('hex')
-    };
-
-  }
-
   static fromRawData(rawData: IBlockHeaderData, internalTxCount?: number): BlockHeader {
 
     const blockHeader = new BlockHeader(internalTxCount);
@@ -126,40 +91,75 @@ export class BlockHeader {
 
   }
 
-  static toRawData(blockHeader: BlockHeader): IBlockHeaderData {
+  toBytes(): Buffer {
+
+    const rawData: IBlockHeaderData = this.toRawData();
+    const bytesLength: number = BlockHeaderSerializer.size(rawData);
+    const bytes = Buffer.allocUnsafe(bytesLength);
+    BlockHeaderSerializer.write(rawData, bytes, 0);
+
+    return bytes;
+
+  }
+
+  toRawData(): IBlockHeaderData {
 
     return {
-      preHash: blockHeader._preHash,
-      merkleHash: blockHeader._merkleHash,
-      time: blockHeader._time,
-      height: blockHeader._height,
-      txCount: blockHeader._txCount,
+      preHash: this._preHash,
+      merkleHash: this._merkleHash,
+      time: this._time,
+      height: this._height,
+      txCount: this._txCount,
       extend: {
-        consensusMemberCount: blockHeader._consensusMemberCount,
-        currentVersion: blockHeader._currentVersion,
-        delay: blockHeader._delay,
-        mainVersion: blockHeader._mainVersion,
-        packingIndexOfRound: blockHeader._packingIndexOfRound,
-        percent: blockHeader._percent,
-        roundIndex: blockHeader._roundIndex,
-        roundStartTime: blockHeader._roundStartTime,
-        stateRoot: blockHeader._stateRoot,
-        extend: blockHeader._extend,
+        consensusMemberCount: this._consensusMemberCount,
+        currentVersion: this._currentVersion,
+        delay: this._delay,
+        mainVersion: this._mainVersion,
+        packingIndexOfRound: this._packingIndexOfRound,
+        percent: this._percent,
+        roundIndex: this._roundIndex,
+        roundStartTime: this._roundStartTime,
+        stateRoot: this._stateRoot,
+        extend: this._extend,
       },
-      signature: getSignatureFromHash(blockHeader._signature)
+      signature: getSignatureFromHash(this._signature)
     };
 
   }
 
-  protected size(): number {
+  toObject(): BlockHeaderObject {
 
-    const transactionData: IBlockHeaderData = BlockHeader.toRawData(this);
-    return BlockHeaderSerializer.size(transactionData);
+    return {
+      hash: this.getHash(),
+      preHash: this._preHash,
+      merkleHash: this._merkleHash,
+      time: this._time,
+      height: this._height,
+      txCount: this._txCount,
+      consensusMemberCount: this._consensusMemberCount,
+      currentVersion: this._currentVersion,
+      delay: this._delay,
+      mainVersion: this._mainVersion,
+      packingIndexOfRound: this._packingIndexOfRound,
+      percent: this._percent,
+      roundIndex: this._roundIndex,
+      roundStartTime: this._roundStartTime,
+      stateRoot: this._stateRoot && this._stateRoot.toString('hex'),
+      extend: this._extend && this._extend.toString('hex'),
+      signature: this._signature.toString('hex')
+    };
 
   }
 
   setInternalTxCount(count: number) {
     this._internalTxCount = count;
+  }
+
+  size(): number {
+
+    const transactionData: IBlockHeaderData = this.toRawData();
+    return BlockHeaderSerializer.size(transactionData);
+
   }
   
   getHash(): BlockHash {
@@ -185,7 +185,7 @@ export class BlockHeader {
     const txCount: number = this._txCount;
     this._txCount = this._txCount - this._internalTxCount;
 
-    const blockBytes: Buffer = BlockHeader.toBytes(this);
+    const blockBytes: Buffer = this.toBytes();
     const digest: IDigestData = NulsDigestData.digest(blockBytes);
 
     // restore signature after serialization
@@ -214,10 +214,6 @@ export class BlockHeader {
     this._signature = createBlockSignature(this, privateKeyBuffer);
     return this;
 
-  }
-
-  toObject(): BlockHeaderObject {
-    return BlockHeader.toObject(this);
   }
 
 }

@@ -1,10 +1,8 @@
 import { Hash, isValidHash } from './../../utils/crypto';
 import { Address, isValidAddress } from '../../utils/crypto';
-import { TransactionType, CONSENSUS_LOCK_TIME, BlockVersion } from '../../common';
-import { ITransactionData } from '../../utils/serialize/transaction/transaction';
-import { BaseTransaction, TransactionConfig } from './baseTransaction';
+import { TransactionType, CONSENSUS_LOCK_TIME } from '../../common';
+import { BaseTransaction } from './baseTransaction';
 import { ITxDataDepositData } from '../../utils/serialize/transaction/txData/txDataDeposit';
-import { UTXO } from '../utxo';
 import { MAX_FEE_PRICE_1024_BYTES, nulsToNa } from '../../utils';
 
 // https://github.com/nuls-official/nuls/blob/4c60055c9fae38c66c62b432e0b634117e2876fe/consensus-module/poc/consensus-poc-protocol/src/main/java/io/nuls/consensus/poc/protocol/tx/DepositTransaction.java#L38
@@ -18,34 +16,6 @@ export class DepositTransaction extends BaseTransaction {
   protected _txData: ITxDataDepositData = {} as any;
 
   private _consensusOutputIndex: number | undefined;
-
-  static fromBytes(bytes: Buffer, blockHeight?: number, blockVersion?: BlockVersion): DepositTransaction {
-
-    let tx = new DepositTransaction(undefined, blockHeight, blockVersion);
-    return this._fromBytes(bytes, tx);
-
-  }
-
-  static fromRawData(rawData: ITransactionData, blockHeight?: number, blockVersion?: BlockVersion): DepositTransaction {
-
-    let tx = new DepositTransaction(undefined, blockHeight, blockVersion);
-    return this._fromRawData(rawData, tx);
-
-  }
-
-  static async fromAddress(address: string, config?: TransactionConfig, blockHeight?: number, blockVersion?: BlockVersion): Promise<DepositTransaction> {
-
-    let tx = new DepositTransaction(undefined, blockHeight, blockVersion);
-    return this._fromAddress<DepositTransaction>(address, tx, config);
-
-  };
-
-  static fromUtxos(utxos: UTXO[], blockHeight?: number, blockVersion?: BlockVersion): DepositTransaction {
-
-    let tx = new DepositTransaction(undefined, blockHeight, blockVersion);
-    return this._fromUtxos<DepositTransaction>(utxos, tx);
-
-  };
 
   address(address: Address): this {
 

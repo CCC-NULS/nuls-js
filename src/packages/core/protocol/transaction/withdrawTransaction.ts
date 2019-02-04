@@ -1,10 +1,9 @@
 import { CoinOutput, CoinInput } from './../coin/coin';
-import { CONSENSUS_LOCK_TIME, BlockVersion } from './../../common';
+import { CONSENSUS_LOCK_TIME } from './../../common';
 // import { TransactionApi } from './../../api/transaction';
 import { Hash, isValidHash } from '../../utils/crypto';
 import { Address, isValidAddress } from '../../utils/crypto';
 import { TransactionType } from '../../common';
-import { ITransactionData } from '../../utils/serialize/transaction/transaction';
 import { BaseTransaction } from './baseTransaction';
 import { ITxDataWithdrawData } from '../../utils/serialize/transaction/txData/txDataWithdraw';
 import { MAX_FEE_PRICE_1024_BYTES, nulsToNa } from '../../utils';
@@ -23,20 +22,6 @@ export class WithdrawTransaction extends BaseTransaction {
 
   private _consensusInput: CoinInput | undefined;
   private _consensusOutput: CoinOutput | undefined;
-
-  static fromBytes(bytes: Buffer, blockHeight?: number, blockVersion?: BlockVersion): WithdrawTransaction {
-
-    let tx = new WithdrawTransaction(undefined, blockHeight, blockVersion);
-    return this._fromBytes(bytes, tx);
-
-  }
-
-  static fromRawData(rawData: ITransactionData, blockHeight?: number, blockVersion?: BlockVersion): WithdrawTransaction {
-
-    let tx = new WithdrawTransaction(undefined, blockHeight, blockVersion);
-    return this._fromRawData(rawData, tx);
-
-  }
 
   address(address: Address): this {
 

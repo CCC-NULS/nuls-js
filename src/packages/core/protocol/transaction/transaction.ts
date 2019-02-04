@@ -13,7 +13,7 @@ import { UnregisterTransaction } from './unregisterTransaction';
 import { ContractCreateTransaction, ContractCallTransaction, ContractDeleteTransaction, ContractTransferTransaction } from '../../../contract/protocol/transaction';
 import { DataTransaction } from './dataTransaction';
 
-export class Transaction extends BaseTransaction {
+export class Transaction {
 
   static fromBytes(bytes: Buffer, blockHeight?: number, blockVersion?: BlockVersion): BaseTransaction {
 
@@ -70,61 +70,6 @@ export class Transaction extends BaseTransaction {
 
       default:
         throw new Error(`Transaction type ${TransactionType[rawData.type] ? TransactionType[rawData.type] : rawData.type} not supported`);
-
-    }
-
-  }
-
-  static toRawData(tx: BaseTransaction): ITransactionData {
-
-    const type: TransactionType = tx.getType();
-
-    switch (type) {
-
-      case TransactionType.Reward:
-        return RewardTransaction.toRawData(tx);
-
-      case TransactionType.Alias:
-        return AliasTransaction.toRawData(tx);
-
-      case TransactionType.Transfer:
-        return TransferTransaction.toRawData(tx);
-
-      case TransactionType.Register:
-        return RegisterTransaction.toRawData(tx);
-
-      case TransactionType.Deposit:
-        return DepositTransaction.toRawData(tx);
-
-      case TransactionType.Withdraw:
-        return WithdrawTransaction.toRawData(tx);
-
-      case TransactionType.YellowCard:
-        return YellowCardTransaction.toRawData(tx);
-
-      case TransactionType.RedCard:
-        return RedCardTransaction.toRawData(tx);
-
-      case TransactionType.Unregister:
-        return UnregisterTransaction.toRawData(tx);
-
-      case TransactionType.Data:
-        return DataTransaction.toRawData(tx);
-
-      case TransactionType.ContractCreate:
-        return ContractCreateTransaction.toRawData(tx);
-
-      case TransactionType.ContractCall:
-        return ContractCallTransaction.toRawData(tx);
-
-      case TransactionType.ContractDelete:
-        return ContractDeleteTransaction.toRawData(tx);
-
-      case TransactionType.ContractTransfer:
-        return ContractTransferTransaction.toRawData(tx);
-
-      default:
-        throw new Error(`Transaction type ${TransactionType[type] ? TransactionType[type] : type} not supported`);
 
     }
 

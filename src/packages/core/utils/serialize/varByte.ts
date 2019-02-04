@@ -1,4 +1,5 @@
-import { IReadData, VarIntSerializer } from '.';
+import { VarIntSerializer } from './varInt';
+import { IReadData } from './common';
 
 /***
   * ### VarByte

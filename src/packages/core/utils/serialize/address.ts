@@ -1,6 +1,6 @@
-import { IReadData } from '.';
 import { ADDRESS_LENGTH } from '../../common';
 import { Address, AddressHash, addressFromHash, hashFromAddress } from '../crypto';
+import { IReadData } from './common';
 
 /***
   * ### Address

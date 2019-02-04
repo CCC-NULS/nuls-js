@@ -11,6 +11,14 @@ import { getPrivateKeyBuffer } from '../../utils/crypto';
 import { IAPIConfig, TransactionApi } from '../../api';
 import { CoinInput, CoinOutput } from '../coin';
 
+export type TransactionStaticClass = typeof BaseTransaction;
+
+export interface TransactionConstructor<T extends BaseTransaction> {
+  new(config?: TransactionConfig, blockHeight?: number, blockVersion?: BlockVersion): T;
+};
+
+export type TransactionClass<T extends BaseTransaction> = TransactionConstructor<T> & TransactionStaticClass
+
 export type TransactionHash = string;
 export type TransactionHex = string;
 
@@ -32,8 +40,6 @@ export interface TransactionObject {
 
 export abstract class BaseTransaction {
 
-  protected static _className = BaseTransaction;
-
   protected _type!: TransactionType;
   protected _time: number = new Date().getTime();
   protected _remark: Buffer = Buffer.from([]);
@@ -53,48 +59,22 @@ export abstract class BaseTransaction {
   private _utxos: CoinInput[] = [];
   private _changeOutput: CoinOutput | undefined;
 
-  static fromBytes(bytes: Buffer, blockHeight?: number, blockVersion?: BlockVersion): BaseTransaction {
-    throw new Error('Method fromBytes not implemented');
-  }
+  static fromBytes<T extends BaseTransaction>(this: TransactionClass<T>, bytes: Buffer, blockHeight?: number, blockVersion?: BlockVersion): T {
 
-  protected static _fromBytes<T extends BaseTransaction>(bytes: Buffer, tx: T): T {
-
+    let tx: T = new this(undefined, blockHeight, blockVersion);
     const rawData: ITransactionData = TransactionSerializer.read(bytes, 0).data;
     return this._fromRawData(rawData, tx);
 
   }
 
-  static toBytes(tx: BaseTransaction): Buffer {
+  static fromRawData<T extends BaseTransaction>(this: TransactionClass<T>, rawData: ITransactionData, blockHeight?: number, blockVersion?: BlockVersion): T {
 
-    const rawData: ITransactionData = this.toRawData(tx);
-    const bytesLength: number = TransactionSerializer.size(rawData);
-    const bytes = Buffer.allocUnsafe(bytesLength);
-    TransactionSerializer.write(rawData, bytes, 0);
-
-    return bytes;
+    let tx: T = new this(undefined, blockHeight, blockVersion);
+    return this._fromRawData(rawData, tx);
 
   }
 
-  static toObject(transaction: BaseTransaction): TransactionObject {
-
-    return {
-      hash: transaction.getHash(),
-      type: transaction._type,
-      blockHeight: transaction._blockHeight,
-      time: transaction._time,
-      remark: transaction._remark.toString('utf-8'),
-      txData: transaction._txData, // TODO: Implement in each transaction kind
-      coinData: transaction._coinData.toObject(),
-      signature: transaction._signature.toString('hex'),
-    };
-
-  }
-
-  static fromRawData(rawData: ITransactionData, blockHeight?: number, blockVersion?: BlockVersion): BaseTransaction {
-    throw new Error('Method fromRawData not implemented');
-  }
-
-  protected static _fromRawData<T extends BaseTransaction>(rawData: ITransactionData, tx: T): T {
+  static _fromRawData<T extends BaseTransaction>(rawData: ITransactionData, tx: T): T {
 
     if (rawData.type !== tx._type) {
       throw new Error(`Error reading Transaction from rawData (Incompatible types: ${TransactionType[rawData.type]} !== ${TransactionType[tx._type]})`);
@@ -111,24 +91,9 @@ export abstract class BaseTransaction {
 
   }
 
-  protected static toRawData(tx: BaseTransaction): ITransactionData {
+  static fromUtxos<T extends BaseTransaction>(this: TransactionClass<T>, utxos: UTXO[], blockHeight?: number, blockVersion?: BlockVersion): T {
 
-    return {
-      type: tx._type,
-      time: tx._time,
-      remark: tx._remark,
-      txData: tx._txData,
-      coinData: CoinData.toRawData(tx._coinData),
-      scriptSign: tx._signature
-    };
-
-  }
-
-  protected static fromUtxos(utxos: UTXO[]): BaseTransaction {
-    throw new Error('Method fromUtxos not implemented');
-  };
-
-  protected static _fromUtxos<T extends BaseTransaction>(utxos: UTXO[], tx: T): T {
+    let tx: T = new this(undefined, blockHeight, blockVersion);
 
     utxos.forEach((utxo: UTXO) => {
 
@@ -141,40 +106,64 @@ export abstract class BaseTransaction {
 
     return tx;
 
-  }
-
-  protected static async fromAddress(address: string, config: TransactionConfig): Promise<BaseTransaction> {
-    throw new Error('Method fromAddress not implemented');
   };
 
-  protected static async _fromAddress<T extends BaseTransaction>(address: string, tx: T, config?: TransactionConfig): Promise<T> {
+  protected static async fromAddress<T extends BaseTransaction>(this: TransactionClass<T>, address: string, config: TransactionConfig): Promise<T> {
+
+    const utxos = await Utxo.getUtxos(address, config ? config.api : undefined);
+    const tx: T = this.fromUtxos(utxos);
 
     tx._changeAddress = address;
 
     tx.config(config);
 
-    const utxos = await Utxo.getUtxos(address, tx._config.api);
+    return tx;
 
-    return BaseTransaction._fromUtxos(utxos, tx);
-
-  }
-
-  static async send(tx: BaseTransaction, config?: TransactionConfig): Promise<TransactionHash> {
-
-    tx.config(config);
-
-    const api = new TransactionApi(tx._config.api);
-    const txHex: TransactionHex = tx.serialize();
-
-    // TODO: Catch errors
-    return await api.broadcast(txHex);
-
-  }
+  };
 
   constructor(config?: TransactionConfig, blockHeight: number = -1, blockVersion: BlockVersion = BlockVersion.SmartContracts) {
     this._blockHeight = blockHeight;
     this._blockVersion = blockVersion;
     this.config(config);
+  }
+
+  toBytes(): Buffer {
+
+    const rawData: ITransactionData = this.toRawData();
+    const bytesLength: number = TransactionSerializer.size(rawData);
+    const bytes = Buffer.allocUnsafe(bytesLength);
+    TransactionSerializer.write(rawData, bytes, 0);
+
+    return bytes;
+
+  }
+
+  toRawData(): ITransactionData {
+
+    return {
+      type: this._type,
+      time: this._time,
+      remark: this._remark,
+      txData: this._txData,
+      coinData: CoinData.toRawData(this._coinData),
+      scriptSign: this._signature
+    };
+
+  }
+
+  toObject(): TransactionObject {
+
+    return {
+      hash: this.getHash(),
+      type: this._type,
+      blockHeight: this._blockHeight,
+      time: this._time,
+      remark: this._remark.toString('utf-8'),
+      txData: this._txData, // TODO: Implement in each transaction kind
+      coinData: this._coinData.toObject(),
+      signature: this._signature.toString('hex'),
+    };
+
   }
 
   getType(): TransactionType {
@@ -253,24 +242,30 @@ export abstract class BaseTransaction {
 
     }
 
-    return BaseTransaction.toBytes(this).toString('hex');
+    return this.toBytes().toString('hex');
 
   }
 
-  async send(): Promise<TransactionHash> {
+  async send(config?: TransactionConfig): Promise<TransactionHash> {
 
     if (this._signature.length === 0) {
       throw new Error('The transaction is not signed');
     }
 
-    return await BaseTransaction.send(this, this._config);
+    this.config(config);
+
+    const api = new TransactionApi(this._config.api);
+    const txHex: TransactionHex = this.serialize();
+
+    // TODO: Catch errors
+    return await api.broadcast(txHex);
 
   }
 
   // https://github.com/nuls-io/nuls/blob/274204b748ed72fdac150637ee758037d64c7ce5/core-module/kernel/src/main/java/io/nuls/kernel/model/Transaction.java#L213
   getDigest(): IDigestData {
 
-    const transactionData: ITransactionData = BaseTransaction.toRawData(this);
+    const transactionData: ITransactionData = this.toRawData();
 
     const transactionHashSize: number = TransactionSerializer.sizeHash(transactionData, this._blockVersion);
     let transactionHash: Buffer = Buffer.allocUnsafe(transactionHashSize);
@@ -278,10 +273,6 @@ export abstract class BaseTransaction {
 
     return NulsDigestData.digest(transactionHash);
 
-  }
-
-  toObject(): TransactionObject {
-    return BaseTransaction.toObject(this);
   }
 
   getHash(): TransactionHash {
@@ -346,7 +337,7 @@ export abstract class BaseTransaction {
 
   protected size(): number {
 
-    const transactionData: ITransactionData = BaseTransaction.toRawData(this);
+    const transactionData: ITransactionData = this.toRawData();
     return TransactionSerializer.size(transactionData);
 
   }

@@ -1,4 +1,4 @@
-import { IReadData, PLACE_HOLDER } from '.';
+import { IReadData, PLACE_HOLDER } from './common';
 
 /***
   * ### NulsData

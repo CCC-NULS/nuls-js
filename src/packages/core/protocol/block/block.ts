@@ -1,7 +1,6 @@
 import { BlockHeader, BlockHex, BlockHash, BlockHeaderObject } from './blockHeader';
 import { BlockSerializer, IBlockData } from '../../utils/serialize/block/block';
-import { BaseTransaction, TransactionObject } from '../transaction';
-import { Transaction } from '../transaction/transaction';
+import { BaseTransaction, TransactionObject, Transaction } from '../transaction';
 import { ITransactionData } from '../../utils/serialize/transaction/transaction';
 import { TransactionType } from '../../common';
 
@@ -44,28 +43,6 @@ export class Block {
 
   }
 
-  static toObject(block: Block): BlockObject {
-
-    const blockHeader: BlockHeaderObject = block._header.toObject();
-
-    return {
-      ...blockHeader,
-      transactions: block._transactions.map((tx: BaseTransaction) => tx.toObject()),
-    };
-
-  }
-
-  static toBytes(block: Block): Buffer {
-
-    const rawData: IBlockData = this.toRawData(block);
-    const bytesLength: number = BlockSerializer.size(rawData);
-    const bytes = Buffer.allocUnsafe(bytesLength);
-    BlockSerializer.write(rawData, bytes, 0);
-
-    return bytes;
-
-  }
-
   static fromRawData(rawData: IBlockData): Block {
 
     const block = new Block();
@@ -97,20 +74,42 @@ export class Block {
 
   }
 
-  protected static toRawData(block: Block): IBlockData {
+  toBytes(): Buffer {
+
+    const rawData: IBlockData = this.toRawData();
+    const bytesLength: number = BlockSerializer.size(rawData);
+    const bytes = Buffer.allocUnsafe(bytesLength);
+    BlockSerializer.write(rawData, bytes, 0);
+
+    return bytes;
+
+  }
+
+  toRawData(): IBlockData {
 
     const rawTransactions: ITransactionData[] = [];
 
-    for (let i = 0; i < block._header.getTxCount(); i++) {
+    for (let i = 0; i < this._header.getTxCount(); i++) {
 
-      const rawTx: ITransactionData = Transaction.toRawData(block._transactions[i]);
+      const rawTx: ITransactionData = this._transactions[i].toRawData();
       rawTransactions.push(rawTx);
 
     }
 
     return {
-      header: BlockHeader.toRawData(block._header),
+      header: this._header.toRawData(),
       transactions: rawTransactions
+    };
+
+  }
+
+  toObject(): BlockObject {
+
+    const blockHeader: BlockHeaderObject = this._header.toObject();
+
+    return {
+      ...blockHeader,
+      transactions: this._transactions.map((tx: BaseTransaction) => tx.toObject()),
     };
 
   }
@@ -128,19 +127,13 @@ export class Block {
 
   serialize(): BlockHex {
 
-    return Block.toBytes(this).toString('hex');
+    return this.toBytes().toString('hex');
 
   }
 
-  toObject(): BlockObject {
+  size(): number {
 
-    return Block.toObject(this);
-
-  }
-
-  protected size(): number {
-
-    const transactionData: IBlockData = Block.toRawData(this);
+    const transactionData: IBlockData = this.toRawData();
     return BlockSerializer.size(transactionData);
 
   }

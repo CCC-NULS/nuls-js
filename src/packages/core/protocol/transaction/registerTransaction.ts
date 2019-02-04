@@ -1,9 +1,7 @@
 import { Address, isValidAddress } from './../../utils/crypto';
-import { TransactionType, CONSENSUS_LOCK_TIME, BlockVersion } from '../../common';
-import { ITransactionData } from '../../utils/serialize/transaction/transaction';
-import { BaseTransaction, TransactionConfig } from './baseTransaction';
+import { TransactionType, CONSENSUS_LOCK_TIME } from '../../common';
+import { BaseTransaction } from './baseTransaction';
 import { ITxDataRegisterData } from '../../utils/serialize/transaction/txData/txDataRegister';
-import { UTXO } from '../utxo';
 import { MAX_FEE_PRICE_1024_BYTES, nulsToNa } from '../../utils';
 
 // https://github.com/nuls-official/nuls/blob/4c60055c9fae38c66c62b432e0b634117e2876fe/consensus-module/poc/consensus-poc-protocol/src/main/java/io/nuls/consensus/poc/protocol/tx/CreateAgentTransaction.java#L38
@@ -17,34 +15,6 @@ export class RegisterTransaction extends BaseTransaction {
   protected _txData: ITxDataRegisterData = {} as any;
 
   private _consensusOutputIndex: number | undefined;
-
-  static fromBytes(bytes: Buffer, blockHeight?: number, blockVersion?: BlockVersion): RegisterTransaction {
-
-    let tx = new RegisterTransaction(undefined, blockHeight, blockVersion);
-    return this._fromBytes(bytes, tx);
-
-  }
-
-  static fromRawData(rawData: ITransactionData, blockHeight?: number, blockVersion?: BlockVersion): RegisterTransaction {
-
-    let tx = new RegisterTransaction(undefined, blockHeight, blockVersion);
-    return this._fromRawData(rawData, tx);
-
-  }
-
-  static async fromAddress(address: string, config?: TransactionConfig, blockHeight?: number, blockVersion?: BlockVersion): Promise<RegisterTransaction> {
-
-    let tx = new RegisterTransaction(undefined, blockHeight, blockVersion);
-    return this._fromAddress<RegisterTransaction>(address, tx, config);
-
-  };
-
-  static fromUtxos(utxos: UTXO[], blockHeight?: number, blockVersion?: BlockVersion): RegisterTransaction {
-
-    let tx = new RegisterTransaction(undefined, blockHeight, blockVersion);
-    return this._fromUtxos<RegisterTransaction>(utxos, tx);
-
-  };
 
   agentAddress(address: Address): this {
 

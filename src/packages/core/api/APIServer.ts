@@ -12,7 +12,7 @@ export class APIServerClass {
 	public readonly api: AxiosInstance;
 	public readonly resources?: Record<string, string>;
 
-	constructor(apiConf: IAPIConfig = config.nuls.api.apiserver) {
+	constructor(apiConf: IAPIConfig = config.nuls.api.explorer) {
 		this.url = `${apiConf.host}${apiConf.base || ''}`;
 		this.resources = apiConf.resources;
 		this.api = axios.create({

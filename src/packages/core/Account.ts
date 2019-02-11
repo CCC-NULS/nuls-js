@@ -152,14 +152,22 @@ export class Account {
 
 		if (privateKey) { // If a private key is provided we use that
 
-			if (password && this.decryptPrivateKey(password, privateKey)) { // If a password exists and it's able to decrypt the private key then we're actually dealing with an encrypted private key
-				this.privateKeyBuffer = getPrivateKeyBuffer(this.decryptPrivateKey(password, privateKey)); // Decrypt it first into a plain text private key and then store the buffer
+			try {
+				if (password && this.decryptPrivateKey(password, privateKey)) // If a password exists and it's able to decrypt the private key then we're actually dealing with an encrypted private key
+				{
+					this.privateKeyBuffer = getPrivateKeyBuffer(this.decryptPrivateKey(password, privateKey)); // Decrypt it first into a plain text private key and then store the buffer
+				}
+				else
+				{
+					this.privateKeyBuffer = getPrivateKeyBuffer(privateKey); // Turn it into a buffer for reading
+				}
 			}
-			else {
-				this.privateKeyBuffer = getPrivateKeyBuffer(privateKey); // Turn it into a buffer for reading
+			catch (err) {
+				this.privateKeyBuffer = Buffer.from('');
 			}
 		}
-		else {
+		else
+		{
 			// Create a random private key
 			do {
 				this.privateKeyBuffer = randomBytes(32); // Generates the ECKey
@@ -167,6 +175,8 @@ export class Account {
 		}
 
 		try {
+			if(!this.privateKeyBuffer) throw new Error();
+
 			this.publicKeyBuffer = secp256k1.publicKeyCreate(this.privateKeyBuffer);
 		}
 		catch (e) {

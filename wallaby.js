@@ -6,6 +6,7 @@ module.exports = (wallaby) =>
 
 	return {
 		files: [
+			'config/*',
 			'src/**/*.*',
 			'testConfigs/*-setup.*',
 			'package.json',

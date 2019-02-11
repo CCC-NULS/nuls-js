@@ -22,7 +22,7 @@ describe('APIServer', () => {
 		const APILive = new APIServerClass(APIServer);
 		const APITest = new APIServerClass(APIServerTestNet);
 
-		expect(APIDefault.url).toEqual('http://mock.com/mock');
+		expect(APIDefault.url).toEqual('https://mock.com/mock');
 		expect(APILive.url).toEqual('https://apiserver.nuls.io/nuls');
 		expect(APITest.url).toEqual('http://testnet.apiserver.nuls.io/nuls');
 	});

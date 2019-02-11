@@ -2,8 +2,8 @@ import { IAPIConfig } from '..';
 import { UtxoApi } from '../api/utxo';
 
 export interface UTXO {
-  hash: string;
-  idx: number;
+  fromHash: string;
+  fromIndex: number;
   value: number;
   lockTime: number;
 }

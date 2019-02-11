@@ -1,6 +1,4 @@
 nuls:
   api:
-    apiserver:
-      host: https://apiserver.nuls.io
     explorer:
       host: https://nuls.world

@@ -1,4 +1,4 @@
-import { ADDRESS_LENGTH, P2SH_ADDRESS_TYPE, HASH_LENGTH } from '../common';
+import { ADDRESS_LENGTH, HASH_LENGTH } from '../common';
 import { AddressSerializer } from './serialize/address';
 import { Address, Hash, isValidAddress, addressFromHash, hashFromAddress } from './crypto';
 import { VarIntSerializer } from './serialize';
@@ -116,11 +116,11 @@ export class CoinOwnerUtils {
       AddressSerializer.write(data.address, owner, 0);
 
       // https://github.com/nuls-io/nuls/blob/274204b748ed72fdac150637ee758037d64c7ce5/core-module/kernel/src/main/java/io/nuls/kernel/model/CoinData.java#L155
-      if (owner[2] === P2SH_ADDRESS_TYPE) {
+      // if (owner[2] === P2SH_ADDRESS_TYPE) {
 
-        throw new Error('CoinOwner parse not implemented');
+      //   throw new Error('CoinOwner parse not implemented');
 
-      }
+      // }
 
     } else {
 

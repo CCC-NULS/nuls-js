@@ -1,15 +1,18 @@
 nuls:
   api:
     timeout: 10000
-    apiserver:
-      host: http://testnet.apiserver.nuls.io
-      base: /nuls
     explorer:
       host: https://testnet.nuls.world
       base: ''
       resources:
-        utxos: /addresses/outputs/__ADDRESS__.json
+        utxos: /utxos/__ADDRESS__
+        balance: /balance/__ADDRESS__
         broadcast: /broadcast
-        transaction: /transactions/__HASH__.json
-        contractMethods: /addresses/contracts/__ADDRESS__/methods.json
-        contractView: /addresses/contracts/call
+        transaction: /transaction/__HASH__
+        contractMethods: /contract/__ADDRESS__/methods
+        contractView: /contract/__ADDRESS__/view
+        # utxos: /addresses/outputs/__ADDRESS__.json
+        # broadcast: /broadcast
+        # transaction: /transactions/__HASH__.json
+        # contractMethods: /addresses/contracts/__ADDRESS__/methods.json
+        # contractView: /addresses/contracts/call

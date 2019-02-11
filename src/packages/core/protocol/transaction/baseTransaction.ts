@@ -9,7 +9,7 @@ import { createTransactionSignature } from '../../utils/signature';
 import { MIN_FEE_PRICE_1024_BYTES, getFee } from '../../utils/fee';
 import { getPrivateKeyBuffer } from '../../utils/crypto';
 import { IAPIConfig, TransactionApi } from '../../api';
-import { CoinInput, CoinOutput } from '../coin';
+import { CoinInput, CoinOutput, CoinInputObject, CoinOutputObject } from '../coin';
 
 export type TransactionStaticClass = typeof BaseTransaction;
 
@@ -34,7 +34,8 @@ export interface TransactionObject {
   time: number;
   remark: string;
   txData: any;
-  coinData: CoinDataObject;
+  inputs: CoinInputObject[];
+  outputs: CoinOutputObject[];
   signature: string;
 }
 
@@ -97,7 +98,7 @@ export abstract class BaseTransaction {
 
     utxos.forEach((utxo: UTXO) => {
 
-      const input: CoinInput = new CoinInput(utxo.hash, utxo.idx, utxo.value, utxo.lockTime);
+      const input: CoinInput = new CoinInput(utxo.fromHash, utxo.fromIndex, utxo.value, utxo.lockTime);
 
       tx._utxos.push(input);
       tx._coinData.addInput(input);
@@ -153,6 +154,8 @@ export abstract class BaseTransaction {
 
   toObject(): TransactionObject {
 
+    const coinDataObj: CoinDataObject = this._coinData.toObject();
+
     return {
       hash: this.getHash(),
       type: this._type,
@@ -160,7 +163,8 @@ export abstract class BaseTransaction {
       time: this._time,
       remark: this._remark.toString('utf-8'),
       txData: this._txData, // TODO: Implement in each transaction kind
-      coinData: this._coinData.toObject(),
+      inputs: coinDataObj.inputs,
+      outputs: coinDataObj.outputs,
       signature: this._signature.toString('hex'),
     };
 

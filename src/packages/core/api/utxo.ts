@@ -12,7 +12,7 @@ export class UtxoApi extends APIServerClass {
 
     const resource: string = this.getResource('utxos', address);
 
-    return (await this.api.get(resource)).data.outputs;
+    return (await this.api.get(resource)).data;
 
   }
 

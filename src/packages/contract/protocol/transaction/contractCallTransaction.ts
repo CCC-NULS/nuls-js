@@ -1,11 +1,11 @@
 import { Address } from '../../../core/utils/crypto';
 import { CONTRACT_MIN_GAS_PRICE, CONTRACT_MAX_GAS_LIMIT } from '../../common';
-import { BaseTransaction } from '../../../core/protocol/transaction/baseTransaction';
+import { BaseTransaction, TransactionConfig, TransactionHash } from '../../../core/protocol/transaction/baseTransaction';
 import { TransactionType } from '../../../core/common';
 import { CoinOutput } from '../../..';
 import { ITxDataContractCallData } from '../../../core/utils/serialize/transaction/txData/txDataContractCall';
 import { MIN_FEE_PRICE_1024_BYTES } from '../../../core/utils/fee';
-import { ContractCallArgs, ContractCallArg } from '../../api';
+import { ContractCallArgs, ContractCallArg, ContractApi, IContractCallValidateRequest, IContractCallValidateResponse } from '../../api';
 
 // https://github.com/nuls-io/nuls/blob/305c56ca546407a74298a729f2588511781e624a/contract-module/base/contract-tx/src/main/java/io/nuls/contract/service/impl/ContractTxServiceImpl.java#L655
 export class ContractCallTransaction extends BaseTransaction {
@@ -99,8 +99,61 @@ export class ContractCallTransaction extends BaseTransaction {
 
   }
 
+  async send(config?: TransactionConfig): Promise<TransactionHash> {
+
+    this.validate();
+
+    this.config(config);
+
+    const api = new ContractApi(this._config.api);
+
+    const callRequest: IContractCallValidateRequest = {
+      contractAddress: this._txData.contractAddress,
+      methodName: this._txData.methodName,
+      methodDesc: this._txData.methodDesc,
+      args: this._txData.args,
+      sender: this._txData.sender,
+      value: this._txData.value,
+      price: this._txData.price,
+      gasLimit: this._txData.gasLimit
+    };
+
+    const validateResponse: IContractCallValidateResponse = await api.validate(callRequest);
+
+    if (!validateResponse.isValid) {
+      throw new Error(validateResponse.error);
+    }
+
+    return super.send(config);
+
+  }
+
+  async estimateGas(config?: TransactionConfig): Promise<number> {
+
+    this.validate();
+
+    this.config(config);
+
+    const api = new ContractApi(this._config.api);
+
+    const callRequest: IContractCallValidateRequest = {
+      contractAddress: this._txData.contractAddress,
+      methodName: this._txData.methodName,
+      methodDesc: this._txData.methodDesc,
+      args: this._txData.args,
+      sender: this._txData.sender,
+      value: this._txData.value,
+      price: this._txData.price
+    };
+
+    return await api.gas(callRequest);
+
+  }
+
   protected updateInputsAndOutputs(): void {
+
     super.updateInputsAndOutputs(this._txData.price * this._txData.gasLimit);
+
   }
 
   // TODO: Improve params validation

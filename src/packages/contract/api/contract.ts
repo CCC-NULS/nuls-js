@@ -35,6 +35,24 @@ export interface IContractViewRequest {
 
 export type IContractViewResponse = string;
 
+export interface IContractCallGasRequest extends IContractViewRequest {
+  sender: string;
+  value: number;
+  price: number;
+}
+
+export type IContractCallGasResponse = number;
+
+export interface IContractCallValidateRequest extends IContractCallGasRequest {
+  gasLimit?: number;
+}
+
+export interface IContractCallValidateResponse {
+  isValid: boolean;
+  error?: string;
+};
+
+
 export class ContractApi extends APIServerClass {
 
   constructor(conf: IAPIConfig = config.nuls.api.explorer) {
@@ -44,7 +62,7 @@ export class ContractApi extends APIServerClass {
   async getMethods(contractAddress: string): Promise<IContractGetMethodsResponse> {
 
     const resource: string = this.getResource('contractMethods', contractAddress);
-    return (await this.api.get(resource)).data.methods;
+    return (await this.api.get(resource)).data;
 
   }
 
@@ -64,6 +82,36 @@ export class ContractApi extends APIServerClass {
 
     // TODO: Improve error response codes
     return (await this.api.post(resource, body)).data.result;
+
+  }
+
+  async gas(body: IContractCallGasRequest): Promise<IContractCallGasResponse> {
+
+    const resource: string = this.getResource('contractCallGas', body.contractAddress);
+
+    // TODO: Improve error response codes
+    return (await this.api.post(resource, body)).data.gasLimit;
+
+  }
+
+  async validate(body: IContractCallValidateRequest): Promise<IContractCallValidateResponse> {
+
+    const resource: string = this.getResource('contractCallValidate', body.contractAddress);
+    const response: IContractCallValidateResponse = {
+      isValid: false,
+    }
+
+    try {
+      
+      response.isValid = (await this.api.post(resource, body)).data.isValid;
+
+    } catch (e) {
+
+      response.error = e.response.data.extendedMessage || e.response.data.message || e.response.data.internalError || e.error || `${e}`;
+
+    }
+
+    return response;
 
   }
 

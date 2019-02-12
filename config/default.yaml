@@ -11,6 +11,8 @@ nuls:
         transaction: /transaction/__HASH__
         contractMethods: /contract/__ADDRESS__/methods
         contractView: /contract/__ADDRESS__/view
+        contractCallGas: /contract/__ADDRESS__/call/gas
+        contractCallValidate: /contract/__ADDRESS__/call/validate
         # utxos: /addresses/outputs/__ADDRESS__.json
         # broadcast: /broadcast
         # transaction: /transactions/__HASH__.json

@@ -110,26 +110,29 @@ export class Contract {
       .contractAddress(contractAddress)
       .config(config)
       .sender(config.sender)
-      .change(config.sender);
+      .change(config.sender)
+      .call(method.name, method.desc, ...args);
 
     if (config.value) {
       tx.value(config.value);
     }
 
-    if (config.gasLimit) {
-      tx.gasLimit(config.gasLimit);
-    }
-
     if (config.gasPrice) {
-      tx.gasPrice(config.gasLimit);
+      tx.gasPrice(config.gasPrice);
     }
 
     if (config.remark) {
       tx.remark(config.remark);
     }
 
+    if (config.gasLimit) {
+      tx.gasLimit(config.gasLimit);
+    } else {
+      const gasLimit: number = await tx.estimateGas(config);
+      tx.gasLimit(gasLimit);
+    }
+
     return tx
-      .call(method.name, method.desc, ...args)
       .sign(config.privateKey)
       .send();
 

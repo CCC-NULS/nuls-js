@@ -1,6 +1,6 @@
 {
   "name": "nuls-js",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Isomorphic JavaScript SDK for Nuls blockchain",
   "main": "dist/nuls-js.cjs.js",
   "unpkg": "dist/nuls-js.umd.js",
@@ -10,7 +10,7 @@
   "files": [
     "readme.md",
     "dist/**/*.{d.ts,js}",
-    "src/**/*.{d.ts}"
+    "src/**/*.d.ts"
   ],
   "scripts": {
     "build": "npm run build:clean && webpack --mode development --config webpack.config.js",

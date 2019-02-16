@@ -1,6 +1,8 @@
 nuls:
   api:
     timeout: 10000
+    blockTime: 10
+    blocksMinedTimeout: 15
     explorer:
       host: https://testnet.nuls.world
       base: ''
@@ -8,6 +10,8 @@ nuls:
         utxos: /utxos/__ADDRESS__
         balance: /balance/__ADDRESS__
         broadcast: /broadcast
+        lastHeight: /last-height/
+        block: /block/__HEIGHT_OR_HASH__?full=true
         transaction: /transaction/__HASH__
         contractMethods: /contract/__ADDRESS__/methods
         contractView: /contract/__ADDRESS__/view

@@ -4,12 +4,19 @@ import { APIServerClass, IAPIConfig } from './APIServer';
 import { TransactionHash } from '../protocol/transaction/baseTransaction';
 
 export interface ApiTransaction {
+	hash: string;
+	type: number;
+	blockHeight: number;
+	time: number;
+	remark: string;
+	txData: any;
+	signature: string;
 	inputs: Array<{
 		value: number;
-    lockTime: number;
-    fromHash: Hash;
-    fromIndex: number;
-    address: Address
+		lockTime: number;
+		fromHash: Hash;
+		fromIndex: number;
+		address: Address
 	}>;
 	outputs: Array<{
 		value: number;
@@ -34,7 +41,7 @@ export class TransactionApi extends APIServerClass {
 	async transaction(hash: string): Promise<ApiTransaction> {
 
 		const resource: string = this.getResource('transaction', hash);
-		return (await this.api.get(resource)).data.transaction;
+		return (await this.api.get(resource)).data;
 
 	}
 

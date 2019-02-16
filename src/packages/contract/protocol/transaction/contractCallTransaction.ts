@@ -1,11 +1,12 @@
 import { Address } from '../../../core/utils/crypto';
 import { CONTRACT_MIN_GAS_PRICE, CONTRACT_MAX_GAS_LIMIT } from '../../common';
-import { BaseTransaction, TransactionConfig, TransactionHash } from '../../../core/protocol/transaction/baseTransaction';
+import { BaseTransaction, TransactionConfig, TransactionReceipt } from '../../../core/protocol/transaction/baseTransaction';
 import { TransactionType } from '../../../core/common';
 import { CoinOutput } from '../../..';
 import { ITxDataContractCallData } from '../../../core/utils/serialize/transaction/txData/txDataContractCall';
 import { MIN_FEE_PRICE_1024_BYTES } from '../../../core/utils/fee';
 import { ContractCallArgs, ContractCallArg, ContractApi, IContractCallValidateRequest, IContractCallValidateResponse } from '../../api';
+import { PromiEvent } from 'web3-core-promievent';
 
 // https://github.com/nuls-io/nuls/blob/305c56ca546407a74298a729f2588511781e624a/contract-module/base/contract-tx/src/main/java/io/nuls/contract/service/impl/ContractTxServiceImpl.java#L655
 export class ContractCallTransaction extends BaseTransaction {
@@ -99,7 +100,7 @@ export class ContractCallTransaction extends BaseTransaction {
 
   }
 
-  async send(config?: TransactionConfig): Promise<TransactionHash> {
+  send(config?: TransactionConfig, pe = new PromiEvent()): PromiEvent<TransactionReceipt> {
 
     this.validate();
 
@@ -118,13 +119,25 @@ export class ContractCallTransaction extends BaseTransaction {
       gasLimit: this._txData.gasLimit
     };
 
-    const validateResponse: IContractCallValidateResponse = await api.validate(callRequest);
+    api
+      .validate(callRequest)
+      .then((validateResponse: IContractCallValidateResponse) => {
 
-    if (!validateResponse.isValid) {
-      throw new Error(validateResponse.error);
-    }
+        if (!validateResponse.isValid) {
+          throw new Error(validateResponse.error);
+        }
 
-    return super.send(config);
+        super.send(config, pe);
+
+      })
+      .catch((e: Error) => {
+
+        pe.emit('error', e);
+        pe.reject(e);
+
+      });
+
+    return pe;
 
   }
 

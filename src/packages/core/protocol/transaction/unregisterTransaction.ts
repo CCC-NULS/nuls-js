@@ -1,8 +1,9 @@
 import { TransactionType } from '../../common';
-import { BaseTransaction, TransactionHash } from './baseTransaction';
+import { BaseTransaction, TransactionReceipt } from './baseTransaction';
 import { ITxDataUnregisterData } from '../../utils/serialize/transaction/txData/txDataUnregister';
 import { MAX_FEE_PRICE_1024_BYTES } from '../../utils';
-
+import { PromiEvent } from 'web3-core-promievent';
+ 
 // TODO: Implement this transaction
 export class UnregisterTransaction extends BaseTransaction {
 
@@ -10,7 +11,7 @@ export class UnregisterTransaction extends BaseTransaction {
   protected _type = TransactionType.Unregister;
   protected _txData: ITxDataUnregisterData = {} as any;
 
-  async send(): Promise<TransactionHash> {
+  send(): PromiEvent<TransactionReceipt> {
     throw new Error('Send is not implemented yet for this kind of transaction');
   }
 

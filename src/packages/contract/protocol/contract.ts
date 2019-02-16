@@ -1,7 +1,8 @@
+import { PromiEvent } from 'web3-core-promievent';
 import { Address } from './../../core/utils/crypto';
 import { ContractApi, IContractGetMethodsResponse, IContractMethod, IContractViewResponse, IContractMethodArg, ContractCallArgs } from '../api/contract';
 import { IAPIConfig, ContractCallTransaction, UTXO, Utxo, Account } from '../..';
-import { TransactionHash } from '../../core/protocol';
+import { TransactionReceipt } from '../../core/protocol';
 
 export interface ContractConfig {
   api?: IAPIConfig;
@@ -15,6 +16,7 @@ export interface ContractMethodCallConfig {
   gasPrice?: number;
   gasLimit?: number;
   remark?: string;
+  listener?: PromiEvent<any>;
 };
 
 export interface ContractInfo {
@@ -65,25 +67,30 @@ export class Contract {
         const extMethodName: string = findNextMethodName(contract, contract._methods, method);
 
         contract._info.methods[extMethodName] = method;
-        contract[extMethodName] = async function (...args: ContractCallArgs) {
 
-          let callConfig: ContractMethodCallConfig = {};
+        if (method.payable) {
 
-          if (typeof args[args.length - 1] === 'object') {
-            callConfig = (args.pop() as ContractMethodCallConfig | undefined) || {};
-          }
+          contract[extMethodName] = function (...args: ContractCallArgs): PromiEvent<any> {
 
-          if (method.payable) {
+            let callConfig: ContractMethodCallConfig = {};
 
-            return await Contract.call(this._contractAddress, method, args, { ...this._config, ...callConfig });
+            if (typeof args[args.length - 1] === 'object') {
+              callConfig = (args.pop() as ContractMethodCallConfig | undefined) || {};
+            }
 
-          } else if (method.view) {
-
-            return await Contract.view(this._contractAddress, method, args, this._config, this._api);
+            return Contract.call(this._contractAddress, method, args, { ...this._config, ...callConfig });
 
           }
 
-        };
+        } else if (method.view) {
+
+          contract[extMethodName] = async function (...args: ContractCallArgs): Promise<any> {
+
+            return Contract.view(this._contractAddress, method, args, this._config, this._api);
+
+          }
+
+        }
 
       });
 
@@ -91,7 +98,30 @@ export class Contract {
 
   }
 
-  protected static async call(contractAddress: string, method: IContractMethod, args: ContractCallArgs, config: ContractConfig & ContractMethodCallConfig): Promise<TransactionHash> {
+  protected static call(contractAddress: string, method: IContractMethod, args: ContractCallArgs, config: ContractConfig & ContractMethodCallConfig): PromiEvent<TransactionReceipt> {
+
+    // TODO: Find a better way to achieve this
+    const pe = config.listener instanceof PromiEvent ? config.listener : new PromiEvent();
+
+    Contract
+      .prepareCall(contractAddress, method, args, config)
+      .then((tx: ContractCallTransaction) => {
+
+        tx.send(config, pe);
+
+      })
+      .catch((e: Error) => {
+
+        pe.emit('error', e);
+        pe.reject(e);
+
+      });
+
+    return pe;
+
+  }
+
+  protected static async prepareCall(contractAddress: string, method: IContractMethod, args: ContractCallArgs, config: ContractConfig & ContractMethodCallConfig): Promise<ContractCallTransaction> {
 
     if (!config.sender) {
       throw new Error('Sender address must be especified');
@@ -132,9 +162,7 @@ export class Contract {
       tx.gasLimit(gasLimit);
     }
 
-    return tx
-      .sign(config.privateKey)
-      .send();
+    return tx.sign(config.privateKey);
 
   }
 

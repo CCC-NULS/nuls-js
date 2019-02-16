@@ -1,3 +1,5 @@
+import { ApiTransaction } from './../../api/transaction';
+import { BlockApi, ApiBlock } from './../../api/block';
 import { CoinDataObject } from './../coin/coinData';
 import { UTXO, Utxo } from './../utxo';
 import { TransactionType, BlockVersion } from '../../common';
@@ -10,6 +12,8 @@ import { MIN_FEE_PRICE_1024_BYTES, getFee } from '../../utils/fee';
 import { getPrivateKeyBuffer } from '../../utils/crypto';
 import { IAPIConfig, TransactionApi } from '../../api';
 import { CoinInput, CoinOutput, CoinInputObject, CoinOutputObject } from '../coin';
+import * as cfg from 'config';
+import { PromiEvent } from 'web3-core-promievent';
 
 export type TransactionStaticClass = typeof BaseTransaction;
 
@@ -20,11 +24,18 @@ export interface TransactionConstructor<T extends BaseTransaction> {
 export type TransactionClass<T extends BaseTransaction> = TransactionConstructor<T> & TransactionStaticClass
 
 export type TransactionHash = string;
+export type TransactionReceipt = ApiTransaction;
 export type TransactionHex = string;
 
 export interface TransactionConfig {
   api?: IAPIConfig;
   safeCheck?: boolean;
+  blocksMinedTimeout?: number;
+}
+
+export interface DefaultTransactionConfig extends TransactionConfig {
+  safeCheck: boolean;
+  blocksMinedTimeout: number;
 }
 
 export interface TransactionObject {
@@ -53,8 +64,9 @@ export abstract class BaseTransaction {
   protected _fee_price = MIN_FEE_PRICE_1024_BYTES;
   protected _system_tx: boolean = false;
   protected _changeAddress!: string;
-  protected _config: TransactionConfig = {
-    safeCheck: true
+  protected _config: DefaultTransactionConfig = {
+    safeCheck: true,
+    blocksMinedTimeout: cfg.nuls.api.blocksMinedTimeout
   };
 
   private _utxos: CoinInput[] = [];
@@ -250,7 +262,7 @@ export abstract class BaseTransaction {
 
   }
 
-  async send(config?: TransactionConfig): Promise<TransactionHash> {
+  send(config?: TransactionConfig, pe = new PromiEvent()): PromiEvent<TransactionReceipt> {
 
     if (this._signature.length === 0) {
       throw new Error('The transaction is not signed');
@@ -258,11 +270,69 @@ export abstract class BaseTransaction {
 
     this.config(config);
 
-    const api = new TransactionApi(this._config.api);
+    const txApi = new TransactionApi(this._config.api);
+    const blockApi = new BlockApi(this._config.api);
     const txHex: TransactionHex = this.serialize();
 
-    // TODO: Catch errors
-    return await api.broadcast(txHex);
+    let firstHeight = -1;
+    const subscription = blockApi.subscribe();
+
+    txApi
+      .broadcast(txHex)
+      .then((txHash: TransactionHash) => {
+
+        pe.emit('txHash', txHash);
+
+        subscription
+          .on('block', (block: ApiBlock) => {
+
+            if (firstHeight === -1) {
+              firstHeight = block.height;
+            }
+
+            block.transactions.forEach((tx) => {
+
+              if (tx.hash === txHash) {
+
+                subscription.close();
+                pe.emit('txReceipt', tx);
+                pe.resolve(tx);
+                return;
+
+              }
+
+            });
+
+            if (block.height - firstHeight >= this._config.blocksMinedTimeout) {
+
+              subscription.close();
+              const e = new Error(`The transaction was not included in the next ${this._config.blocksMinedTimeout} blocks`);
+              pe.emit('error', e);
+              pe.reject(e);
+              return;
+
+            }
+
+          })
+          .on('error', (e) => {
+
+            e = new Error(`There was an error verifing the transaction status: ${e}`);
+            subscription.close();
+            pe.emit('error', e);
+            pe.reject(e);
+
+          });
+
+      }).catch((e: Error) => {
+
+        e = new Error(`There was an error sending the transaction to the network: ${e}`);
+        subscription.close();
+        pe.emit('error', e);
+        pe.reject(e);
+
+      });
+
+    return pe;
 
   }
 

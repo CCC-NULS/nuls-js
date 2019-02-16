@@ -31,7 +31,7 @@ export class APIServerClass {
 
 		args.forEach((arg: string) => {
 
-			resource = resource.replace(/__([A-Z]+?)__/, arg);
+			resource = resource.replace(/__([a-zA-Z0-9_]+?)__/, arg);
 
 		});
 

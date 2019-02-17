@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosError } from 'axios';
 import * as config from 'config';
 
 export interface IAPIConfig {
@@ -36,6 +36,16 @@ export class APIServerClass {
 		});
 
 		return resource;
+
+	}
+
+	protected handleErrors(e: AxiosError): AxiosError {
+
+		if (e.response && e.response.data) {
+			e.message = `${e.response.data.message}${e.response.data.extendedMessage ? (' - ' + e.response.data.extendedMessage) : ''}`;
+		}
+
+		return e;
 
 	}
 

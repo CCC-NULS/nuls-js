@@ -62,7 +62,16 @@ export class ContractApi extends APIServerClass {
   async getMethods(contractAddress: string): Promise<IContractGetMethodsResponse> {
 
     const resource: string = this.getResource('contractMethods', contractAddress);
-    return (await this.api.get(resource)).data;
+
+    try {
+
+      return (await this.api.get(resource)).data;
+
+    } catch (e) {
+
+      throw this.handleErrors(e);
+
+    }
 
   }
 
@@ -80,8 +89,15 @@ export class ContractApi extends APIServerClass {
       body.methodDesc = methodDesc;
     }
 
-    // TODO: Improve error response codes
-    return (await this.api.post(resource, body)).data.result;
+    try {
+
+      return (await this.api.post(resource, body)).data.result;
+
+    } catch (e) {
+
+      throw this.handleErrors(e);
+
+    }
 
   }
 
@@ -89,8 +105,15 @@ export class ContractApi extends APIServerClass {
 
     const resource: string = this.getResource('contractCallGas', body.contractAddress);
 
-    // TODO: Improve error response codes
-    return (await this.api.post(resource, body)).data.gasLimit;
+    try {
+
+      return (await this.api.post(resource, body)).data.gasLimit;
+
+    } catch (e) {
+
+      throw this.handleErrors(e);
+
+    }
 
   }
 
@@ -102,7 +125,7 @@ export class ContractApi extends APIServerClass {
     }
 
     try {
-      
+
       response.isValid = (await this.api.post(resource, body)).data.isValid;
 
     } catch (e) {

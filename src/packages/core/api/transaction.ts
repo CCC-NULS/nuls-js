@@ -34,14 +34,32 @@ export class TransactionApi extends APIServerClass {
 	async broadcast(txHex: string): Promise<TransactionHash> {
 
 		const resource: string = this.getResource('broadcast');
-		return (await this.api.post(resource, { txHex })).data.value;
+
+		try {
+
+			return (await this.api.post(resource, { txHex })).data.value;
+
+		} catch (e) {
+
+			throw this.handleErrors(e);
+
+		}
 
 	}
 
 	async transaction(hash: string): Promise<ApiTransaction> {
 
 		const resource: string = this.getResource('transaction', hash);
-		return (await this.api.get(resource)).data;
+
+		try {
+
+			return (await this.api.get(resource)).data;
+
+		} catch (e) {
+
+			throw this.handleErrors(e);
+
+		}
 
 	}
 

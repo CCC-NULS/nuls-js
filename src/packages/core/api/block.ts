@@ -28,7 +28,16 @@ export class BlockApi extends APIServerClass {
 	async lastHeight(): Promise<number> {
 
 		const resource: string = this.getResource('lastHeight');
-		return (await this.api.get(resource)).data[0];
+
+		try {
+
+			return (await this.api.get(resource)).data[0];
+
+		} catch (e) {
+
+			throw this.handleErrors(e);
+
+		}
 
 	}
 
@@ -37,7 +46,16 @@ export class BlockApi extends APIServerClass {
 	async block(heightOrhash: string | number): Promise<ApiBlock> {
 
 		const resource: string = this.getResource('block', `${heightOrhash}`);
-		return (await this.api.get(resource)).data;
+
+		try {
+
+			return (await this.api.get(resource)).data;
+
+		} catch (e) {
+
+			throw this.handleErrors(e);
+
+		}
 
 	}
 

@@ -10,7 +10,7 @@ export interface UTXO {
 
 export class Utxo {
 
-  static async getUtxos(address: string, config?: IAPIConfig) {
+  static async getUtxos(address: string, config?: IAPIConfig): Promise<UTXO[]> {
 
     const api = new UtxoApi(config);
     return api.getUtxos(address);

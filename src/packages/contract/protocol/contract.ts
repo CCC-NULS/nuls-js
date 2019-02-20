@@ -158,9 +158,8 @@ export class Contract {
     if (config.gasLimit) {
       tx.gasLimit(config.gasLimit);
     } else {
-      // TODO: This does not work for all accounts at the moment (will be supported soon), so use max gas instead
-      // const gasLimit: number = await tx.estimateGas(config);
-      // tx.gasLimit(gasLimit);
+      const gasLimit: number = await tx.estimateGas(config);
+      tx.gasLimit(gasLimit);
     }
 
     return tx.sign(config.privateKey);

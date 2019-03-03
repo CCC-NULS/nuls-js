@@ -6,16 +6,25 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur in ullamcorpe
 
 ## Getting Started
 Install `nuls-js` as a dependency in your project.
-###### npm
+
 ```bash
-$ npm i nuls-js
+# using npm
+$ npm i --save nuls-js
+
+# with yarn
+$ yarn add nuls-js
 ```
 
 ## Features
-##### Account Management
- - [Create an Account](/guide/account.html#create-a-new-account)
- - [Import an Account](/guide/account.html#import-an-account)
- - [QRCode](/guide/QRCode.html)
+
+#### Account Management
+ - [Create an Account](/guide/account/#create-a-new-account)
+ - [Import an Account](/guide/account/#import-an-account)
+ - [QRCode](/guide/account/QRCode/)
+
+#### Transactions
+ - [Basic concept](/guide/transaction/#transaction-example)
+ - [Send a transfer](/guide/transaction/transfer.html)
 
 ## TODO
 - Read an address balance
@@ -25,7 +34,6 @@ $ npm i nuls-js
   - Node joining/leaving
   - Node reward output/input
   - Red/yellow card transactions
-- Send a transaction
 - Find all consensus nodes
 - Find all nodes
 - Find richList/mostActive addresses

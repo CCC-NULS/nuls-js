@@ -11,5 +11,5 @@ features:
   details: Quick access to reading and writing to the Blockcain.
 - title: No API Server Required
   details: Easily connect to third party API servers ran by Node operators.
-footer: MIT Licensed | Copyright © 2018-present Josh Welham
+footer: MIT Licensed | Copyright © 2018-present NULS Code Craft Council [CCC]
 ---

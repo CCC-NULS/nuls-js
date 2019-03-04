@@ -28,6 +28,11 @@ module.exports = {
 					['/guide/transaction/', 'Basic concepts'],
 					'/guide/transaction/transfer',
 					'/guide/transaction/alias',
+					'/guide/transaction/register',
+					'/guide/transaction/deposit',
+					'/guide/transaction/withdraw',
+					'/guide/transaction/data',
+					'/guide/transaction/contract-call',
 				]
 			},
 			{
@@ -35,6 +40,8 @@ module.exports = {
 				collapsable: true,
 				children: [
 					'/guide/smart-contract/',
+					'/guide/smart-contract/view-method',
+					'/guide/smart-contract/payable-method'
 				]
 			},
 		]

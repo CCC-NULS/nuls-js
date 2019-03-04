@@ -8,7 +8,7 @@ export const contractCallTxReadExample: ITransactionData = {
   remark: Buffer.from([]),
   txData: {
     sender: 'TTarN3iszzfkh2j4doWHsMw3LxJJrq25',
-    contractAddress: 'TTbA9N6GHNz9fitD7a3HCWjh1KZJNueg',
+    contractAddress: 'TTb3ASyCBbJ6KL1PUS4gh9jWjNi3RvTK',
     value: 0,
     gasLimit: 52014,
     price: 25,

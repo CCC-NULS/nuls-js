@@ -202,6 +202,58 @@ TransferTransaction
 It is not necesary to set up a change address in all kind of transactions. Check the API Reference of each transaction kind to get more details.
 :::
 
+## Transaction remark
+
+We can add a remark in all kind of transactions that will be stored along with the transaction itself. To set it up we have to use the method `.remark(text: string)` available all different Transaction classes.
+
+```typescript
+import { TransferTransaction } from 'nuls-js';
+
+TransferTransaction
+  .fromUtxos(utxos)
+  ...
+  .remark('This is a custom remark that will be stored as part of my transaction')
+  ...
+```
+
+::: warning
+The remark should be a plain text encoded in `utf-8`
+:::
+
+## Transaction fee
+
+By default the transaction fee is calculated depending on the size of the serialized transaction in kilobytes. For each __1024 bytes (1 KB)__, we need to pay __"fee price"__ NULS in concept of fee. Depending on the transaction type, the __fee price__ can be more or less.
+
+There is a transaction fee of __100000 NA (0.001 NULS)__ per __1 KB__ for transactions of kind:
+- [TransferTransaction](../transaction/transfer/)
+- [DataTransaction](../transaction/data/)
+- [ContractCallTransaction](../transaction/contract-call/)
+
+And a fee of __1000000 NA (0.01 NULS)__ per __1 KB__ for transactions of kind:
+
+- [AliasTransaction](../transaction/alias/)
+- [RegisterTransaction](../transaction/register/)
+- [DepositTransaction](../transaction/deposit/)
+- [WithdrawTransaction](../transaction/withdraw/)
+
+So for example, a transaction of type _TransferTransaction_ which size in bytes is __27500__ (__27500__ / __1024__ ~= __27__ ) will have a fee of (__100000 NA__ * __27__ = __2700000 NA__) that is exactly __0.027 NULS__.
+
+The fee is deducted from the utxos, so we need to have enough balance in the account to pay the __transfer amount__ + __fee__.
+
+This is the minimum required fee to make the transaction valid, but we can customize the fee to prioritize our transaction over others when packed in a block. The miner who include this transaction in a block will earn the extra fee as rewards. 
+
+To achieve this we can use the method `.fee(amount: number)` available in all different Transaction classes. The _fee amount_ should be provided in _NA's_.
+
+```typescript
+import { TransferTransaction } from 'nuls-js';
+
+TransferTransaction
+  .fromUtxos(utxos)
+  ...
+  .fee(nulsToNa(1))  // Giving 1 NULS as an extra fee
+  ...
+```
+
 ## Sign a transaction
 
 Once we have our transaction configured, we need to sign it before sending it to the network. To make this we need to provide the private key of the account that owns the utxos used in the transaction.
@@ -255,11 +307,13 @@ TransferTransaction
 The transaction should have been signed before broadcasting it, if not an exception will be thrown
 :::
 
+### Transaction sent returned type
+
 The send method returns an especial object of type `PromiEvent`, which is half `EventEmitter`, and half `Promise`. This will be resolved when the transaction receipt will be available. Additionally the following events are emitted:
 
-- `"txHash"` Once the transaction has been sent and it is in the pending transaction pool of the network waiting to be mined. An string is emitted along with the event, containing the transaction hash that identifies this transaction in the network.
-- `"txReceipt"` Once the transaction has be mined in some block. A mined transaction object is emitted along with the event.
-- `"error"` If there was some error broadcasting the transaction.
+- `"txHash"` Once the transaction has been sent and it is in the pending transaction pool of the network waiting to be mined. An string is emitted along with the event, containing the transaction hash that identifies this transaction in the network
+- `"txReceipt"` Once the transaction has be mined in some block. A mined transaction object is emitted along with the event
+- `"error"` If there was some error broadcasting the transaction
 
 ```typescript
 import { TransferTransaction, PromiEvent, TransactionHash, TransactionReceipt } from 'nuls-js';

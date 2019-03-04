@@ -3,8 +3,8 @@
 The transfer transaction is the most basic transaction that we can make in the NULS blockchain. It is used to 
 transfer nuls from one account to other accounts. We can use the following methods to configure it:
 
-- `".to(address: string, amount: number)"` Send _amount_ NULS to the account identified by _address_.
-- `".remark(remark: string)"` Add a _remark_ in plain text to the transaction.
+- `".to(address: string, amount: number)"` Send _amount_ NULS to the account identified by _address_
+- `".remark(remark: string)"` Add a _remark_ in plain text to the transaction
 
 ```typescript
 import { TransferTransaction, nulsToNa, TransactionReceipt, TransactionConfig, Utxo, UTXO } from 'nuls-js';
@@ -31,7 +31,7 @@ const tx = TransferTransaction
   .remark('test transfer :)')
   .sign(privateKey);
 
-console.log(tx.type());
+console.log(tx.getType());
 // 2
 
 const txReceipt: TransactionReceipt = await tx.send();

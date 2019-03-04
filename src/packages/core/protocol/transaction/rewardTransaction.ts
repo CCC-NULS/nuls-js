@@ -9,8 +9,9 @@ export class RewardTransaction extends TransferTransaction {
 
   protected _fee_price = 0;
   protected _type = TransactionType.Reward;
+  protected _system_tx = true;
 
-  protected updateInputsAndOutputs(extraFee: number = 0): void {
+  protected updateInputsAndOutputs(): void {
     // No inputs nor change output
   }
 

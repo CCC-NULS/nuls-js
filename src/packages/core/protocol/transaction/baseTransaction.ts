@@ -64,6 +64,7 @@ export abstract class BaseTransaction {
   protected _fee_price = MIN_FEE_PRICE_1024_BYTES;
   protected _system_tx: boolean = false;
   protected _changeAddress!: string;
+  protected _extraFee: number = 0;
   protected _config: DefaultTransactionConfig = {
     safeCheck: true,
     blocksMinedTimeout: cfg.nuls.api.blocksMinedTimeout
@@ -223,6 +224,15 @@ export abstract class BaseTransaction {
 
   }
 
+  fee(amount: number): this {
+
+    this._extraFee = amount;
+
+    this.updateInputsAndOutputs();
+    return this;
+
+  }
+
   getFee(): number {
 
     return !this._system_tx
@@ -369,6 +379,10 @@ export abstract class BaseTransaction {
         throw new Error('Transaction data is not filled');
       }
 
+      if (this._remark && this._remark.length > 600) {
+        throw new Error('Remark can not be greater than 600 bytes');
+      }
+
       if (!this._changeAddress && (
         this._type === TransactionType.Transfer || this._type === TransactionType.Alias ||
         this._type === TransactionType.Register || this._type === TransactionType.Deposit || this._type === TransactionType.Data ||
@@ -446,6 +460,8 @@ export abstract class BaseTransaction {
     const utxos: CoinInput[] = this._utxos;
     this._coinData.inputs([]);
 
+    extraFee = extraFee + this._extraFee;
+    
     const amount: number = this._coinData.getOutputs().reduce((prev: number, curr: CoinOutput) => prev + curr.na, 0) + extraFee;
 
     let totalAvailable = 0;
@@ -456,7 +472,7 @@ export abstract class BaseTransaction {
       this._coinData.addInput(input);
       totalAvailable += input.na;
 
-      // TODO: Not the more efficient way to calculate fees, but the easiest one. Optimize it getting the size from the Coin!
+      // TODO: Not the more efficient way to calculate fee, but the easiest one. Optimize it getting the size from the Coin!
       let fee: number = this.calculateFee();
       totalToSpent = amount + fee;
 
@@ -481,12 +497,12 @@ export abstract class BaseTransaction {
           this._changeOutput = new CoinOutput(this._changeAddress, changeNa);
           this._coinData.addOutput(this._changeOutput);
 
-          // Recalculating fees with the new size after adding the change output
+          // Recalculating fee with the new size after adding the change output
           const oldTotalToSpent = totalToSpent;
           fee = this.calculateFee();
           totalToSpent = amount + fee;
 
-          // if after adding the change output, the inputs are not enough to pay the new fees,
+          // if after adding the change output, the inputs are not enough to pay the new fee,
           // add one more input and do the calculation again
           if (totalAvailable < totalToSpent) {
             continue;
@@ -494,7 +510,7 @@ export abstract class BaseTransaction {
 
           this._changeOutput.na = totalAvailable - totalToSpent;
 
-          // if after adding the change output, the change amount is equal to the new fees, better to do not add the output
+          // if after adding the change output, the change amount is equal to the new fee, better to do not add the output
           if (this._changeOutput.na === 0) {
             this.removeChangeOutput();
             totalToSpent = oldTotalToSpent;

@@ -1,7 +1,7 @@
 import { VarByteSerializer } from '..';
 import { IReadData } from '../common';
 
-/***
+/**
   * ### Block extend
   * https://github.com/nuls-io/nuls/blob/master/consensus-module/poc/consensus-poc-base/src/main/java/io/nuls/consensus/poc/model/BlockExtendsData.java#L41
   *

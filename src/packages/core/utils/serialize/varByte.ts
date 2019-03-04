@@ -1,7 +1,7 @@
 import { VarIntSerializer } from './varInt';
 import { IReadData } from './common';
 
-/***
+/**
   * ### VarByte
   * http://dev.nuls.io/protocol/index.html#VarByte
   *

@@ -2,7 +2,7 @@ import { TxDataWithdrawSerializer } from './txDataWithdraw';
 import { AgentHash } from '../../../crypto';
 import { IReadData } from '../../common';
 
-/***
+/**
   * ### TxDataUnregister
   * http://dev.nuls.io/protocol/transaction.html#TX-TYPE-STOP-AGENT
   *
@@ -41,7 +41,7 @@ export class TxDataUnregisterSerializer {
     return {
       readBytes,
       data: {
-        agentHash: data.depositHash,
+        agentHash: data.depositHash
       }
     };
 

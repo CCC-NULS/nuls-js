@@ -25,15 +25,14 @@ export const registerTxReadExample: ITransactionData = {
       {
         owner: Buffer.from('05010186675865bcb74ff2d599bffce52f7638b712dfcd', 'hex'),
         na: 20000000000000,
-        lockTime: -1,
+        lockTime: -1
       },
       {
         owner: Buffer.from('05010186675865bcb74ff2d599bffce52f7638b712dfcd', 'hex'),
         na: 979999898000000,
-        lockTime: 0,
+        lockTime: 0
       }
     ]
   },
   scriptSign: Buffer.from('2102a0cec2035ee540a09510a453729fa9dcceef09bd4bfe36fae2ad37e6f4f7762c00473045022100a5ec2f69517c7994d66c0026cb5c3d5e78a49ae9e466db1559c74b59d0334339022070acfa17c89e5dd60eb869214a88e902e20d0d07f6ffcde499cf1a1393946572', 'hex')
 };
-

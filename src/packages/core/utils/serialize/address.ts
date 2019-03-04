@@ -2,7 +2,7 @@ import { ADDRESS_LENGTH } from '../../common';
 import { Address, AddressHash, addressFromHash, hashFromAddress } from '../crypto';
 import { IReadData } from './common';
 
-/***
+/**
   * ### Address
   *
   * base 58 decoded 23 bytes length buffer `byte[23]`.

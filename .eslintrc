@@ -6,9 +6,7 @@
 		"ecmaVersion": 2017,
 		"sourceType": "module"
 	},
-	"parser": "typescript-eslint-parser",
 	"plugins": [
-		"typescript",
 		"jest",
 		"import"
 	],
@@ -20,7 +18,8 @@
 		"airbnb-base",
 		"plugin:jest/recommended",
 		"plugin:import/errors",
-		"plugin:import/warnings"
+		"plugin:import/warnings",
+		"plugin:@typescript-eslint/recommended"
 	],
 	"settings": {
 		"import/resolver": {
@@ -36,7 +35,7 @@
 		"no-tabs": ["off"],
 		"indent": ["error", "tab", {"SwitchCase": 1}],
 		"unicorn/filename-case": ["off", {"case": "camelCase"}],
-		"brace-style": ["error", "allman"],
+		"brace-style": ["error", "1tbs"],
 		"keyword-spacing": ["error", {
 			"before": true, "after": false, "overrides": {
 				"from": {"before": true, "after": true},
@@ -45,9 +44,15 @@
 				"return": {"after": true},
 				"const": {"after": true},
 				"let": {"after": true},
-				"export": {"after": true}
+				"try": {"after": true},
+				"catch": {"after": true},
+				"if": {"after": true},
+				"else": {"after": true},
+				"export": {"after": true},
+				"for": {"after": true}
 			}
 		}],
+		"no-plusplus": "off",
 		"linebreak-style": ["off"],
 		"lines-around-comment": ["off"],
 		"max-len": ["error", 300, 4, {"ignoreUrls": true, "ignoreComments": true, "ignorePattern": "^import\\s.+\\sfrom\\s.+;$"}],
@@ -59,7 +64,6 @@
 				"cjs-export",
 				"cjs-import",
 				"class",
-				"const",
 				"continue",
 				"debugger",
 				"default",
@@ -82,11 +86,13 @@
 				"while",
 				"with"], "next": "*" },
 			{ "blankLine": "never", "prev": "import", "next": "import" },
+			{ "blankLine": "any", "prev": "export", "next": "export" },
 			{ "blankLine": "any", "prev": "const", "next": "const" },
 			{ "blankLine": "never", "prev": "const", "next": "let" },
-			{ "blankLine": "never", "prev": "case", "next": "*" },
+			{ "blankLine": "never", "prev": "let", "next": "const" },
 			{ "blankLine": "always", "prev": "expression", "next": "return" }
 		],
+		"padded-blocks": ["error", "always"],
 		"no-console": ["off", {"allow": ["warn", "error"]}],
 		"no-inline-comments": ["off"],
 		"one-var": ["error", {"var": "always", "let": "always", "const": "never"}],
@@ -129,9 +135,16 @@
 	"overrides": [
 		{
 			"files": ["**/*.ts"],
-			"parser": "typescript-eslint-parser",
+			"parser": "@typescript-eslint/parser",
+			"parserOptions": {
+				"project": "./tsconfig.json"
+			},
 			"rules": {
-				"no-undef": "off"
+				"no-undef": "off",
+				"indent": "off",
+				"@typescript-eslint/indent": ["error", 2],
+				"@typescript-eslint/interface-name-prefix": "off",
+				"@typescript-eslint/explicit-member-accessibility": "off"
 			}
 		}
 	]

@@ -1,6 +1,6 @@
 import { IReadData, PLACE_HOLDER } from './common';
 
-/***
+/**
   * ### NulsData
   * Checks if the serialized data is null and reads / writes a placeholder
   *

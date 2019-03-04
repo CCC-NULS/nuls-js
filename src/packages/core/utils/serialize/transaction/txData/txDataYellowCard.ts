@@ -1,19 +1,19 @@
-import { AddressSerializer } from './../../address';
+import { AddressSerializer } from '../../address';
 import { Address } from '../../../crypto';
 import { ADDRESS_LENGTH } from '../../../../common';
 import { VarIntSerializer } from '../../varInt';
 import { IReadData } from '../../common';
 
-/***
+/**
   * ### TxDataYellowCard
-  * 
+  *
   * https://github.com/nuls-io/nuls/blob/df9a9db1855be2fe57db81947a50f4eab57471d2/consensus-module/poc/consensus-poc-protocol/src/main/java/io/nuls/consensus/poc/protocol/entity/YellowPunishData.java#L45
   *
   * | Len  | Fields      | Data Type        | Remark         |
   * | ---- | ----------- | ---------------- | -------------- |
   * | ??   | addresSize  | VarInt           |                |
   * | ??   | addreses    | byte[23][]       |                |
-  * 
+  *
  */
 
 export interface ITxDataYellowCardData {

@@ -1,4 +1,4 @@
-import { CoinSerializer, ICoinData } from './../../utils/serialize/transaction/coinData/coin';
+import { CoinSerializer, ICoinData } from '../../utils/serialize/transaction/coinData/coin';
 import { Address } from '../../utils/crypto';
 import { CoinOwnerUtils, ICoinOwnerData } from '../../utils/coinOwner';
 

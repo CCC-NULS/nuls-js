@@ -1,6 +1,6 @@
 import { ITxDataRewardOutput, TxDataRewardSerializer, ITxDataRewardData } from './txDataReward';
 
-/***
+/**
   * ### TxDataTransfer
   * http://dev.nuls.io/protocol/transaction.html#TX-TYPE-TRANSFER
   *

@@ -3,6 +3,7 @@ declare module 'web3-core-promievent' {
   import * as EventEmitter from 'eventemitter3';
 
   export class PromiEvent<T> implements Promise<T>, EventEmitter {
+
     [Symbol.toStringTag]: 'Promise';
     eventNames(): (string | symbol)[];
     listeners(event: string | symbol): EventEmitter.ListenerFn[];
@@ -19,6 +20,7 @@ declare module 'web3-core-promievent' {
     resolve(value?: T | PromiseLike<T>): void;
     reject(reason?: any): void;
     finally(...args: any[]): any;
+
   }
 }
 

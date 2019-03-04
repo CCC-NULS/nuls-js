@@ -1,4 +1,4 @@
-import { Transaction } from './../transaction';
+import { Transaction } from '../transaction';
 import { BaseTransaction } from '../baseTransaction';
 import { BlockVersion } from '../../../common';
 

@@ -1,7 +1,7 @@
 import { AddressHash } from '../../../crypto';
 import { IReadData, VarByteSerializer, writeUint64LE, readUint64LE } from '../..';
 
-/***
+/**
   * ### Coin
   * https://github.com/nuls-io/nuls/blob/master/core-module/kernel/src/main/java/io/nuls/kernel/model/Coin.java#L77
   * 

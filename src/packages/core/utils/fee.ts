@@ -1,4 +1,4 @@
-/***
+/**
   * ### Fee calculation utils
   *
   * https://github.com/nuls-io/nuls/blob/d8227554ce35dfd7557ed489fb5949b528a738bf/core-module/kernel/src/main/java/io/nuls/kernel/utils/TransactionFeeCalculator.java

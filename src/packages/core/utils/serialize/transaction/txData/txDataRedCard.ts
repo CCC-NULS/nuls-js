@@ -4,9 +4,9 @@ import { ADDRESS_LENGTH } from '../../../../common';
 import { VarByteSerializer } from '../../varByte';
 import { IReadData } from '../../common';
 
-/***
+/**
   * ### TxDataRedCard
-  * 
+  *
   * https://github.com/nuls-io/nuls/blob/df9a9db1855be2fe57db81947a50f4eab57471d2/consensus-module/poc/consensus-poc-protocol/src/main/java/io/nuls/consensus/poc/protocol/entity/RedPunishData.java#L39
   *
   * | Len  | Fields      | Data Type        | Remark         |
@@ -14,13 +14,13 @@ import { IReadData } from '../../common';
   * | 23   | address     | byte[23]         |                |
   * | 1    | reasonCode  | byte             |                |
   * | ??   | evidence    | VarByte          |                |
-  * 
+  *
  */
 
 export interface ITxDataRedCardData {
   address: Address;
   reasonCode: number;
-  evidence: Buffer
+  evidence: Buffer;
 }
 
 export interface ITxDataRedCardOutput extends IReadData {

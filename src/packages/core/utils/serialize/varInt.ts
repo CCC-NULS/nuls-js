@@ -1,6 +1,6 @@
 import { IReadData, writeUint64LE, readUint64LE } from './common';
 
-/***
+/**
   * ### VarInt
   * http://dev.nuls.io/protocol/index.html#VarInt
   *
@@ -33,21 +33,33 @@ export class VarIntSerializer {
 
     // if negative, it's actually a very large unsigned long value
     if (data < 0) {
+
       // 1 marker + 8 data bytes
       return 9;
+
     }
+
     if (data < 0xFD) {
+
       // 1 data byte
       return 1;
+
     }
+
     if (data <= 0xFFFF) {
+
       // 1 marker + 2 data bytes
       return 3;
+
     }
+
     if (data <= 0xFFFFFFFF) {
+
       // 1 marker + 4 data bytes
       return 5;
+
     }
+
     // 1 marker + 8 data bytes
     return 9;
 
@@ -61,8 +73,8 @@ export class VarIntSerializer {
   public static read(buf: Buffer, offset: number): IVarIntOutput {
 
     const first = 0xFF & buf[offset];
-    let readBytes = 0;
-    let data = 0;
+    let readBytes = 0,
+      data = 0;
 
     if (first < 0xFD) {
 
@@ -83,7 +95,7 @@ export class VarIntSerializer {
 
       // data = buf.readUIntLE(offset + 1, 8);
       // readBytes = 9;
-    
+
       data = readUint64LE(buf, offset + 1);
       readBytes = 9;
 

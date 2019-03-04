@@ -1,6 +1,6 @@
-import { CoinOutput, CoinInput } from './../coin/coin';
-import { CONSENSUS_LOCK_TIME } from './../../common';
-// import { TransactionApi } from './../../api/transaction';
+import { CoinOutput, CoinInput } from '../coin/coin';
+import { CONSENSUS_LOCK_TIME } from '../../common';
+// import { TransactionApi } from '../../api/transaction';
 import { Hash, isValidHash } from '../../utils/crypto';
 import { Address, isValidAddress } from '../../utils/crypto';
 import { TransactionType } from '../../common';

@@ -1,6 +1,6 @@
 import { PLACE_HOLDER, IReadData } from '../../common';
 
-/***
+/**
   * ### TxDataReward (Coinbase)
   * http://dev.nuls.io/protocol/transaction.html#TX-TYPE-COINBASE
   *

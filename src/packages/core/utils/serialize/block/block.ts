@@ -2,7 +2,7 @@ import { BlockHeaderSerializer, IBlockHeaderData } from './blockHeader';
 import { IReadData } from '../common';
 import { TransactionSerializer, ITransactionData } from '../transaction/transaction';
 
-/***
+/**
   * ### Block
   * https://github.com/nuls-io/nuls/blob/df9a9db1855be2fe57db81947a50f4eab57471d2/core-module/kernel/src/main/java/io/nuls/kernel/model/Block.java#L41
   *

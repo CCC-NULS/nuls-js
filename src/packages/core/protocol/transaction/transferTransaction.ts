@@ -1,4 +1,4 @@
-import { PLACE_HOLDER } from './../../utils/serialize/common';
+import { PLACE_HOLDER } from '../../utils/serialize/common';
 import { TransactionType } from '../../common';
 import { ITxDataTransferData } from '../../utils/serialize/transaction/txData/txDataTransfer';
 import { TransactionObject } from '..';

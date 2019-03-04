@@ -1,4 +1,4 @@
-import { Hash, Address } from './../utils/crypto';
+import { Hash, Address } from '../utils/crypto';
 import * as config from 'config';
 import { APIServerClass, IAPIConfig } from './APIServer';
 import { TransactionHash } from '../protocol/transaction/baseTransaction';

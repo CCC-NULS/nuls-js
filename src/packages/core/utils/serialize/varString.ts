@@ -1,7 +1,7 @@
 import { VarByteSerializer } from './varByte';
 import { IReadData } from './common';
 
-/***
+/**
   * ### VarString
   * http://dev.nuls.io/protocol/index.html#VarString
   *
@@ -25,7 +25,7 @@ export interface IVarStringOutput extends IReadData {
 export class VarStringSerializer {
 
   public static DEFAULT_ENCODING: string = 'utf8';
-  
+
   /**
    * Size of the serialized data
    * @returns the bytes size of a serialized VarString
@@ -45,7 +45,7 @@ export class VarStringSerializer {
   public static read(buf: Buffer, offset: number): IVarStringOutput {
 
     const { data, readBytes } = VarByteSerializer.read(buf, offset);
-  
+
     return {
       readBytes,
       data: data.toString(VarStringSerializer.DEFAULT_ENCODING)
@@ -67,5 +67,5 @@ export class VarStringSerializer {
     return VarByteSerializer.write(buffData, buf, offset);
 
   }
-  
+
 }

@@ -26,7 +26,7 @@ describe('TransactionSerializer integration tests', () => {
 
     it('should serialize an example of read transaction', () => {
 
-      let buf = Buffer.alloc(100000);
+      const buf = Buffer.alloc(100000);
       const offset = TransactionSerializer.write(yellowCardTxReadExample, buf, 0);
       const tx: string = buf.slice(0, offset).toString('base64');
 

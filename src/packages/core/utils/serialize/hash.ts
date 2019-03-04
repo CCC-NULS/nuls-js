@@ -2,7 +2,7 @@ import { HASH_LENGTH } from '../../common';
 import { Hash } from '../crypto';
 import { IReadData } from './common';
 
-/***
+/**
   * ### Hash
   * Hash === NulsDigestData.toString('hex')
  */

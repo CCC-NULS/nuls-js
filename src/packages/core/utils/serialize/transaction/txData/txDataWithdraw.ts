@@ -3,7 +3,7 @@ import { HashSerializer } from '../../hash';
 import { HASH_LENGTH } from '../../../../common';
 import { IReadData } from '../../common';
 
-/***
+/**
   * ### TxDataWithdraw
   * http://dev.nuls.io/protocol/transaction.html#TX-TYPE-CANCEL-DEPOSIT
   *

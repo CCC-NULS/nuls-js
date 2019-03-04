@@ -2,7 +2,7 @@ import { IReadData, VarIntSerializer } from '../..';
 import { ICoinData, CoinSerializer } from './coin';
 import { NulsDataSerializer } from '../../nulsData';
 
-/***
+/**
   * ### CoinData
   * https://github.com/nuls-io/nuls/blob/master/core-module/kernel/src/main/java/io/nuls/kernel/model/CoinData.java
   *

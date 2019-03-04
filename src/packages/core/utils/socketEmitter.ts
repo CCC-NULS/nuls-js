@@ -18,13 +18,16 @@ export class SocketEmitter extends EventEmitter {
 
   }
 
-  async tick() {
+  async tick(): Promise<void> {
 
     try {
 
       await this.fn();
+
       if (this.active) {
+
         this.nextTick = setTimeout(() => this.tick(), config.nuls.api.blockTime * 1000);
+
       }
 
     } catch (e) {
@@ -36,14 +39,14 @@ export class SocketEmitter extends EventEmitter {
 
   }
 
-  restart() {
+  restart(): void {
 
     this.active = true;
     this.tick();
 
   }
 
-  close() {
+  close(): void {
 
     this.active = false;
     clearTimeout(this.nextTick);

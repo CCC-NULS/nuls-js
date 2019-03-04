@@ -1,9 +1,9 @@
-import { ADDRESS_LENGTH } from './../../../../common';
-import { AddressSerializer } from './../../address';
+import { ADDRESS_LENGTH } from '../../../../common';
+import { AddressSerializer } from '../../address';
 import { Address } from '../../../crypto';
 import { readUint64LE, writeUint64LE, IReadData } from '../../common';
 
-/***
+/**
   * ### TxDataRegister
   * http://dev.nuls.io/protocol/transaction.html#TX-TYPE-REGISTER-AGENT
   *

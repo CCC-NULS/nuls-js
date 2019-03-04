@@ -1,4 +1,4 @@
-import { TxDataRewardSerializer } from './../../txData/txDataReward';
+import { TxDataRewardSerializer } from '../../txData/txDataReward';
 import { ITransactionData } from '../../transaction';
 
 export const rewardTxSerializedExample: string = 'AQDgzzp/ZwEA/////wAEFwQjAVnZBZV+EHRNejdxUzprwEueqX+wMRfNAwAAAADpUhMAAAAXBCMBd97NtGpPJOgOZS2Fgyaab9QUz+BsIwgAAAAAAOlSEwAAABcEIwGMqoHy58Py9NOzohXiFWjzKQ4ihCva4wIAAAAA6VITAAAAFwQjAY6z3aDewbM43/jAQIh+ayckeJBbKSFNAAAAAADpUhMAAAAA';
@@ -38,50 +38,50 @@ export const rewardTxReadExample: ITransactionData = {
 };
 
 export const rewardTxExample = {
-  "hash": "002079409275ae77ccb99fb885c4c3924e67e5af5a7bd0390ec4f38421ecd9cf291a",
-  "type": 1,
-  "time": 1544027820000,
-  "blockHeight": 1265409,
-  "fee": 0,
-  "value": 117847537,
-  "remark": '',
-  "scriptSig": '',
-  "status": 1,
-  "confirmCount": 48,
-  "size": 168,
-  "inputs": [],
-  "outputs": [
+  hash: '002079409275ae77ccb99fb885c4c3924e67e5af5a7bd0390ec4f38421ecd9cf291a',
+  type: 1,
+  time: 1544027820000,
+  blockHeight: 1265409,
+  fee: 0,
+  value: 117847537,
+  remark: '',
+  scriptSig: '',
+  status: 1,
+  confirmCount: 48,
+  size: 168,
+  inputs: [],
+  outputs: [
     {
-      "txHash": "002079409275ae77ccb99fb885c4c3924e67e5af5a7bd0390ec4f38421ecd9cf291a",
-      "index": 0,
-      "address": "NsdyeMiuA79sjoBDBj7H9LoFpgGpDWao",
-      "value": 63772465,
-      "lockTime": 1266409,
-      "status": 1
+      txHash: '002079409275ae77ccb99fb885c4c3924e67e5af5a7bd0390ec4f38421ecd9cf291a',
+      index: 0,
+      address: 'NsdyeMiuA79sjoBDBj7H9LoFpgGpDWao',
+      value: 63772465,
+      lockTime: 1266409,
+      status: 1
     },
     {
-      "txHash": "002079409275ae77ccb99fb885c4c3924e67e5af5a7bd0390ec4f38421ecd9cf291a",
-      "index": 1,
-      "address": "Nse1VS85rue13xtXDrx9hCu8WAfM34T4",
-      "value": 533356,
-      "lockTime": 1266409,
-      "status": 1
+      txHash: '002079409275ae77ccb99fb885c4c3924e67e5af5a7bd0390ec4f38421ecd9cf291a',
+      index: 1,
+      address: 'Nse1VS85rue13xtXDrx9hCu8WAfM34T4',
+      value: 533356,
+      lockTime: 1266409,
+      status: 1
     },
     {
-      "txHash": "002079409275ae77ccb99fb885c4c3924e67e5af5a7bd0390ec4f38421ecd9cf291a",
-      "index": 2,
-      "address": "Nse2mbsj7uWnjiQfRpqER8MxSdt171Tx",
-      "value": 48486955,
-      "lockTime": 1266409,
-      "status": 1
+      txHash: '002079409275ae77ccb99fb885c4c3924e67e5af5a7bd0390ec4f38421ecd9cf291a',
+      index: 2,
+      address: 'Nse2mbsj7uWnjiQfRpqER8MxSdt171Tx',
+      value: 48486955,
+      lockTime: 1266409,
+      status: 1
     },
     {
-      "txHash": "002079409275ae77ccb99fb885c4c3924e67e5af5a7bd0390ec4f38421ecd9cf291a",
-      "index": 3,
-      "address": "Nse2ts9ndjW6xCGasBDx3eZeY1Hqx4kw",
-      "value": 5054761,
-      "lockTime": 1266409,
-      "status": 1
+      txHash: '002079409275ae77ccb99fb885c4c3924e67e5af5a7bd0390ec4f38421ecd9cf291a',
+      index: 3,
+      address: 'Nse2ts9ndjW6xCGasBDx3eZeY1Hqx4kw',
+      value: 5054761,
+      lockTime: 1266409,
+      status: 1
     }
   ]
 };

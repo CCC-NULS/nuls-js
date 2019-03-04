@@ -1,7 +1,7 @@
-import { ApiTransaction } from './../../api/transaction';
-import { BlockApi, ApiBlock } from './../../api/block';
-import { CoinDataObject } from './../coin/coinData';
-import { UTXO, Utxo } from './../utxo';
+import { ApiTransaction } from '../../api/transaction';
+import { BlockApi, ApiBlock } from '../../api/block';
+import { CoinDataObject } from '../coin/coinData';
+import { UTXO, Utxo } from '../utxo';
 import { TransactionType, BlockVersion } from '../../common';
 import { TransactionSerializer, ITransactionData } from '../../utils/serialize/transaction/transaction';
 import { CoinData } from '../coin/coinData';

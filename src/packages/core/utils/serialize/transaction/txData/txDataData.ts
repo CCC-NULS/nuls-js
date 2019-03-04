@@ -1,6 +1,6 @@
 import { VarByteSerializer, IVarByteData, IVarByteOutput } from '../../varByte';
 
-/***
+/**
   * ### TxDataData 
   *
   * ### TX_TYPE_DATA

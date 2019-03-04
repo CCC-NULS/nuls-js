@@ -1,7 +1,7 @@
 import { VarByteSerializer } from '../varByte';
 import { IReadData } from '../common';
 
-/***
+/**
   * ### NulsSignData
   * http://dev.nuls.io/protocol/index.html#NulsSignData
   *

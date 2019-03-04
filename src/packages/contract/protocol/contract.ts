@@ -1,5 +1,5 @@
 import { PromiEvent } from 'web3-core-promievent';
-import { Address } from './../../core/utils/crypto';
+import { Address } from '../../core/utils/crypto';
 import { ContractApi, IContractGetMethodsResponse, IContractMethod, IContractViewResponse, IContractMethodArg, ContractCallArgs } from '../api/contract';
 import { IAPIConfig, ContractCallTransaction, UTXO, Utxo, Account } from '../..';
 import { TransactionReceipt } from '../../core/protocol';

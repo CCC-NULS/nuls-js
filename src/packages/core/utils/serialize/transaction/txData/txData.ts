@@ -1,7 +1,7 @@
 import { TxDataContractCallSerializer, ITxDataContractCallData } from './txDataContractCall';
 import { TxDataUnregisterSerializer, ITxDataUnregisterData } from './txDataUnregister';
 import { TxDataWithdrawSerializer, ITxDataWithdrawData } from './txDataWithdraw';
-import { TransactionType } from '../../../../../../packages/core/common';
+import { TransactionType } from '../../../../common';
 import { TxDataRewardSerializer, ITxDataRewardData } from './txDataReward';
 import { TxDataTransferSerializer, ITxDataTransferData } from './txDataTransfer';
 import { TxDataAliasSerializer, ITxDataAliasData } from './txDataAlias';
@@ -16,7 +16,7 @@ import { ITxDataContractDeleteData, TxDataContractDeleteSerializer } from './txD
 import { ITxDataContractTransferData, TxDataContractTransferSerializer } from './txDataContractTransfer';
 import { TxDataDataSerializer, ITxDataDataData } from './txDataData';
 
-/***
+/**
   * ### TxData
   * http://dev.nuls.io/protocol/index.html#Transaction88
   *

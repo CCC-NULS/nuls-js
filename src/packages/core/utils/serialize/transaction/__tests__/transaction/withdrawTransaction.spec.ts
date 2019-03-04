@@ -21,8 +21,8 @@ describe('TransactionSerializer integration tests', () => {
       expect(tx.scriptSign).toEqual(withdrawTxReadExample.scriptSign);
       expect((tx.txData as ITxDataWithdrawData)).toEqual(withdrawTxReadExample.txData);
 
-      expect(tx.coinData.inputs.length).toBe(withdrawTxReadExample.coinData.inputs.length);
-      expect(tx.coinData.outputs.length).toBe(withdrawTxReadExample.coinData.outputs.length);
+      expect(tx.coinData.inputs).toHaveLength(withdrawTxReadExample.coinData.inputs.length);
+      expect(tx.coinData.outputs).toHaveLength(withdrawTxReadExample.coinData.outputs.length);
 
       checkAssertsCoins(tx.coinData.inputs, withdrawTxReadExample.coinData.inputs);
       checkAssertsCoins(tx.coinData.outputs, withdrawTxReadExample.coinData.outputs);
@@ -31,7 +31,7 @@ describe('TransactionSerializer integration tests', () => {
 
     it('should serialize an example of read transaction', () => {
 
-      let buf = Buffer.alloc(100000);
+      const buf = Buffer.alloc(100000);
       const offset = TransactionSerializer.write(withdrawTxReadExample, buf, 0);
       const tx: string = buf.slice(0, offset).toString('base64');
 

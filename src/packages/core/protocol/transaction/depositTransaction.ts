@@ -1,4 +1,4 @@
-import { Hash, isValidHash } from './../../utils/crypto';
+import { Hash, isValidHash } from '../../utils/crypto';
 import { Address, isValidAddress } from '../../utils/crypto';
 import { TransactionType, CONSENSUS_LOCK_TIME } from '../../common';
 import { BaseTransaction } from './baseTransaction';

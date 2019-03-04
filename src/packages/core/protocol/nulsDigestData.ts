@@ -1,7 +1,7 @@
 import { sha256Twice, sha256, ripemd160 } from '../utils/crypto';
 import { INulsDigestDataData } from '../utils/serialize/nulsDigestData';
 
-/***
+/**
  * ### NulsDigestData
  * 
  * https://github.com/nuls-io/nuls/blob/274204b748ed72fdac150637ee758037d64c7ce5/core-module/kernel/src/main/java/io/nuls/kernel/model/NulsDigestData.java#L135

@@ -5,7 +5,7 @@ import { Hash } from '../../crypto';
 import { HASH_LENGTH } from '../../../../core/common';
 import { P2PKHScriptSigSerializer, IP2PKHScriptSigData } from '../signature/P2PKHScriptSig';
 
-/***
+/**
   * ### Block header
   * https://github.com/nuls-io/nuls/blob/df9a9db1855be2fe57db81947a50f4eab57471d2/core-module/kernel/src/main/java/io/nuls/kernel/model/BlockHeader.java#L43
   *

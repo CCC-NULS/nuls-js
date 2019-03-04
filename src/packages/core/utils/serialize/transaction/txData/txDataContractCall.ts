@@ -1,10 +1,10 @@
-import { VarStringSerializer } from './../../varString';
-import { AddressSerializer } from './../../address';
+import { VarStringSerializer } from '../../varString';
+import { AddressSerializer } from '../../address';
 import { Address } from '../../../crypto';
-import { ADDRESS_LENGTH } from '../../../../../../packages/core/common';
+import { ADDRESS_LENGTH } from '../../../../common';
 import { readUint64LE, IReadData, writeUint64LE } from '../../common';
 
-/***
+/**
   * ### TxDataContractCall
   *
   * | 尺寸  | 字段            | 数据类型           |

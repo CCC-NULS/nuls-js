@@ -1,10 +1,10 @@
-import { HashSerializer } from './../../hash';
-import { HASH_LENGTH, ADDRESS_LENGTH } from './../../../../common';
-import { Hash, Address } from './../../../crypto';
+import { HashSerializer } from '../../hash';
+import { HASH_LENGTH, ADDRESS_LENGTH } from '../../../../common';
+import { Hash, Address } from '../../../crypto';
 import { IReadData } from '../../common';
 import { AddressSerializer } from '../../address';
 
-/***
+/**
   * ### TxDataContractTransfer
   *
   * | 尺寸  | 字段            | 数据类型              |

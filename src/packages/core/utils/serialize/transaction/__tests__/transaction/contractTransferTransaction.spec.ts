@@ -31,7 +31,7 @@ describe('TransactionSerializer integration tests', () => {
 
     it('should serialize an example of read transaction', () => {
 
-      let buf = Buffer.alloc(10000);
+      const buf = Buffer.alloc(10000);
       const offset = TransactionSerializer.write(contractTransferTxReadExample, buf, 0);
       const tx: string = buf.slice(0, offset).toString('base64');
 

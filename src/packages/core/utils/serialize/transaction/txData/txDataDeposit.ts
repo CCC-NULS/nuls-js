@@ -1,10 +1,10 @@
-import { HASH_LENGTH } from './../../../../common';
+import { HASH_LENGTH } from '../../../../common';
 import { ADDRESS_LENGTH } from '../../../../common';
 import { AddressSerializer } from '../../address';
 import { Address, AgentHash } from '../../../crypto';
 import { readUint64LE, writeUint64LE, HashSerializer, IReadData } from '../..';
 
-/***
+/**
   * ### TxDataDeposit
   * http://dev.nuls.io/protocol/transaction.html#TX-TYPE-JOIN-CONSENSUS
   * 

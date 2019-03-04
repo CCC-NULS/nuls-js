@@ -1,5 +1,5 @@
-import { IDigestData } from '../protocol/nulsDigestData';
 import * as secp256k1 from 'secp256k1';
+import { IDigestData } from '../protocol/nulsDigestData';
 import { publicKeyFromPrivateKey } from './crypto';
 import { P2PKHScriptSigSerializer, IP2PKHScriptSigData } from './serialize/signature/P2PKHScriptSig';
 import { INulsSignDataData } from './serialize/signature/nulsSignData';
@@ -18,34 +18,6 @@ export type SignatureHash = Buffer;
 
 export interface IDigestible {
   getDigest(): IDigestData;
-};
-
-// https://github.com/nuls-io/nuls/blob/6e22e5ba554fae9e690faaa3797cdddb49f90c44/core-module/kernel/src/main/java/io/nuls/kernel/script/SignatureUtil.java#L147
-// TODO: Implement P2SH "P2PKHScriptSignature"
-export function createTransactionSignature(tx: IDigestible, privateKey: Buffer): SignatureHash {
-
-  const signatureData: IP2PHKSignature = createSignatureByEckey(tx, privateKey);
-  return getSignatureHash(signatureData);
-
-}
-
-export function createBlockSignature(blockHeader: IDigestible, privateKey: Buffer): SignatureHash {
-
-  return createTransactionSignature(blockHeader, privateKey);
-
-}
-
-// https://github.com/nuls-io/nuls/blob/6e22e5ba554fae9e690faaa3797cdddb49f90c44/core-module/kernel/src/main/java/io/nuls/kernel/script/SignatureUtil.java#L193
-function createSignatureByEckey(digestible: IDigestible, privateKey: Buffer): IP2PHKSignature {
-
-  const publicKey: Buffer = publicKeyFromPrivateKey(privateKey);
-  const signData: INulsSignData = signDigest(digestible, privateKey);
-
-  return {
-    publicKey,
-    signData
-  };
-
 }
 
 // https://github.com/nuls-io/nuls/blob/6e22e5ba554fae9e690faaa3797cdddb49f90c44/core-module/kernel/src/main/java/io/nuls/kernel/script/SignatureUtil.java#L400
@@ -63,6 +35,19 @@ function signDigest(digestible: IDigestible, privateKey: Buffer): INulsSignData 
 
 }
 
+// https://github.com/nuls-io/nuls/blob/6e22e5ba554fae9e690faaa3797cdddb49f90c44/core-module/kernel/src/main/java/io/nuls/kernel/script/SignatureUtil.java#L193
+function createSignatureByEckey(digestible: IDigestible, privateKey: Buffer): IP2PHKSignature {
+
+  const publicKey: Buffer = publicKeyFromPrivateKey(privateKey);
+  const signData: INulsSignData = signDigest(digestible, privateKey);
+
+  return {
+    publicKey,
+    signData
+  };
+
+}
+
 export function getSignatureHash(signatureData: IP2PHKSignature | null): SignatureHash {
 
   const signatureSize: number = P2PKHScriptSigSerializer.size(signatureData);
@@ -71,6 +56,21 @@ export function getSignatureHash(signatureData: IP2PHKSignature | null): Signatu
   P2PKHScriptSigSerializer.write(signatureData, signatureHash, 0);
 
   return signatureHash;
+
+}
+
+// https://github.com/nuls-io/nuls/blob/6e22e5ba554fae9e690faaa3797cdddb49f90c44/core-module/kernel/src/main/java/io/nuls/kernel/script/SignatureUtil.java#L147
+// TODO: Implement P2SH "P2PKHScriptSignature"
+export function createTransactionSignature(tx: IDigestible, privateKey: Buffer): SignatureHash {
+
+  const signatureData: IP2PHKSignature = createSignatureByEckey(tx, privateKey);
+  return getSignatureHash(signatureData);
+
+}
+
+export function createBlockSignature(blockHeader: IDigestible, privateKey: Buffer): SignatureHash {
+
+  return createTransactionSignature(blockHeader, privateKey);
 
 }
 

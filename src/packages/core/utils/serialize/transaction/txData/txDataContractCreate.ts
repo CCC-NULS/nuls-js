@@ -1,11 +1,11 @@
-import { VarByteSerializer } from './../../varByte';
+import { VarByteSerializer } from '../../varByte';
 import { VarStringSerializer } from '../../varString';
 import { AddressSerializer } from '../../address';
 import { Address } from '../../../crypto';
 import { ADDRESS_LENGTH } from '../../../../common';
 import { readUint64LE, IReadData, writeUint64LE } from '../../common';
 
-/***
+/**
   * ### TxDataContractCreate
   *
   * | 尺寸  | 字段            | 数据类型           |

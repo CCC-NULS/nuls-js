@@ -3,7 +3,7 @@ import { Address } from '../../../crypto';
 import { ADDRESS_LENGTH } from '../../../../common';
 import { IReadData } from '../../common';
 
-/***
+/**
   * ### TxDataContractDelete
   *
   * | 尺寸  | 字段            | 数据类型           |

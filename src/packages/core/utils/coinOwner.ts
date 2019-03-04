@@ -3,7 +3,7 @@ import { AddressSerializer } from './serialize/address';
 import { Address, Hash, isValidAddress, addressFromHash, hashFromAddress } from './crypto';
 import { VarIntSerializer } from './serialize';
 
-/***
+/**
   * ### CoinOwner
  */
 export interface ICoinOwnerData {

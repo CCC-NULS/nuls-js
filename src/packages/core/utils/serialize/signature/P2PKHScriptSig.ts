@@ -3,7 +3,7 @@ import { VarByteSerializer } from '../..';
 import { NulsSignDataSerializer, INulsSignDataData } from './nulsSignData';
 import { NulsDataSerializer, INulsDataData } from '../nulsData';
 
-/***
+/**
   * ### P2PKHScriptSig
   * http://dev.nuls.io/protocol/index.html#P2PKHScriptSig
   *

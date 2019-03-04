@@ -1,10 +1,9 @@
-import { Address, AddressHash, hashFromAddress } from '../../../crypto';
+import { Address, AddressHash, hashFromAddress, addressFromHash } from '../../../crypto';
 import { VarStringSerializer } from '../../varString';
-import { addressFromHash } from '../../../crypto';
 import { VarByteSerializer } from '../../varByte';
 import { IReadData } from '../../common';
 
-/***
+/**
   * ### TxDataAlias
   * http://dev.nuls.io/protocol/transaction.html#TX-TYPE-ACCOUNT-ALIAS
   *

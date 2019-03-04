@@ -1,4 +1,4 @@
-import { BlockVersion } from './../../common';
+import { BlockVersion } from '../../common';
 import { BlockHeaderSerializer, IBlockHeaderData } from '../../utils/serialize/block/blockHeader';
 import { Hash, getPrivateKeyBuffer } from '../../utils/crypto';
 import { getSignatureHash, getSignatureFromHash, createBlockSignature } from '../../utils';

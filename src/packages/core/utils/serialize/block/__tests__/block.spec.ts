@@ -1,4 +1,4 @@
-import { blockSerializedExample2, blockReadExample2 } from './../__mocks__/examples/block';
+import { blockSerializedExample2, blockReadExample2 } from '../__mocks__/examples/block';
 import { blockSerializedExample, blockReadExample } from '../__mocks__/examples/block';
 import { BlockSerializer, IBlockData } from '../block';
 

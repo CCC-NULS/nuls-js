@@ -20,12 +20,13 @@ module.exports = {
 					'/guide/account/qr-code',
 				]
 			},
-			// ['/guide/transaction/', 'Transaction'],
+			['/guide/block/', 'Block'],
 			{
 				title: 'Transaction',
 				collapsable: true,
 				children: [
 					['/guide/transaction/', 'Basic concepts'],
+					'/guide/transaction/transaction-model',
 					'/guide/transaction/transfer',
 					'/guide/transaction/alias',
 					'/guide/transaction/register',

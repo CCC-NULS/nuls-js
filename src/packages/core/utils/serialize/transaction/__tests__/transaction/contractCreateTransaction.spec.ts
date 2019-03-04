@@ -19,9 +19,7 @@ describe('TransactionSerializer integration tests', () => {
       expect(tx.time).toEqual(contractCreateTxReadExample.time);
       expect(tx.remark).toEqual(contractCreateTxReadExample.remark);
       expect(tx.scriptSign).toEqual(contractCreateTxReadExample.scriptSign);
-
-      const txData: ITxDataContractCreateData = tx.txData as ITxDataContractCreateData;
-      expect(txData).toEqual((contractCreateTxReadExample.txData as ITxDataContractCreateData));
+      expect(tx.txData as ITxDataContractCreateData).toEqual(contractCreateTxReadExample.txData);
 
       expect(tx.coinData.inputs.length).toBe(contractCreateTxReadExample.coinData.inputs.length);
       expect(tx.coinData.outputs.length).toBe(contractCreateTxReadExample.coinData.outputs.length);

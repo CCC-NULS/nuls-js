@@ -68,3 +68,4 @@ typedocs/
 .playground
 docs/.vuepress/dist
 config/local.yaml
+docs/.vuepress/public/typedoc

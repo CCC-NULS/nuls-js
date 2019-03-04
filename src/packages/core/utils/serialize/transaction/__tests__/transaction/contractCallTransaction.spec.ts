@@ -16,23 +16,10 @@ describe('TransactionSerializer integration tests', () => {
 
       expect(tx.type).toEqual(contractCallTxReadExample.type);
       expect(tx.type).toEqual(TransactionType.ContractCall);
-
       expect(tx.time).toEqual(contractCallTxReadExample.time);
-
       expect(tx.remark).toEqual(contractCallTxReadExample.remark);
-
       expect(tx.scriptSign).toEqual(contractCallTxReadExample.scriptSign);
-
-      const txData: ITxDataContractCallData = tx.txData as ITxDataContractCallData;
-
-      expect(txData.contractAddress).toEqual((contractCallTxReadExample.txData as ITxDataContractCallData).contractAddress);
-      expect(txData.gasLimit).toEqual((contractCallTxReadExample.txData as ITxDataContractCallData).gasLimit);
-      expect(txData.methodName).toEqual((contractCallTxReadExample.txData as ITxDataContractCallData).methodName);
-      expect(txData.methodDesc).toEqual((contractCallTxReadExample.txData as ITxDataContractCallData).methodDesc);
-      expect(txData.price).toEqual((contractCallTxReadExample.txData as ITxDataContractCallData).price);
-      expect(txData.sender).toEqual((contractCallTxReadExample.txData as ITxDataContractCallData).sender);
-      expect(txData.price).toEqual((contractCallTxReadExample.txData as ITxDataContractCallData).price);
-      expect(txData.args).toEqual((contractCallTxReadExample.txData as ITxDataContractCallData).args);
+      expect(tx.txData as ITxDataContractCallData).toEqual(contractCallTxReadExample.txData);
 
       expect(tx.coinData.inputs.length).toBe(contractCallTxReadExample.coinData.inputs.length);
       expect(tx.coinData.outputs.length).toBe(contractCallTxReadExample.coinData.outputs.length);

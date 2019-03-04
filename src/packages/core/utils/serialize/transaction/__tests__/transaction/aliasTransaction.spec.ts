@@ -16,13 +16,9 @@ describe('TransactionSerializer integration tests', () => {
 
       expect(tx.type).toEqual(aliasTxReadExample.type);
       expect(tx.type).toEqual(TransactionType.Alias);
-
       expect(tx.time).toEqual(aliasTxReadExample.time);
-
       expect(tx.remark).toEqual(aliasTxReadExample.remark);
-
       expect(tx.scriptSign).toEqual(aliasTxReadExample.scriptSign);
-
       expect((tx.txData as ITxDataAliasData)).toEqual(aliasTxReadExample.txData);
 
       expect(tx.coinData.inputs.length).toBe(aliasTxReadExample.coinData.inputs.length);

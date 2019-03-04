@@ -16,13 +16,9 @@ describe('TransactionSerializer integration tests', () => {
 
       expect(tx.type).toEqual(rewardTxReadExample.type);
       expect(tx.type).toEqual(TransactionType.Reward);
-
       expect(tx.time).toEqual(rewardTxReadExample.time);
-
       expect(tx.remark).toEqual(rewardTxReadExample.remark);
-
       expect(tx.scriptSign).toEqual(rewardTxReadExample.scriptSign);
-
       expect(tx.txData as ITxDataRewardData).toEqual(TxDataRewardSerializer.PLACE_HOLDER);
 
       expect(tx.coinData.inputs.length).toBe(rewardTxReadExample.coinData.inputs.length);

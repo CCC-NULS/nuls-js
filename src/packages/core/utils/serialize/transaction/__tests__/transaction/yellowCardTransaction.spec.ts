@@ -2,7 +2,6 @@ import { ITransactionData, TransactionSerializer } from '../../transaction';
 import { yellowCardTxSerializedExample, yellowCardTxReadExample } from '../../__mocks__/examples/yellowCardTx';
 import { TransactionType } from '../../../../../common';
 import { ITxDataYellowCardData } from '../../txData/txDataYellowCard';
-import { checkAssertsCoins } from '../../__mocks__/common';
 
 describe('TransactionSerializer integration tests', () => {
 

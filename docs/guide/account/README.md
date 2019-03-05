@@ -1,5 +1,5 @@
 # Create/Import Account
-The account class can handle the whole account generation, importing, decrypting and encrypting for you.
+The account class can handle the complete account generation, importing, decrypting and encrypting for you.
 There are only two parameters which are accepted, `PASSWORD` and `PRIVATE_KEY` in their respective order.
 If you do not provide a password the account created will not be encrypted.
 
@@ -18,14 +18,14 @@ const flobAccount = account.import(PASSWORD, ENCRYPTED_PRIVATE_KEY); // Imports 
 ```
 
 ## Create a New Account
-Accounts can be easily be created on the frontend without calling any server. It should be
-done by the user only without interacting with any server for best security measures.
+Accounts can be created easily on the frontend without calling any server. It should only be
+done by the user without interacting with any server to get the best security measures.
 
 ```js
 import { Account } from 'nuls-js';
 
-const fooAccount = account.create(); // Creates an account
-const barAccount = account.create(PASSWORD); // Creates an account with a password
+const fooAccount = Account.create(); // Creates an account
+const barAccount = Account.create(PASSWORD); // Creates an account with a password
 ```
 
 #### Without a Password
@@ -42,8 +42,8 @@ console.log(Account.create());
 ```
 
 #### With a Password
-To encrypt your generated account with a password you can provide a plain text password as
-the first `param` and you will be provided both the plain text and encrypted private keys.
+To generated a new account encrypted with a password you can provide a plain text password as
+the first `param` whereafter you will receive a private key both in plain text and encrypted.
 ```js
 import { Account } from 'nuls-js';
 
@@ -58,7 +58,7 @@ console.log(Account.create('Password1!'));
 
 ## Import an Account
 You can import an existing account by using the private key. The private key can be encrypted or decrypted,
-if you provide just the private key it must be decrypted, if you provide an encrypted private key and a password
+if you provide just the private key it must be decrypted, if you provide an encrypted private key together with its password
 it will decrypt the private key, if you provide a password and a decrypted private key it will import it and
 encrypt the private key.
 
@@ -71,7 +71,7 @@ const flobAccount = Account.import(PASSWORD, ENCRYPTED_PRIVATE_KEY); // Imports 
 ```
 
 #### Unencrypted (plain text) Private Key
-You can provide the unencrypted plain text private key as the second `param` in the `Account` class.
+You can provide the unencrypted private key in plain text as the second `param` in the `Account` class.
 ```js
 import { Account } from 'nuls-js';
 
@@ -99,8 +99,8 @@ console.log(Account.import('Password1!', '6f1a067690b4481de3743de3f015da5f172d93
 ```
 
 #### Encrypting an Unencrypted (plain text) Private Key
-If you want to encrypt the plain text private key you can provide the password and plain text private key,
-the account will be imported and encrypted.
+If you want to encrypt a private key you can provide the password and unecrypted private key,
+the account will then be imported and encrypted.
 ```js
 import { Account } from 'nuls-js';
 

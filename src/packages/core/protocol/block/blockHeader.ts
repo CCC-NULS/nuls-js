@@ -3,7 +3,7 @@ import { BlockHeaderSerializer, IBlockHeaderData } from '../../utils/serialize/b
 import { Hash, getPrivateKeyBuffer } from '../../utils/crypto';
 import { getSignatureHash, getSignatureFromHash, createBlockSignature } from '../../utils';
 import { IDigestData, NulsDigestData } from '../nulsDigestData';
-import { NulsDigestDataSerializer } from '../../utils/serialize/nulsDigestData';
+import { NulsDigestDataSerializer } from '../../utils/serialize/nnulsDigestData';
 
 export type BlockHash = string;
 export type BlockHex = string;

@@ -17,7 +17,7 @@
     "build:prod": "npm run build:clean && webpack --mode production --config webpack.config.js",
     "build:clean": "rimraf dist",
     "tsnode": "ts-node --project tsconfig.json -O '{\"module\": \"commonjs\", \"allowJs\": true}' tests/index.ts",
-    "test": "npm run test:jest && npm run test:lint",
+    "test": "npm run test:jest",
     "test:lint": "./node_modules/.bin/eslint --ext=js,ts ./src",
     "test:jest": "jest",
     "test:jest:coverage": "jest --coverage",

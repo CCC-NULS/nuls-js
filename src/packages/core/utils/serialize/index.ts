@@ -4,7 +4,7 @@ export * from './varString';
 export * from './common';
 export * from './address';
 export * from './hash';
-export * from './nnulsDigestData';
+export * from './nulsDigestData';
 export * from './block';
 export * from './signature';
 export * from './transaction';

@@ -6,7 +6,7 @@ import { TransactionType, BlockVersion } from '../../common';
 import { TransactionSerializer, ITransactionData } from '../../utils/serialize/transaction/transaction';
 import { CoinData } from '../coin/coinData';
 import { NulsDigestData, IDigestData } from '../nulsDigestData';
-import { NulsDigestDataSerializer } from '../../utils/serialize/nnulsDigestData';
+import { NulsDigestDataSerializer } from '../../utils/serialize/nulsDigestData';
 import { createTransactionSignature } from '../../utils/signature';
 import { MIN_FEE_PRICE_1024_BYTES, getFee } from '../../utils/fee';
 import { getPrivateKeyBuffer } from '../../utils/crypto';

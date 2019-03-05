@@ -1,5 +1,5 @@
 import { sha256Twice, sha256, ripemd160 } from '../utils/crypto';
-import { INulsDigestDataData } from '../utils/serialize/nnulsDigestData';
+import { INulsDigestDataData } from '../utils/serialize/nulsDigestData';
 
 /**
  * ### NulsDigestData

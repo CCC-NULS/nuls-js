@@ -13,7 +13,7 @@ install:
     - npm i
 script:
     - npm run test
-    - npm run test:jest:coveralls
+    - npm run test:jest:coveralls -- -u
     - npm run docs:build
 cache:
     directories:

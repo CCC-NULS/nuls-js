@@ -26,6 +26,16 @@ const commonWebpackConfig = {
 			{
 				test: /\.txt$/,
 				use: 'raw-loader'
+			},
+			{
+				test: /\.(png|jp(e*)g|svg)$/,
+				use: [{
+					loader: 'url-loader',
+					options: {
+						limit: 8000, // Convert images < 8kb to base64 strings
+						name: 'images/[hash]-[name].[ext]'
+					}
+				}]
 			}
 		]
 	},
@@ -33,7 +43,7 @@ const commonWebpackConfig = {
 		fs: 'empty'
 	},
 	resolve: {
-		extensions: ['.ts', '.js', '.txt'],
+		extensions: ['.ts', '.js', '.txt', '.png'],
 		alias: {
 			config: path.resolve(__dirname, './config/config.json'),
 			'@': path.join(__dirname, './src')

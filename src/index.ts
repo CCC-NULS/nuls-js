@@ -1,9 +1,7 @@
 // https://github.com/Microsoft/TypeScript/pull/29262
 // <reference path="./public-typings.d.ts" />
-const packages = require('./packages');
 
+import * as packages from './packages';
 export * from './packages';
 
-export default{
-  ...packages
-};
+export default packages;

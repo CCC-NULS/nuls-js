@@ -3,7 +3,6 @@ const config = require('config');
 const nodeExternals = require('webpack-node-externals');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const fs = require('fs');
 
 const packageconfigFileName = './config/config.json';
@@ -15,7 +14,6 @@ const commonWebpackConfig = {
 	entry: {
 		'nuls-js': './src/index.ts'
 	},
-	devtool: 'inline-source-map',
 	module: {
 		rules: [
 			{
@@ -26,16 +24,6 @@ const commonWebpackConfig = {
 			{
 				test: /\.txt$/,
 				use: 'raw-loader'
-			},
-			{
-				test: /\.(png|jp(e*)g|svg)$/,
-				use: [{
-					loader: 'url-loader',
-					options: {
-						limit: 8000, // Convert images < 8kb to base64 strings
-						name: 'images/[hash]-[name].[ext]'
-					}
-				}]
 			}
 		]
 	},
@@ -43,7 +31,7 @@ const commonWebpackConfig = {
 		fs: 'empty'
 	},
 	resolve: {
-		extensions: ['.ts', '.js', '.txt', '.png'],
+		extensions: ['.ts', '.js', '.txt'],
 		alias: {
 			config: path.resolve(__dirname, './config/config.json'),
 			'@': path.join(__dirname, './src')
@@ -53,12 +41,7 @@ const commonWebpackConfig = {
 		library: '@nuls/[name]',
 		filename: 'bundle.js',
 		path: path.resolve(__dirname, 'dist')
-	},
-	plugins: [
-		new CopyWebpackPlugin([
-			{ from: 'src/assets', to: 'assets' }
-		])
-	]
+	}
 };
 
 const serverWebpackConfig = merge(commonWebpackConfig, {

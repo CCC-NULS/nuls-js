@@ -28,7 +28,9 @@ const commonWebpackConfig = {
 		]
 	},
 	node: {
-		fs: 'empty'
+		fs: 'empty',
+		crypto: true,
+		module: false
 	},
 	resolve: {
 		extensions: ['.ts', '.js', '.txt'],

@@ -26,6 +26,16 @@ describe('BaseTransaction integration tests', () => {
 
     });
 
+    it('should produce a valid hash when coinData is empty (yellow card tx)', () => {
+
+      const txBytes: Buffer = Buffer.from('BwBQJGeraAEAAQUBAckF+4vmtqFM+1k/+5hQs1XOG+2m/////wA=', 'base64');
+      const txHash: string = '0020d974ab5b0d098a7fc15a1b54071c5e4a56dfe5fdd53f61195f2a99189ca17172';
+
+      const transaction: BaseTransaction = Transaction.fromBytes(txBytes);
+      expect(transaction.getHash()).toEqual(txHash);
+
+    });
+
   });
 
 });

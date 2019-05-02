@@ -113,10 +113,7 @@ export class TransactionSerializer {
     offset = VarByteSerializer.write(data.remark, buf, offset);
     offset = TxDataSerializer.write(data.txData, buf, offset, data.type);
     offset = CoinDataSerializer.write(data.coinData, buf, offset);
-
-    if (data.scriptSign) {
-      offset = VarByteSerializer.write(data.scriptSign, buf, offset);
-    }
+    offset = VarByteSerializer.write(data.scriptSign, buf, offset);
 
     return offset;
 

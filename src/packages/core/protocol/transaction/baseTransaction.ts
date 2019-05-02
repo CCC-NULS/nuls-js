@@ -159,7 +159,7 @@ export abstract class BaseTransaction {
       time: this._time,
       remark: this._remark,
       txData: this._txData,
-      coinData: CoinData.toRawData(this._coinData),
+      coinData: this._coinData.toRawData(),
       scriptSign: this._signature
     };
 

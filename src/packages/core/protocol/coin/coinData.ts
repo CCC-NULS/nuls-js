@@ -12,6 +12,7 @@ export class CoinData {
 
   protected _inputs: CoinInput[] = [];
   protected _outputs: CoinOutput[] = [];
+  protected nullRead: boolean = false;
 
   static toObject(coinData: CoinData): CoinDataObject {
 
@@ -26,7 +27,9 @@ export class CoinData {
 
     let coinData = new CoinData();
 
-    if (rawData != null) {
+    coinData.nullRead = rawData === null;
+
+    if (rawData !== null) {
 
       rawData.inputs.forEach((inputRawData: ICoinData) => {
 
@@ -48,28 +51,41 @@ export class CoinData {
 
   }
 
-  static toRawData(coinData: CoinData): ICoinDataData {
+  toRawData(): CoinDataData {
 
-    let rawData: ICoinDataData = {
+    let rawData: CoinDataData = {
       inputs: [],
       outputs: []
     };
 
-    coinData._inputs.forEach((input: CoinInput) => {
+    this._inputs.forEach((input: CoinInput) => {
 
       const inputRawData: ICoinData = CoinInput.toRawData(input);
-      rawData.inputs.push(inputRawData);
+      (rawData as ICoinDataData).inputs.push(inputRawData);
 
     });
 
-    coinData._outputs.forEach((output: CoinOutput) => {
+    this._outputs.forEach((output: CoinOutput) => {
 
       const outputRawData: ICoinData = CoinOutput.toRawData(output);
-      rawData.outputs.push(outputRawData);
+      (rawData as ICoinDataData).outputs.push(outputRawData);
 
     });
 
+    if (rawData.inputs.length === 0 && rawData.outputs.length === 0 && this.nullRead) {
+      rawData = null;
+    }
+
     return rawData;
+
+  }
+
+  toObject(): CoinDataObject {
+
+    return {
+      inputs: this._inputs.map((input: CoinInput) => input.toObject()),
+      outputs: this._outputs.map((output: CoinOutput) => output.toObject()),
+    };
 
   }
 
@@ -178,10 +194,6 @@ export class CoinData {
 
     }
 
-  }
-
-  toObject(): CoinDataObject {
-    return CoinData.toObject(this);
   }
 
 }

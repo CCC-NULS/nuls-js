@@ -1,3 +1,4 @@
+export * from './coinData';
 export * from './baseTransaction';
 export * from './transaction';
 export * from './transferTransaction';

@@ -1,6 +1,6 @@
-import { CoinSerializer, ICoinData } from '../../utils/serialize/transaction/coinData/coin';
-import { Address } from '../../utils/crypto';
-import { CoinOwnerUtils, ICoinOwnerData } from '../../utils/coinOwner';
+import { CoinSerializer, ICoinData } from '../../../utils/serialize/transaction/coinData/coin';
+import { Address } from '../../../utils/crypto';
+import { CoinOwnerUtils, ICoinOwnerData } from '../../../utils/coinOwner';
 
 export type CoinObject = CoinInputObject | CoinOutputObject;
 

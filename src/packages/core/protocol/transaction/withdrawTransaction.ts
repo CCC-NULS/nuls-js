@@ -1,4 +1,4 @@
-import { CoinOutput, CoinInput } from '../coin/coin';
+import { CoinOutput, CoinInput } from './coinData/coin';
 import { CONSENSUS_LOCK_TIME } from '../../common';
 // import { TransactionApi } from '../../api/transaction';
 import { Hash, isValidHash } from '../../utils/crypto';

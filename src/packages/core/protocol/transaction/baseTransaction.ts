@@ -1,17 +1,17 @@
 import { ApiTransaction } from '../../api/transaction';
 import { BlockApi, ApiBlock } from '../../api/block';
-import { CoinDataObject } from '../coin/coinData';
+import { CoinDataObject } from './coinData/coinData';
 import { UTXO, Utxo } from '../utxo';
 import { TransactionType, BlockVersion } from '../../common';
 import { TransactionSerializer, ITransactionData } from '../../utils/serialize/transaction/transaction';
-import { CoinData } from '../coin/coinData';
+import { CoinData } from './coinData/coinData';
 import { NulsDigestData, IDigestData } from '../nulsDigestData';
 import { NulsDigestDataSerializer } from '../../utils/serialize/nulsDigestData';
 import { createTransactionSignature } from '../../utils/signature';
 import { MIN_FEE_PRICE_1024_BYTES, getFee } from '../../utils/fee';
 import { getPrivateKeyBuffer } from '../../utils/crypto';
 import { IAPIConfig, TransactionApi } from '../../api';
-import { CoinInput, CoinOutput, CoinInputObject, CoinOutputObject } from '../coin';
+import { CoinInput, CoinOutput, CoinInputObject, CoinOutputObject } from './coinData';
 import * as cfg from 'config';
 import { PromiEvent } from 'web3-core-promievent';
 

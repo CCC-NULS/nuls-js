@@ -1,6 +1,6 @@
-import { Address } from '../../utils/crypto';
-import { ICoinDataData, CoinDataData } from '../../utils/serialize/transaction/coinData/coinData';
-import { ICoinData } from '../../utils/serialize/transaction/coinData/coin';
+import { Address } from '../../../utils/crypto';
+import { ICoinDataData, CoinDataData } from '../../../utils/serialize/transaction/coinData/coinData';
+import { ICoinData } from '../../../utils/serialize/transaction/coinData/coin';
 import { CoinInput, CoinOutput, CoinInputObject, CoinOutputObject, Coin } from './coin';
 
 export interface CoinDataObject {

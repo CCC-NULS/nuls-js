@@ -119,15 +119,3 @@ export function ripemd160(data: string | Buffer): Buffer {
   return new RIPEMD160().update(data).digest();
 
 }
-
-export function hashFromPublicKey(publicKey: Buffer, { chainId = 8964, addressType = 1 } = {}): Buffer {
-
-  const sha = sha256(publicKey);
-  const pubkeyHash = ripemd160(sha);
-  const output = Buffer.allocUnsafe(3);
-  output.writeInt16LE(chainId, 0);
-  output.writeInt8(addressType, 2);
-
-  return Buffer.concat([output, pubkeyHash]);
-
-}

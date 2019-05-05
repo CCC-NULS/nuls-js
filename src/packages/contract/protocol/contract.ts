@@ -325,10 +325,10 @@ export class Contract {
 
     } else {
 
-      const acc = (arg as Account).getAccount();
+      const acc = (arg as Account).toObject();
 
       sender = acc.address;
-      privateKey = acc.prikey;
+      privateKey = acc.privateKey;
 
     }
 

@@ -7,33 +7,35 @@ The default `addressType` is `1` and `chainId` is `8964`. You can change these y
 as parameters, read [Address Type and ChainId](#address-type-and-chainid).
 
 #### Quick Start
-```js
-import nuls from 'nuls-js';
+```ts
+import { Account } from 'nuls-js';
 
-const Account = new nuls.Account();
-const fooAccount = account.create(); // Creates an account
-const barAccount = account.create(PASSWORD); // Creates an account with a password
-const bazAccount = account.import(null, PLAIN_TEXT_PRIVATE_KEY); // Imports a plain text private key
-const quzAccount = account.import(PASSWORD, PLAIN_TEXT_PRIVATE_KEY); // Imports a plain text private key and encrypts it
-const flobAccount = account.import(PASSWORD, ENCRYPTED_PRIVATE_KEY); // Imports an encrypted private key
+Account.create(); // Creates an account
+Account.create(PASSWORD); // Creates an account with a password
+Account.import(PLAIN_TEXT_PRIVATE_KEY); // Imports a plain text private key
+Account.import(PLAIN_TEXT_PRIVATE_KEY, PASSWORD); // Imports a plain text private key and encrypts it
+Account.import(ENCRYPTED_PRIVATE_KEY, PASSWORD); // Imports an encrypted private key
 ```
 
 ## Create a New Account
 Accounts can be created easily on the frontend without calling any server. It should only be
 done by the user without interacting with any server to get the best security measures.
 
-```js
-const Account = new nuls.Account();
-const fooAccount = Account.create(); // Creates an account
-const barAccount = Account.create(PASSWORD); // Creates an account with a password
+```ts
+import { Account } from 'nuls-js';
+
+Account.create(); // Creates an account
+Account.create(PASSWORD); // Creates an account with a password
 ```
 
 #### Without a Password
 To generate a new account you can call the `Account` class.
-```js
-const Account = new nuls.Account();
 
-console.log(Account.create());
+```ts
+import { Account } from 'nuls-js';
+
+const account = Account.create();
+console.log(account.toObject());
 // {
 //     address: 'Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6',
 //     privateKey: '889bba933b77da1360e1fc6314552f3d777a099cca82dcf594c6f3e3287b3c97',
@@ -44,10 +46,11 @@ console.log(Account.create());
 #### With a Password
 To generated a new account encrypted with a password you can provide a plain text password as
 the first `param` whereafter you will receive a private key both in plain text and encrypted.
-```js
-const Account = new nuls.Account();
+```ts
+import { Account } from 'nuls-js';
 
-console.log(Account.create('Password1!'));
+const account = Account.create('Password1!');
+console.log(account.toObject());
 // {
 //     address: 'Nse1TYHc6Rxs84iimrnygSF2kqrUAQM6',
 //     privateKey: '889bba933b77da1360e1fc6314552f3d777a099cca82dcf594c6f3e3287b3c97',
@@ -58,23 +61,26 @@ console.log(Account.create('Password1!'));
 
 ## Import an Account
 You can import an existing account by using the private key. The private key can be encrypted or decrypted,
-if you provide just the private key it must be decrypted, if you provide an encrypted private key together with its password
+if you provide just the private key it must be encrypted, if you provide an encrypted private key together with its password
 it will decrypt the private key, if you provide a password and a decrypted private key it will import it and
 encrypt the private key.
 
-```js
-const Account = new nuls.Account();
-const bazAccount = Account.import(null, PLAIN_TEXT_PRIVATE_KEY); // Imports a plain text private key
-const quzAccount = Account.import(PASSWORD, PLAIN_TEXT_PRIVATE_KEY); // Imports a plain text private key and encrypts it
-const flobAccount = Account.import(PASSWORD, ENCRYPTED_PRIVATE_KEY); // Imports an encrypted private key
+```ts
+import { Account } from 'nuls-js';
+
+Account.import(PLAIN_TEXT_PRIVATE_KEY); // Imports a plain text private key
+Account.import(PLAIN_TEXT_PRIVATE_KEY, PASSWORD); // Imports a plain text private key and encrypts it
+Account.import(ENCRYPTED_PRIVATE_KEY, PASSWORD); // Imports an encrypted private key
 ```
 
 #### Unencrypted (plain text) Private Key
-You can provide the unencrypted private key in plain text as the second `param` in the `Account` class.
-```js
-const Account = new nuls.Account();
+You can provide the unencrypted private key in plain text as the first `param` in the `Account` class.
 
-console.log(Account.import(null, '2d5ed8706749f6d7c096772a075c027f56fae4148bacbf6c78b59df09f84b07b'));
+```ts
+import { Account } from 'nuls-js';
+
+const account = Account.import('2d5ed8706749f6d7c096772a075c027f56fae4148bacbf6c78b59df09f84b07b');
+console.log(account.toObject());
 // {
 //     address: 'Nse8Ar5XvuPdDCYcTnkK4LDwDNZqTqYx',
 //     privateKey: '2d5ed8706749f6d7c096772a075c027f56fae4148bacbf6c78b59df09f84b07b',
@@ -84,11 +90,13 @@ console.log(Account.import(null, '2d5ed8706749f6d7c096772a075c027f56fae4148bacbf
 
 #### Encrypted Private Key
 If the private key you're providing is encrypted with a password, you can provide the
-password in the first `param` in plain text and the encrypted private key as the second as before.
-```js
-const Account = new nuls.Account();
+password as second `param` in plain text and the encrypted private key as the first `param`.
 
-console.log(Account.import('Password1!', '6f1a067690b4481de3743de3f015da5f172d939b5b1b4842c16977278a9c1fb914adc6079df87c70ab6cef422d6add01'));
+```ts
+import { Account } from 'nuls-js';
+
+const account = Account.import('6f1a067690b4481de3743de3f015da5f172d939b5b1b4842c16977278a9c1fb914adc6079df87c70ab6cef422d6add01', 'Password1!');
+console.log(account.toObject());
 // {
 //     address: 'Nse8Ar5XvuPdDCYcTnkK4LDwDNZqTqYx',
 //     privateKey: '2d5ed8706749f6d7c096772a075c027f56fae4148bacbf6c78b59df09f84b07b',
@@ -100,10 +108,12 @@ console.log(Account.import('Password1!', '6f1a067690b4481de3743de3f015da5f172d93
 #### Encrypting an Unencrypted (plain text) Private Key
 If you want to encrypt a private key you can provide the password and unecrypted private key,
 the account will then be imported and encrypted.
-```js
-const Account = new nuls.Account();
 
-console.log(Account.import('Password1!', '2d5ed8706749f6d7c096772a075c027f56fae4148bacbf6c78b59df09f84b07b'));
+```ts
+import { Account } from 'nuls-js';
+
+const account = Account.import('2d5ed8706749f6d7c096772a075c027f56fae4148bacbf6c78b59df09f84b07b', 'Password1!');
+console.log(account.toObject());
 // {
 //     address: 'Nse8Ar5XvuPdDCYcTnkK4LDwDNZqTqYx',
 //     privateKey: '2d5ed8706749f6d7c096772a075c027f56fae4148bacbf6c78b59df09f84b07b',
@@ -116,10 +126,20 @@ console.log(Account.import('Password1!', '2d5ed8706749f6d7c096772a075c027f56fae4
 You can create or import accounts under different address types or chainIds by providing them as parameters
 into the `create` or `import` functions as such:
 
-```js
-const Account = new nuls.Account();
-const fooAccount = Account.create(PASSWORD, ADDRESS_TYPE, CHAINID);
-const barAccount = Account.import(PASSWORD, PRIVATE_KEY, ADDRESS_TYPE, CHAINID);
+```ts
+import { Account } from 'nuls-js';
+
+Account.create(PASSWORD, ADDRESS_TYPE, CHAIN_ID);
+Account.import(PRIVATE_KEY, PASSWORD, ADDRESS_TYPE, CHAIN_ID);
+```
+
+You can use the util enums `AddressType` and `ChainIdType` to provide this information as latest arguments.
+
+```ts
+import { Account, AddressType, ChainIdType } from 'nuls-js';
+
+Account.import('2d5ed8706749f6d7c096772a075c027f56fae4148bacbf6c78b59df09f84b07b', null, AddressType.Default, ChainIdType.Testnet);
+Account.create(null, AddressType.Default, ChainIdType.Mainnet);
 ```
 
 ## Create a Custom Address
@@ -129,21 +149,19 @@ what parameters are available for the method. Below is an example for finding ad
 `josh` where case sensitive is not an issue. This will return the first address found, but be aware the longer the
 string then the harder it is to find, as well as making it case sensitive and setting the position to `start`.
 
-```js
-const Account = new nuls.Account();
+```ts
+import { Account } from 'nuls-js';
 
-// const fooAccount = createCustomAddress(MATCH_STRING, PASSWORD, CASE_SENSITIVE, MATCH_POSITION);
+Account.createCustomAddress(MATCH_STRING, PASSWORD, CASE_SENSITIVE, MATCH_POSITION);
 const fooAccount = Account.createCustomAddress('josh', 'Password1!');
 ```
 
 ###### Find all `josh` addresses until the script is killed
-```js
-const Account = new nuls.Account();
+```ts
+import { Account } from 'nuls-js';
 
-while(true)
-{
+while (true) {
 	const account = Account.createCustomAddress('josh', 'Password1!');
-
 	console.log(account);
 }
 ```

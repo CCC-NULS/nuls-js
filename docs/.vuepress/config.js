@@ -16,8 +16,7 @@ module.exports = {
 				title: 'Account',
 				collapsable: true,
 				children: [
-					'/guide/account/',
-					'/guide/account/qr-code',
+					'/guide/account/'
 				]
 			},
 			['/guide/block/', 'Block'],

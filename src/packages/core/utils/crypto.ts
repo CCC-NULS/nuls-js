@@ -1,5 +1,5 @@
 import * as bs58 from 'bs58';
-import * as RIPEMD160 from 'ripemd160';
+import RIPEMD160 from 'ripemd160';
 import * as secp256k1 from 'secp256k1';
 import * as shajs from 'sha.js';
 import { HASH_LENGTH } from '../common';
@@ -20,13 +20,7 @@ export function publicKeyFromPrivateKey(privateKey: Buffer): Buffer {
 
 export function isValidPrivateKey(privateKey: string): boolean {
 
-  if (!isHex(privateKey)) {
-
-    return false;
-
-  }
-
-  if (!privateKey) {
+  if (!privateKey || !isHex(privateKey)) {
 
     return false;
 
@@ -46,8 +40,8 @@ export function isValidPrivateKey(privateKey: string): boolean {
 
   try {
 
-    const prvbuffer = Buffer.from(privateKey, 'hex');
-    publicKeyFromPrivateKey(prvbuffer);
+    const privateKeyBuffer = Buffer.from(privateKey, 'hex');
+    publicKeyFromPrivateKey(privateKeyBuffer);
 
     return true;
 
@@ -108,9 +102,9 @@ export function hashFromAddress(address: Address): AddressHash {
 
 }
 
-export function sha256(buffer: Buffer): Buffer {
+export function sha256(data: string | Buffer): Buffer {
 
-  return new shajs.sha256().update(buffer).digest();
+  return new shajs.sha256().update(data).digest();
 
 }
 
@@ -120,9 +114,9 @@ export function sha256Twice(buffer: Buffer): Buffer {
 
 }
 
-export function ripemd160(buffer: Buffer): Buffer {
+export function ripemd160(data: string | Buffer): Buffer {
 
-  return new RIPEMD160().update(buffer).digest();
+  return new RIPEMD160().update(data).digest();
 
 }
 

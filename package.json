@@ -50,6 +50,7 @@
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
     "@types/bs58": "^3.0.30",
+    "@types/crypto-js": "^3.1.43",
     "@types/deepmerge": "^2.2.0",
     "@types/jest": "^23.3.5",
     "@types/node": "^10.11.7",

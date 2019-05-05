@@ -1,4 +1,6 @@
-import { Block } from '../src';
+import { Block } from './../src/packages/core/protocol/block/block';
+import { BaseTransaction } from '../src/packages';
+// import { Transaction } from '../src';
 
 // import { TransferTransaction, nulsToNa } from '../src/index';
 // import { AliasTransaction } from '../src/index';
@@ -8,10 +10,28 @@ import { Block } from '../src';
 
 async function run() {
 
+  const b = Block.fromBytes(Buffer.from("ACCL6GlJMIhLrXyri9cn4afHF/aLIrtII7hCA0SyK/m0SwAgUtitQpDTL2Y1x+jg/c2RFpGz+dVebnXbE6xE/BId9IBQJGeraAEe1AoAAgAAAD3WUA0ADwCAKGWraAENAAIAAAADAAAAWgAQJwAAILAnlCUbFqJcrditOTKy/PecE4u03ZlJi3fhnMC6xNG4IQJy+9FK2wqLUU2SemeMX6uKClNfrg8TRp+B41shTpSqnQBHMEUCIQDPYeLh9LBPpDxQjb1CRZIjuAxyxCkI02Mpz6KbLXMV5gIgfimN/HlY1v0mN/FYYrYSi0BW7pnISlylfMlUMXo/n14BAFAkZ6toAQD/////AAUXBQEBkwWT5LsVIHtbFQJYySyUU95sKh66OVgCAAAAAAbYCgAAABcFAQGAtJOG+8wFkhisQjNr1c+cYMeGZIWSmwAAAAAABtgKAAAAFwUBAb4YfTytQTE/h/JkRAfcoRSK6m5y16qeBwAAAAAG2AoAAAAXBQEBevC4xmyD6OqicT08GmSuyslpFIy1R34GAAAAAAbYCgAAABcFAQFWdsoDrnt4kIbToiEuGNYCx9hVLEPJTQAAAAAABtgKAAAAAAcAUCRnq2gBAAEFAQHJBfuL5rahTPtZP/uYULNVzhvtpv////8A", 'base64'));
 
-  const blockBytes: Buffer = Buffer.from('ACCVtyL5tbIBJD3KMaeULlBELo8aDMVl5cbLS8GdLE8o8wAgt6RxSEcTPDL/sV446QytAOaylxD3H5ATbtlQuJoZaGAg7ejsZgGjBgEAAQAAAD07SgwADQDwd+jsZgEDAAIAAAACAAAAWgAQJwAAIDl5nQU1bDlC800WeMS8DgSiAUJs3d40nQQZy3NDuS4gIQOmzfqeD9WVAn7XY36qrisuFlnoJ6DSFwzTZaC72EQXhQBHMEUCIQCzvG+8FeeOkObK8e0BFDaI0qrs6BD12bM5GjyEkDvM/QIgY/ZNu7WdU7KuNrpydwgOK+4JDiaV0FaEUHZsS66q7csBACDt6OxmAQD/////AAMXBQEBj+RFsJovbn13e4BIjrTTJQRV5e6/JEAFAAAAAIsKAQAAABcFAQH0qS/uv9Nvposd4xqeix6piJ1WR9iU7QUAAAAAiwoBAAAAFwUBAfjtsLAUdIoaiDClVbJSvcM40xLkrBC+BAAAAACLCgEAAAAA', 'base64');
-  const block: Block = Block.fromBytes(blockBytes);
-  console.log(JSON.stringify(block.toObject(), undefined, 2));
+  // const t = Transaction.fromRawData({
+  //   type: 7,
+  //   time: 1556432030000,
+  //   remark: Buffer.from([]),
+  //   txData: {
+  //     addresses: ['TTanruj97W89XTkyaExWnuJPhTDc2q7H']
+  //   },
+  //   coinData: null,
+  //   scriptSign: Buffer.from([]),
+  // });
+
+  // const hash = t.toObject();
+
+  const t: BaseTransaction = (b as any)._transactions[1];
+
+  console.log(t.toBytes().toString('hex'));
+  console.log(Buffer.from('BwBQJGeraAEAAQUBAckF+4vmtqFM+1k/+5hQs1XOG+2m/////wA=', 'base64').toString('hex'));
+  
+  console.log(t.toObject().hash);
+
 
 }
 
